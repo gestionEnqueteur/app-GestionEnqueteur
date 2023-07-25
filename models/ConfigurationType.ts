@@ -1,4 +1,6 @@
+import User from "./User";
+
 export default interface ConfigurationType {
   urlApi: string;
-  invertigator: string; 
+  user: string;
 }
