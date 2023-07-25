@@ -1,27 +1,14 @@
-export default interface MesureBsc {
+import InfoEnqueteur from "../InfoEnqueteur";
+import InfoTrain from "./InfoTrain";
+import Perturbation from "./Perturbation";
+import Questionnaires from "./Questionnaire";
+import Retard from "./Retard";
+
+export default interface MesureBSC {
+  infoEnqueteur: InfoEnqueteur;
+  infoTrain: InfoTrain;
+  perturbation?: Perturbation;
+  retards?: Retard;
   questionnaires?: Questionnaires;
-  infoTrain?: InfoTrain;
-  retards?: Retards;
-  trainRemovalReason?: string;
-}
-
-export interface Questionnaires {
-  distributedQuestionnaires?: number;
-  unusableQuestionnaires?: number;
-  emptyQuestionnaires?: number;
-  usableQuestionnaires?: number;
-}
-
-export interface InfoTrain {
-  composition?: "US" | "UM2" | "UM3";
-  material?: number;
-}
-
-export interface Retards {
-  lateDeparture: number | Date;
-  lateArrival: number | Date;
-}
-
-export interface Investigator {
-  dropOffStation: string;
+  commentaireNoSuccess: string;
 }

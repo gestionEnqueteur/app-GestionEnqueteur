@@ -1,14 +1,19 @@
-import MesureBsc from "./bsc/MesureBsc";
+import InfoHoraireCourse from "./InfoHoraireCourse";
+import Ligne from "./Ligne";
+import MesureBSC from "./bsc/MesureBsc";
+import { StatusEnum } from "./enum";
+import MesureMQ from "./mq/MesureMQ";
+import MesureOD from "./od/MesureOD";
 
 export default interface Course {
-  mission: string;
-  date: string;
-  depart: string;
-  arrivee: string;
-  hd: string;
-  ha: string;
-  trainCourse?: string;
-  ligne?: string;
-  prQuota?: number;
-  mesureBsc?: MesureBsc;
+  id: number;
+  missionType: string;
+  infoHoraireCourse: InfoHoraireCourse;
+  status: StatusEnum;
+  ligne: Ligne;
+  mesure?: MesureBSC | MesureMQ | MesureOD;
+  service?: string;
+  trainCourse: string;
+  objectif: number;
+  commentaire?: string;
 }
