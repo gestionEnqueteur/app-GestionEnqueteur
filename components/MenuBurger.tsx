@@ -3,40 +3,40 @@ import { Menu, IconButton } from "react-native-paper";
 import { View } from "react-native";
 import ModalSaisiBsc from "./modals/ModalSaisiBsc";
 
-export default function MenuBurger() {
-  const [visible, setVisible] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalSeleted, setModalSeleted] = useState("info");
+export default function MenuBurger(): JSX.Element {
+  const [visible, setVisible] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalSeleted, setModalSeleted] = useState<string>("info");
 
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
+  const openMenu = (): void => setVisible(true);
+  const closeMenu = (): void => setVisible(false);
 
   //function button
-  function openModalSuppressionTrain() {
+  function openModalSuppressionTrain(): void {
     closeMenu();
     setModalSeleted("supression");
     setModalVisible(true);
   }
 
-  function openModalInfoTrain() {
+  function openModalInfoTrain(): void {
     closeMenu();
     setModalSeleted("info");
     setModalVisible(true);
   }
 
-  function openModalRetardTrain() {
+  function openModalRetardTrain(): void {
     closeMenu();
     setModalSeleted("retard");
     setModalVisible(true);
   }
 
-  function openModalGareDescente() {
+  function openModalGareDescente(): void {
     closeMenu();
     setModalSeleted("descent");
     setModalVisible(true);
   }
 
-  const buttom = (
+  const button: JSX.Element = (
     <IconButton
       mode="contained-tonal"
       icon="dots-vertical"
@@ -46,8 +46,12 @@ export default function MenuBurger() {
 
   return (
     <View>
-      <ModalSaisiBsc visible={modalVisible} select={modalSeleted} setVisible={setModalVisible} />
-      <Menu visible={visible} anchor={buttom} onDismiss={closeMenu}>
+      <ModalSaisiBsc
+        visible={modalVisible}
+        select={modalSeleted}
+        setVisible={setModalVisible}
+      />
+      <Menu visible={visible} anchor={button} onDismiss={closeMenu}>
         <Menu.Item
           leadingIcon="delete"
           onPress={openModalSuppressionTrain}

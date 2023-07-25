@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import styles from "./modalStyle";
 
 import TopRetard from "../bsc/TopRetard";
 
-export default function RetardTrain() {
+export default function RetardTrain(): JSX.Element {
   // variable de test
-  const datetime = new Date();
+  const datetime: Date = new Date();
 
   return (
     <View style={styles.modalContainer}>
@@ -16,15 +16,20 @@ export default function RetardTrain() {
         labelInput="Retard au départ"
         labelButton="Top Départ"
         time={datetime}
-        onChangeValue={() => console.log("salut les lapin")}
+        onChangeValue={(): void => console.log("salut les lapin")}
       />
       <TopRetard
         labelInput="Retard a l'arrivé "
         labelButton="Top Arrivé"
         time={datetime}
-        onChangeValue={() => console.log("salut les lapin")}
+        onChangeValue={(): void => console.log("salut les lapin")}
       />
-      <Button mode="contained" onPress={() => console.log("validation retard")}>Valider</Button>
+      <Button
+        mode="contained"
+        onPress={(): void => console.log("validation retard")}
+      >
+        Valider
+      </Button>
     </View>
   );
 }

@@ -8,21 +8,21 @@ type DetailTrajetProps = {
   departureCity: string;
   arrivalCity: string;
 };
-const removeTiret = (word: string) => {
+const removeTiret = (word: string): string => {
   return word.replaceAll("-", " ");
 };
 
-const formatTime = (time: Date) => {
-  const hours = time.getHours().toString().padStart(2, "0");
-  const minutes = time.getMinutes().toString().padStart(2, "0");
+const formatTime = (time: Date): string => {
+  const hours: string = time.getHours().toString().padStart(2, "0");
+  const minutes: string = time.getMinutes().toString().padStart(2, "0");
   return `${hours}:${minutes}`;
 };
 
-const DetailTrajet = (props: DetailTrajetProps) => {
+const DetailTrajet = (props: DetailTrajetProps): JSX.Element => {
   const { departureTime, arrivalTime, departureCity, arrivalCity } = props;
 
-  const formattedDepartureTime = formatTime(departureTime);
-  const formattedArrivalTime = formatTime(arrivalTime);
+  const formattedDepartureTime: string = formatTime(departureTime);
+  const formattedArrivalTime: string = formatTime(arrivalTime);
 
   return (
     <View style={styles.container}>

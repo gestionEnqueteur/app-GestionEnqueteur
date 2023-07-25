@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import {
-  Avatar,
-  Button,
-  SegmentedButtons,
-  Surface,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { Avatar, Button, Surface, Text, TextInput } from "react-native-paper";
 
 import CardNumeroLine from "../../components/CardNumeroLine";
 import ChronoTopDepart from "../../components/ChornoTopDepart";
@@ -15,13 +8,11 @@ import DetailTrajet from "../../components/DetailTrajet";
 import MenuBurger from "../../components/MenuBurger";
 
 // variable de test
-const datetime = new Date();
+const datetime: Date = new Date();
 
 // test composant
 
-export default function SaisiBscScreen() {
-  const [value, setValue] = useState("");
-
+export default function SaisiBscScreen(): JSX.Element {
   return (
     <View style={style.container}>
       <Surface style={style.header} mode="elevated" elevation={4}>
@@ -76,13 +67,15 @@ export default function SaisiBscScreen() {
         <View style={style.areaButton}>
           <Button
             mode="contained"
-            onPress={() => console.log("Enregistrement du formulaire Saisi")}
+            onPress={(): void =>
+              console.log("Enregistrement du formulaire Saisi")
+            }
           >
             Enregister
           </Button>
           <Button
             mode="contained"
-            onPress={() => console.log("Sousmission du formulaire Saisi")}
+            onPress={(): void => console.log("Sousmission du formulaire Saisi")}
           >
             Soumettre
           </Button>
@@ -137,6 +130,6 @@ const style = StyleSheet.create({
   },
   detailTime: {
     flexDirection: "row",
-    width: 200
-  }
+    width: 200,
+  },
 });

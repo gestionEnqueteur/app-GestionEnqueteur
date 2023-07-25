@@ -14,39 +14,36 @@ type Props = {
   course: Course;
 };
 
-const dateOfTest = new Date();
+const dateOfTest: Date = new Date();
 
-export default function DetailCourse(props: Props) {
+export default function DetailCourse(props: Props): JSX.Element {
   const { course } = props;
 
   const navigation = useNavigation();
 
-
-  const [dateTimeHd, setDateTimeHd] = useState(new Date());
-  const [dateTimeHa, setDateTimeHa] = useState(new Date());
+  const [dateTimeHd, setDateTimeHd] = useState<Date>(new Date());
+  const [dateTimeHa, setDateTimeHa] = useState<Date>(new Date());
 
   // pour le test en attende de modification du Mock;
-  const dateTimeDeparture = "2023-06-09T07:33:14.719Z";
-  const datetimeArrival = "2023-06-09T07:59:56.333Z";
+  const dateTimeDeparture: string = "2023-06-09T07:33:14.719Z";
+  const datetimeArrival: string = "2023-06-09T07:59:56.333Z";
 
-  useEffect(() => {
+  useEffect((): void => {
     setDateTimeHd(new Date(dateTimeDeparture));
     setDateTimeHa(new Date(datetimeArrival));
-  }, []);
+  }, [dateTimeDeparture, datetimeArrival]);
 
-  const handleGotoAction = () => {
+  const handleGotoAction = (): void => {
     switch (course.mission) {
-      case "BSC HDF": 
-        navigation.navigate("SaisiBsc", {course: course});
-      default: 
+      case "BSC HDF":
+        navigation.navigate("SaisiBsc", { course: course });
+      default:
         console.log("pas action pour ce type de mission");
     }
-  }
+  };
 
   return (
-    <TouchableRipple
-      onPress={handleGotoAction}
-    >
+    <TouchableRipple onPress={handleGotoAction}>
       <View style={style.container}>
         <View style={style.lineUp}>
           <View style={style.detailTime}>

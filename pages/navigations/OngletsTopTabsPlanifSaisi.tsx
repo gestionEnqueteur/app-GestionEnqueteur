@@ -5,7 +5,7 @@ import TrainASaisiScreen from "../TrainASaisiScreen";
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function OngletsTopTabPlaniSaisi() {
+export default function OngletsTopTabPlaniSaisi(): JSX.Element {
   return (
     <Tab.Navigator>
       <Tab.Screen name="trainPlanifié" component={TrainPlanifieScreen} />

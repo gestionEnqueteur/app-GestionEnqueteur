@@ -26,37 +26,36 @@ enum VersionChrono {
 }
 // mode du chrono : date | 60 minute avant départ | temps restant | date
 
-export default function ChronoTopDepart(props: props) {
+export default function ChronoTopDepart(props: props): JSX.Element {
   const { datetimeDepart, datetimeArrival, currentDatetime } = props;
 
-  const [timeRemaningBeforeDepature, setTimeRemaningBeforeDeparture] = useState(
-    new Date()
+  const [timeRemaningBeforeDepature, setTimeRemaningBeforeDeparture] =
+    useState<Date>(new Date());
+  const [timeRemaningBeforeArrival, setTimeRemaningBefoireArrival] =
+    useState<Date>(new Date());
+  const [versionChrono, setVersionChrono] = useState<VersionChrono>(
+    VersionChrono.Date
   );
-  const [timeRemaningBeforeArrival, setTimeRemaningBefoireArrival] = useState(
-    new Date()
-  );
-  const [versionChrono, setVersionChrono] = useState(VersionChrono.Date);
 
-  const ONE_HOUR = new Date(0, 0, 0, 1);
+  const ONE_HOUR: Date = new Date(0, 0, 0, 1);
 
-  useEffect(() => {
-    const isSixtyMinuteBeforeDeparture =
+  useEffect((): void => {
+    const isSixtyMinuteBeforeDeparture: boolean =
       currentDatetime.getTime() >
         datetimeDepart.getTime() - ONE_HOUR.getTime() &&
       currentDatetime.getTime() < datetimeDepart.getTime();
 
-    const isTrainRunning = currentDatetime.getTime() > datetimeDepart.getTime() &&
-    currentDatetime.getTime() < datetimeArrival.getTime(); 
+    const isTrainRunning: boolean =
+      currentDatetime.getTime() > datetimeDepart.getTime() &&
+      currentDatetime.getTime() < datetimeArrival.getTime();
 
-    // choix du composant à afficher 
+    // choix du composant à afficher
     if (isTrainRunning) {
       setVersionChrono(VersionChrono.Running);
-    }
-    else if (isSixtyMinuteBeforeDeparture ) {
+    } else if (isSixtyMinuteBeforeDeparture) {
       setVersionChrono(VersionChrono.BeforeDepature);
-    }
-    else {
-      setVersionChrono(VersionChrono.Date); 
+    } else {
+      setVersionChrono(VersionChrono.Date);
     }
 
     // calcul du temps avant départ
@@ -69,8 +68,10 @@ export default function ChronoTopDepart(props: props) {
     );
   }, [currentDatetime]);
 
-  function TimerRunningTrain(propsTimerRunning: propsTimerRunning) {
-    const timeRemaining = propsTimerRunning.remainingTime;
+  function TimerRunningTrain(
+    propsTimerRunning: propsTimerRunning
+  ): JSX.Element {
+    const timeRemaining: Date = propsTimerRunning.remainingTime;
     return (
       <View style={style.container}>
         <Text style={style.reste}>RESTE</Text>
@@ -81,7 +82,7 @@ export default function ChronoTopDepart(props: props) {
     );
   }
 
-  function BeforeDepature(props: propsBeforeDepature) {
+  function BeforeDepature(props: propsBeforeDepature): JSX.Element {
     return (
       <View style={style.container}>
         <Text style={style.text}>
@@ -92,7 +93,7 @@ export default function ChronoTopDepart(props: props) {
     );
   }
 
-  function DisplayDateCourse(props: propsDisplayDate) {
+  function DisplayDateCourse(props: propsDisplayDate): JSX.Element {
     return (
       <View style={style.container}>
         <Text style={style.text}>
@@ -104,7 +105,9 @@ export default function ChronoTopDepart(props: props) {
 
   switch (versionChrono) {
     case VersionChrono.BeforeDepature:
-      return <BeforeDepature timeBeforeDeparture={timeRemaningBeforeDepature} />;
+      return (
+        <BeforeDepature timeBeforeDeparture={timeRemaningBeforeDepature} />
+      );
     case VersionChrono.Running:
       return <TimerRunningTrain remainingTime={timeRemaningBeforeArrival} />;
     default:

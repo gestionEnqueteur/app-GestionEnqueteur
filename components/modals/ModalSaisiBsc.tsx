@@ -8,21 +8,18 @@ import GareDeDescente from "./GareDeDescente";
 
 // import pour les test
 
-type props = {
+type Props = {
   visible: boolean;
   select: string;
-  setVisible: Function
+  setVisible: Function;
 };
 
-export default function ModalSaisiBsc(props: props) {
+export default function ModalSaisiBsc(props: Props) {
   const { select, visible } = props;
 
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={() => props.setVisible(false)}
-      >
+      <Modal visible={visible} onDismiss={(): void => props.setVisible(false)}>
         {select === "supression" && <SupressionTrain />}
         {select === "retard" && <RetardTrain />}
         {select === "info" && <InfoTrain />}

@@ -7,38 +7,37 @@ type Props = {
 };
 
 // création du context
-export const ConfigurationContext = createContext<any | null>(null);
+export const ConfigurationContext: React.Context<any | null> = createContext<
+  any | null
+>(null);
 
-export default function ConfigurationProvider(props: Props) {
+export default function ConfigurationProvider(props: Props): JSX.Element {
   const [configuration, setConfiguration] = useState<ConfigurationType>({
     urlApi: "",
-    invertigator: "",
+    user: "",
   });
 
-  const getConfiguration = async () => {
+  const getConfiguration = async (): Promise<ConfigurationType | undefined> => {
     try {
-      const jsonValue = await AsyncStorage.getItem("configuration");
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
+      const jsonValue: string | null = await AsyncStorage.getItem(
+        "configuration"
+      );
+      return jsonValue != null ? JSON.parse(jsonValue) : undefined;
+    } catch (e: any) {
       console.log(e);
     }
   };
 
-
-
-  useEffect(() => {
+  useEffect((): void => {
     // chargement de la configuration dans le context ConfigurationProvider
     try {
-      getConfiguration().then((storedConfig: ConfigurationType) => {
-        if (storedConfig !== null) setConfiguration(storedConfig);
+      getConfiguration().then((storedConfig?: ConfigurationType) => {
+        if (storedConfig) setConfiguration(storedConfig);
       });
-
-    } catch(e) {
+    } catch (e: any) {
       // ici on va gerer l'erreur en cas d'échec
-      console.log("Echec du chargement de la configuration"); 
+      console.log("Echec du chargement de la configuration: " + e);
     }
-
-
   }, []);
 
   return (

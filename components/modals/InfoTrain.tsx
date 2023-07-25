@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { View , StyleSheet} from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Button, TextInput, Text, SegmentedButtons } from "react-native-paper";
 import styles from "./modalStyle";
 
-export default function InfoTrain() {
-  const [composition, setComposition] = useState("US");
+export default function InfoTrain(): JSX.Element {
+  const [composition, setComposition] = useState<string>("US");
 
   return (
     <View style={styles.modalContainer}>
@@ -36,7 +36,7 @@ export default function InfoTrain() {
 }
 
 const style = StyleSheet.create({
-  input: { 
-    minWidth: 150
-  }
-})
+  input: {
+    minWidth: 150,
+  },
+});

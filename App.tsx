@@ -3,7 +3,7 @@ import { PaperProvider } from "react-native-paper";
 import ConfigurationProvider from "./provider/ConfigurationProvider";
 import MyMainStack from "./pages/navigations/StackNavigation";
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <PaperProvider>
       <ConfigurationProvider>

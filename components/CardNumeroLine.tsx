@@ -6,16 +6,16 @@ type Props = {
   lineNumber: string;
 };
 
-export default function CardNumeroLine(props: Props) {
+export default function CardNumeroLine(props: Props): JSX.Element {
   const { lineNumber } = props;
 
   // state
-  const [backgroundColor, setBackgroundColor] = useState("gray");
-  const [textColor, setTextColor] = useState("black");
+  const [backgroundColor, setBackgroundColor] = useState<string>("gray");
+  const [textColor, setTextColor] = useState<string>("black");
 
-  useEffect(() => {
+  useEffect((): void => {
     // choix couleur
-    const firstLetter = lineNumber[0];
+    const firstLetter: string = lineNumber[0];
 
     // switch
     switch (firstLetter) {
@@ -30,7 +30,7 @@ export default function CardNumeroLine(props: Props) {
         setBackgroundColor("green");
         break;
     }
-  }, []);
+  }, [lineNumber]);
 
   const style = StyleSheet.create({
     container: {

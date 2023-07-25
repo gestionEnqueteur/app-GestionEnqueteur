@@ -4,21 +4,22 @@ import { useEffect, useContext, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ConfigurationContext } from "../provider/ConfigurationProvider";
 
-export default function ParamScreen() {
-  const { configuration, setConfiguration } = useContext(ConfigurationContext);
-  const [visibleSnackBar, setVisibleSnackBar] = useState(false);
-  const [labelSnackBar, setLabelSnackBar] = useState("");
-  const [iconSnackBar, setIconSnackBar] = useState("");
+export default function ParamScreen(): JSX.Element {
+  const { configuration, setConfiguration } =
+    useContext<any>(ConfigurationContext);
+  const [visibleSnackBar, setVisibleSnackBar] = useState<boolean>(false);
+  const [labelSnackBar, setLabelSnackBar] = useState<string>("");
+  const [iconSnackBar, setIconSnackBar] = useState<string>("");
 
-  const handleOnChangeURL = (newValue: string) => {
+  const handleOnChangeURL = (newValue: string): void => {
     setConfiguration({ ...configuration, urlApi: newValue });
   };
 
-  const handleOnChangeInvertigator = (newValue: string) => {
+  const handleOnChangeInvertigator = (newValue: string): void => {
     setConfiguration({ ...configuration, invertigator: newValue });
   };
 
-  const displaySnackBar = (label: string, icon: string) => {
+  const displaySnackBar = (label: string, icon: string): void => {
     // mettre a jour le state
     setLabelSnackBar(label);
     setIconSnackBar(icon);
@@ -27,12 +28,12 @@ export default function ParamScreen() {
     setVisibleSnackBar(true);
   };
 
-  const saveConfiguration = async () => {
+  const saveConfiguration = async (): Promise<void> => {
     try {
-      const jsonValue = JSON.stringify(configuration);
+      const jsonValue: string = JSON.stringify(configuration);
       await AsyncStorage.setItem("configuration", jsonValue);
       displaySnackBar("Paramètre sauvegardé", "content-save");
-    } catch (e) {
+    } catch (e: any) {
       displaySnackBar("Echec d'enregistrement", "alert-circle");
     }
   };
