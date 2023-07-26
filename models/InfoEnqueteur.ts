@@ -5,5 +5,5 @@ export default interface InfoEnqueteur {
   enqueteur: User;
   numTablette?: string;
   gareMonteeReel: Gare;
-  gaerDescenteReel: Gare;
+  gareDescenteReel: Gare;
 }

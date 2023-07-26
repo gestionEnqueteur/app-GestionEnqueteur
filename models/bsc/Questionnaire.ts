@@ -1,5 +1,5 @@
 export default interface Questionnaires {
-  distribuées: number;
+  distribuees: number;
   vides: number;
   inexploitables: number;
   exploitables?: number;

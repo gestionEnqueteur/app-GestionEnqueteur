@@ -7,7 +7,7 @@ export default interface User {
   lastName: string;
   email: string;
   tel: string;
-  Role: RoleEnum[];
+  role: RoleEnum[];
   agence?: AgenceInterim;
   username: string;
   password?: string;
