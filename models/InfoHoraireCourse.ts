@@ -1,12 +1,10 @@
-import Gare from "./Gare";
-
 export default interface InfoHoraireCourse {
   departTrain?: Date;
   arriveTrain?: Date;
-  gareOrigine?: Gare;
-  gareTerminus?: Gare;
-  departEnqueteur: Date;
-  arriveEnqueteur: Date;
-  gareDepartEnq: Gare;
-  gareArriveEnq: Gare;
+  gareOrigine?: string;
+  gareTerminus?: string;
+  datetimeDepartEnq?: Date;
+  datetimeArriveEnq?: Date;
+  gareDepartEnq?: string;
+  gareArriveEnq?: string;
 }

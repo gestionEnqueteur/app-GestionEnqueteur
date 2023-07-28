@@ -4,8 +4,10 @@ export enum RoleEnum {
 }
 
 export enum StatusEnum {
-  EN_ATTENDE,
-  OK,
+  DRAFT,
+  AFFECTED,
+  CANCELED,
+  TERMINED,
 }
 
 export enum CompositionEnum {

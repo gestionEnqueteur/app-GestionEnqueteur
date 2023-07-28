@@ -1,10 +1,9 @@
 import Course from "./Course";
-import User from "./User";
 
 export default interface Vacation {
   id: number;
-  affectation: User;
+  affectation?: string;
   pds: string;
-  vacNumber: string;
+  vac: string;
   courses: Course[];
 }

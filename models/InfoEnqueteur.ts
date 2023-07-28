@@ -1,9 +1,6 @@
-import Gare from "./Gare";
-import User from "./User";
-
 export default interface InfoEnqueteur {
-  enqueteur: User;
+  enqueteur?: string;
   numTablette?: string;
-  gareMonteeReel: Gare;
-  gareDescenteReel: Gare;
+  gareMonteeReel?: string;
+  gareDescenteReel?: string;
 }
