@@ -37,6 +37,10 @@ const DetailTrajet = (props: Props) => {
   );
 };
 
+// création de variable pour parametre le CSS
+const SizeNameGare = 18;
+const sizeHoraire = 18; 
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
@@ -46,20 +50,20 @@ const styles = StyleSheet.create({
   },
   timeStart: {
     marginLeft: 4,
-    fontSize: 24,
+    fontSize: sizeHoraire,
     fontWeight: "bold",
   },
   timeEnd: {
     marginLeft: 4,
-    fontSize: 24,
+    fontSize: sizeHoraire,
   },
-  cityStart: {
+  gareStart: {
     fontWeight: "bold",
-    fontSize: 24,
+    fontSize: SizeNameGare,
   },
-  cityEnd: {
+  gareEnd: {
     marginLeft: 0,
-    fontSize: 24,
+    fontSize: SizeNameGare,
   },
   divider: {
     height: "80%",
