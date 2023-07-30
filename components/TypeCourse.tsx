@@ -1,5 +1,4 @@
-
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 type Props = {
@@ -7,7 +6,6 @@ type Props = {
 };
 
 export default function TypeCourse({ mission }: Props) {
-
   let icon: string;
 
   switch (mission) {
