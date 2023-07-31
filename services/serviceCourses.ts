@@ -5,6 +5,7 @@ export const getCourses = async (): Promise<Course[]> => {
   const courses: Course[] = [];
   try {
     const data = await enqAPI.get("/courses");
+    console.log(data.data.data);
     for (const course of data.data.data) {
       const body: Course = {
         id: course.id,

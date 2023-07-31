@@ -1,6 +1,5 @@
 import axios from "axios";
-import "@env";
 
 export const enqAPI = axios.create({
-  baseURL: `http://${process.env.IP_ADDRESS}:${process.env.PORT}/api`,
+  baseURL: `http://192.168.1.81:1337/api`,
 });

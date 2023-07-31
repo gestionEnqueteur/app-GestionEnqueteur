@@ -20,17 +20,16 @@ export default function ConfigurationProvider(props: Props) {
 
   useEffect(() => {
     // chargement de la configuration dans le context ConfigurationProvider
-    try {
-      getConfiguration().then((storedConfig: ConfigurationType) => {
+    getConfiguration()
+      .then((storedConfig: ConfigurationType) => {
         if (storedConfig !== null) setConfiguration(storedConfig);
+      })
+      .catch((e) => {
+        console.log("Echec du chargement de la configuration");
       });
-    } catch (e) {
-      // ici on va gerer l'erreur en cas d'échec
-      console.log("Echec du chargement de la configuration");
-    }
-    try {
-      getCourses().then((courses: Course[]) => setCourses(courses));
-    } catch (e) {}
+    getCourses()
+      .then((courses: Course[]) => setCourses(courses))
+      .catch((e) => console.log("Course", e));
   }, []);
 
   return (
