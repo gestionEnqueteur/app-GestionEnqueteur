@@ -30,10 +30,6 @@ export default function DetailCourse(props: Props) {
     }
   };
 
-  const isMissionBSC = (): boolean => {
-    return course.mission === "BSC HDF";
-  };
-
   return (
     <TouchableRipple onPress={handleGoToAction}>
       <View style={style.container}>
@@ -50,7 +46,7 @@ export default function DetailCourse(props: Props) {
               <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
             )}
           </View>
-          <View>{isMissionBSC() && <MenuBurger />}</View>
+          <View>{course.mission === "BSC HDF" && <MenuBurger />}</View>
         </View>
         <View style={style.infoLine}>
           <TypeCourse mission={course.mission} />
