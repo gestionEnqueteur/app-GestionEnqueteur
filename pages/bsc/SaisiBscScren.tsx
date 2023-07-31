@@ -1,13 +1,5 @@
-import { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import {
-  Avatar,
-  Button,
-  SegmentedButtons,
-  Surface,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { Avatar, Button, Surface, Text, TextInput } from "react-native-paper";
 
 import CardNumeroLine from "../../components/CardNumeroLine";
 import ChronoTopDepart from "../../components/ChronoTopDepart";
@@ -20,8 +12,6 @@ const datetime = new Date();
 // test composant
 
 export default function SaisiBscScreen() {
-  const [value, setValue] = useState("");
-
   return (
     <View style={style.container}>
       <Surface style={style.header} mode="elevated" elevation={4}>
