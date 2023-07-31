@@ -16,7 +16,7 @@ type Props = {
 export default function DetailCourse(props: Props) {
   const { course } = props;
 
-  const handleGotoAction = () => {
+  const handleGoToAction = () => {
     // appuie sur le composant
     switch (course.mission) {
       case "BSC HDF":
@@ -35,7 +35,7 @@ export default function DetailCourse(props: Props) {
   };
 
   return (
-    <TouchableRipple onPress={handleGotoAction}>
+    <TouchableRipple onPress={handleGoToAction}>
       <View style={style.container}>
         <View style={style.lineUp}>
           <View style={style.detailTime}>
