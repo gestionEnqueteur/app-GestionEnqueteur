@@ -6,12 +6,19 @@ type Props = {
   lineNumber: string;
 };
 
+type ColorCard = {
+  background: string; // default gray
+  text: string; // default black
+};
+
 export default function CardNumeroLine(props: Props) {
   const { lineNumber } = props;
 
   // state
-  const [backgroundColor, setBackgroundColor] = useState("gray");
-  const [textColor, setTextColor] = useState("black");
+  const [colorCard, setColorCard] = useState<ColorCard>({
+    background: "gray",
+    text: "black",
+  });
 
   useEffect(() => {
     // choix couleur
@@ -20,27 +27,26 @@ export default function CardNumeroLine(props: Props) {
     // switch
     switch (firstLetter) {
       case "K":
-        setBackgroundColor("red");
+        setColorCard({ background: "red", text: "black" });
         break;
       case "C":
-        setBackgroundColor("blue");
-        setTextColor("white");
+        setColorCard({ background: "blue", text: "white" });
         break;
       case "P":
-        setBackgroundColor("green");
+        setColorCard({ background: "green", text: "black" });
         break;
     }
   }, []);
 
   const style = StyleSheet.create({
     container: {
-      backgroundColor: backgroundColor,
+      backgroundColor: colorCard.background,
       padding: 5,
       borderRadius: 10,
     },
     text: {
       fontSize: 20,
-      color: textColor,
+      color: colorCard.text,
     },
   });
 

@@ -1,12 +1,10 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, Divider } from "react-native-paper";
+import InfoHoraireCourse from "../models/InfoHoraireCourse";
 
-type DetailTrajetProps = {
-  departureTime: Date;
-  arrivalTime: Date;
-  departureCity: string;
-  arrivalCity: string;
+type Props = {
+  infoHoraireCourse: InfoHoraireCourse;
 };
 const removeTiret = (word: string) => {
   return word.replaceAll("-", " ");
@@ -18,11 +16,11 @@ const formatTime = (time: Date) => {
   return `${hours}:${minutes}`;
 };
 
-const DetailTrajet = (props: DetailTrajetProps) => {
-  const { departureTime, arrivalTime, departureCity, arrivalCity } = props;
+const DetailTrajet = (props: Props) => {
+  const { infoHoraireCourse } = props;
 
-  const formattedDepartureTime = formatTime(departureTime);
-  const formattedArrivalTime = formatTime(arrivalTime);
+  const formattedDepartureTime = formatTime(infoHoraireCourse.datetimeDepartEnq);
+  const formattedArrivalTime = formatTime(infoHoraireCourse.datetimeArriveEnq);
 
   return (
     <View style={styles.container}>
@@ -32,12 +30,16 @@ const DetailTrajet = (props: DetailTrajetProps) => {
       </View>
       <Divider style={styles.divider} />
       <View>
-        <Text style={styles.cityStart}>{removeTiret(departureCity)}</Text>
-        <Text style={styles.cityEnd}>{removeTiret(arrivalCity)}</Text>
+        <Text style={styles.gareStart}>{removeTiret(infoHoraireCourse.gareDepartEnq)}</Text>
+        <Text style={styles.gareEnd}>{removeTiret(infoHoraireCourse.gareArriveEnq)}</Text>
       </View>
     </View>
   );
 };
+
+// création de variable pour parametre le CSS
+const SizeNameGare = 18;
+const sizeHoraire = 18; 
 
 const styles = StyleSheet.create({
   container: {
@@ -48,20 +50,20 @@ const styles = StyleSheet.create({
   },
   timeStart: {
     marginLeft: 4,
-    fontSize: 24,
+    fontSize: sizeHoraire,
     fontWeight: "bold",
   },
   timeEnd: {
     marginLeft: 4,
-    fontSize: 24,
+    fontSize: sizeHoraire,
   },
-  cityStart: {
+  gareStart: {
     fontWeight: "bold",
-    fontSize: 24,
+    fontSize: SizeNameGare,
   },
-  cityEnd: {
+  gareEnd: {
     marginLeft: 0,
-    fontSize: 24,
+    fontSize: SizeNameGare,
   },
   divider: {
     height: "80%",

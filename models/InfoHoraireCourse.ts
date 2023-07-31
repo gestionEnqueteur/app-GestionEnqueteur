@@ -3,8 +3,8 @@ export default interface InfoHoraireCourse {
   arriveTrain?: Date;
   gareOrigine?: string;
   gareTerminus?: string;
-  datetimeDepartEnq?: Date;
-  datetimeArriveEnq?: Date;
-  gareDepartEnq?: string;
-  gareArriveEnq?: string;
+  datetimeDepartEnq: Date;
+  datetimeArriveEnq: Date;
+  gareDepartEnq: string;
+  gareArriveEnq: string;
 }
