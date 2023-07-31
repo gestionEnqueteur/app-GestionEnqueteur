@@ -1,27 +1,23 @@
-import { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import {
-  Avatar,
-  Button,
-  SegmentedButtons,
-  Surface,
-  Text,
-  TextInput,
-} from "react-native-paper";
+import { Avatar, Button, Surface, Text, TextInput } from "react-native-paper";
 
 import CardNumeroLine from "../../components/CardNumeroLine";
 import ChronoTopDepart from "../../components/ChronoTopDepart";
 import DetailTrajet from "../../components/DetailTrajet";
 import MenuBurger from "../../components/MenuBurger";
+import InfoHoraireCourse from "../../models/InfoHoraireCourse";
 
-// variable de test
-const datetime = new Date();
+// TODO: code a modifié.
+const infoHoraireCourse: InfoHoraireCourse = {
+  datetimeArriveEnq: new Date(),
+  datetimeDepartEnq: new Date(),
+  gareDepartEnq: "Lille Flandres",
+  gareArriveEnq: "Paris",
+};
 
 // test composant
 
 export default function SaisiBscScreen() {
-  const [value, setValue] = useState("");
-
   return (
     <View style={style.container}>
       <Surface style={style.header} mode="elevated" elevation={4}>
@@ -33,16 +29,11 @@ export default function SaisiBscScreen() {
         <View style={style.infoCourse}>
           <View style={style.detailTime}>
             <ChronoTopDepart
-              currentDatetime={datetime}
-              datetimeArrival={datetime}
-              datetimeDepart={datetime}
+              currentDatetime={new Date()}
+              datetimeArrival={infoHoraireCourse.datetimeArriveEnq}
+              datetimeDepart={infoHoraireCourse.datetimeDepartEnq}
             />
-            <DetailTrajet
-              departureTime={datetime}
-              arrivalTime={datetime}
-              departureCity="Lille"
-              arrivalCity="Paris"
-            />
+            <DetailTrajet infoHoraireCourse={infoHoraireCourse} />
           </View>
           <MenuBurger />
         </View>
@@ -137,6 +128,6 @@ const style = StyleSheet.create({
   },
   detailTime: {
     flexDirection: "row",
-    width: 200
-  }
+    width: 200,
+  },
 });

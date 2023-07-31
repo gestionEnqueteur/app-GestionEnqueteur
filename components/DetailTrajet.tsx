@@ -2,36 +2,33 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, Divider } from "react-native-paper";
 import InfoHoraireCourse from "../models/InfoHoraireCourse";
+import { removeDashes, formatTime } from "../helpers/formatHelper";
 
 type Props = {
   infoHoraireCourse: InfoHoraireCourse;
-};
-const removeTiret = (word: string) => {
-  return word.replaceAll("-", " ");
-};
-
-const formatTime = (time: Date) => {
-  const hours = time.getHours().toString().padStart(2, "0");
-  const minutes = time.getMinutes().toString().padStart(2, "0");
-  return `${hours}:${minutes}`;
 };
 
 const DetailTrajet = (props: Props) => {
   const { infoHoraireCourse } = props;
 
-  const formattedDepartureTime = formatTime(infoHoraireCourse.datetimeDepartEnq);
-  const formattedArrivalTime = formatTime(infoHoraireCourse.datetimeArriveEnq);
-
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.timeStart}>{formattedDepartureTime}</Text>
-        <Text style={styles.timeEnd}>{formattedArrivalTime}</Text>
+        <Text style={styles.timeStart}>
+          {formatTime(infoHoraireCourse.datetimeDepartEnq)}
+        </Text>
+        <Text style={styles.timeEnd}>
+          {formatTime(infoHoraireCourse.datetimeArriveEnq)}
+        </Text>
       </View>
       <Divider style={styles.divider} />
       <View>
-        <Text style={styles.gareStart}>{removeTiret(infoHoraireCourse.gareDepartEnq)}</Text>
-        <Text style={styles.gareEnd}>{removeTiret(infoHoraireCourse.gareArriveEnq)}</Text>
+        <Text style={styles.gareStart}>
+          {removeDashes(infoHoraireCourse.gareDepartEnq)}
+        </Text>
+        <Text style={styles.gareEnd}>
+          {removeDashes(infoHoraireCourse.gareArriveEnq)}
+        </Text>
       </View>
     </View>
   );
