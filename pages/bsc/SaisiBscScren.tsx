@@ -10,7 +10,7 @@ import {
 } from "react-native-paper";
 
 import CardNumeroLine from "../../components/CardNumeroLine";
-import ChronoTopDepart from "../../components/ChornoTopDepart";
+import ChronoTopDepart from "../../components/ChronoTopDepart";
 import DetailTrajet from "../../components/DetailTrajet";
 import MenuBurger from "../../components/MenuBurger";
 

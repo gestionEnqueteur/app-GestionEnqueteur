@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
-import ChronoTopDepart from "./ChornoTopDepart";
+import ChronoTopDepart from "./ChronoTopDepart";
 import DetailTrajet from "./DetailTrajet";
 import MenuBurger from "./MenuBurger";
 import CardNumeroLine from "./CardNumeroLine";
