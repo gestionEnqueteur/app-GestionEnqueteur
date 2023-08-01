@@ -6,8 +6,9 @@ import {
   useContext,
 } from "react";
 import Course from "../models/Course";
-import TestMock from "../services/TestMock";
 import { ConfigurationContext } from "./ConfigurationProvider";
+import { getCourses } from "../services/CourseService";
+import { url } from "inspector";
 
 type Props = {
   children: ReactNode;
@@ -28,8 +29,11 @@ export default function CourseProvider(props: Props) {
     console.log(configuration);
 
     // chargement des data
-    setListCourse(TestMock.getCourses());
+    getCourses(configuration.configuration.urlApi).then((courses: Course[]) =>
+      setListCourse(courses)
+    );
 
+    console.log(listCourse);
     //TODO: adapter la fonction par rapport a API. pour le test.
   }, [configuration]);
 
