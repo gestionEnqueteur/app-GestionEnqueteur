@@ -8,7 +8,6 @@ import {
 import Course from "../models/Course";
 import { ConfigurationContext } from "./ConfigurationProvider";
 import { getCourses } from "../services/CourseService";
-import { url } from "inspector";
 
 type Props = {
   children: ReactNode;
@@ -25,16 +24,10 @@ export default function CourseProvider(props: Props) {
   useEffect(() => {
     // Init de l'application
 
-    // test URL
-    console.log(configuration);
-
     // chargement des data
     getCourses(configuration.configuration.urlApi).then((courses: Course[]) =>
       setListCourse(courses)
     );
-
-    console.log(listCourse);
-    //TODO: adapter la fonction par rapport a API. pour le test.
   }, [configuration]);
 
   return (
