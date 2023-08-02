@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ConfigurationType from "../models/ConfigurationType";
 
-export const getConfiguration = async () => {
+export const loadConfiguration = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem("configuration");
     return jsonValue != null ? JSON.parse(jsonValue) : null;

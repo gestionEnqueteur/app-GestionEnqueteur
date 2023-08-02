@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useState, useEffect } from "react";
 import ConfigurationType from "../models/ConfigurationType";
-import { getConfiguration } from "../services/ConfigurationService";
+import { loadConfiguration } from "../services/ConfigurationService";
 
 type Props = {
   children: ReactNode;
@@ -17,7 +17,7 @@ export default function ConfigurationProvider(props: Props) {
 
   useEffect(() => {
     // chargement de la configuration dans le context ConfigurationProvider
-    getConfiguration()
+    loadConfiguration()
       .then((storedConfig: ConfigurationType) => {
         if (storedConfig !== null) setConfiguration(storedConfig);
       })
