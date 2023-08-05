@@ -1,24 +1,18 @@
 import { StyleSheet, ScrollView } from "react-native";
 import DetailCourse from "../components/DetailCourse";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import Course from "../models/Course";
-import TestMock from "../services/TestMock";
-
+import { Text } from "react-native-paper";
 
 export default function TrainPlanifieScreen() {
-  const [listCourse, setListCourse] = useState<Course[]>([]);
-
   useEffect(() => {
     // init du composant.
-    setListCourse(TestMock.getCourses());
+    console.log("Mount: train");
   }, []);
 
   return (
     <ScrollView style={style.container}>
-      {listCourse.map((course) => (
-        <DetailCourse course={course} key={course.id} />
-      ))}
+      <Text>Test de la pages</Text>
     </ScrollView>
   );
 }
