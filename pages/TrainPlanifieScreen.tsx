@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList } from "react-native";
+import { FlatList } from "react-native";
 import DetailCourse from "../components/DetailCourse";
 import { useContext, useEffect, useState } from "react";
 import { CourseContext } from "../provider/AppProvider";
@@ -40,11 +40,3 @@ export default function TrainPlanifieScreen() {
     />
   );
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    gap: 5,
-  },
-});
