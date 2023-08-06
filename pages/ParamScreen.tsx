@@ -1,7 +1,8 @@
 import { View, ScrollView, StyleSheet } from "react-native";
 import { Text, TextInput, Button, Surface, Snackbar } from "react-native-paper";
 import { useEffect, useContext, useState } from "react";
-import { ConfigurationContext } from "../provider/ConfigurationProvider";
+import { ConfigurationContext } from "../provider/AppProvider";
+import ConfigurationType from "../models/ConfigurationType";
 
 type SnackBar = {
   visible: boolean;
@@ -9,15 +10,10 @@ type SnackBar = {
   icon: string;
 };
 
-type ValueForm = {
-  urlApi: string;
-  user: string;
-};
-
 export default function ParamScreen() {
-  //TODO: récupéré le nouveau context
+  const config = useContext(ConfigurationContext);
 
-  const [valueForm, setValueForm] = useState<ValueForm>({
+  const [valueForm, setValueForm] = useState<ConfigurationType>({
     urlApi: "",
     user: "",
   });
@@ -30,10 +26,13 @@ export default function ParamScreen() {
 
   useEffect(() => {
     // Init de la page
+    if (config) {
+      // la config est préent
+      console.log("Init ParamScreem");
+      setValueForm(config.getConfiguration());
+    }
 
     // récupération de la configuration au niveau du Provider
-    console.log("Init ParamScreem");
-    //TODO: remplir le formulaire avec la configuration 
   }, []);
 
   const handleOnChangeURL = (newValue: string) => {
@@ -48,10 +47,12 @@ export default function ParamScreen() {
 
   const handleOnClickSubmit = () => {
     // stockage dans le AsyncStorage
-    // TODO: récupéré la fonction sur les nouveau services.
+    config?.saveConfiguration(valueForm, succesSave, failureSave);
   };
 
   const succesSave = () => {
+    console.info("succes de la sauvegarde");
+
     displaySnackBar("Paramètre sauvegardé", "content-save");
   };
 
