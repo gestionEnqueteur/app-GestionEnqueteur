@@ -1,15 +1,18 @@
 import Course from "../models/Course";
+import TestMock from "./TestMock";
 
 export default class StorageService {
-  static saveCourse(course: Course) {
+  saveCourse(course: Course) {
     //TODO: crée la méthode pour sauvergader une course.
   }
 
-  static getCourse() {
+  getCourse() {
     //TODO: crée la méthode pour récuperer une course. dans la database.
   }
 
-  static getAllCourse() {
+  getAllCourse() {
     //TODO: crée la méthode pour récuperer tout les courses dans la database.
+
+    return TestMock.getCourses();
   }
 }
