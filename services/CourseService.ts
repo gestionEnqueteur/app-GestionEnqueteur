@@ -1,15 +1,12 @@
-import axios from "axios";
-
 import Course from "../models/Course";
-import TestMock from "./TestMock";
-import ConfigurationType from "../models/ConfigurationType";
+import StorageService from "./StorageServices";
 
 export default class CourseService {
-  private configuration: ConfigurationType;
+  private storage: StorageService;
   private courses: Course[];
 
-  constructor(configuration: ConfigurationType) {
-    this.configuration = configuration;
+  constructor( storage: StorageService) {
+    this.storage = storage;
     this.courses = [];
   }
 
