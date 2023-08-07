@@ -15,8 +15,13 @@ export default class StorageService {
     //TODO: faire la fonction deleteData
   }
 
+  /**
+   *
+   * @returns the list des courses from mock
+   * @deprecated ne pas utiliser, sera supprimer très prochainement !!!!
+   */
   getAllCourse() {
-    //TODO: crée la méthode pour récuperer tout les courses dans la database.
+    //TODO: supprimer la fonction
 
     return TestMock.getCourses();
   }
