@@ -1,4 +1,3 @@
-import Course from "../models/Course";
 import TestMock from "./TestMock";
 
 export default class StorageService {
