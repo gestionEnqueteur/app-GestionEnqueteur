@@ -1,32 +1,42 @@
-import { StyleSheet, ScrollView } from "react-native";
+import { FlatList } from "react-native";
 import DetailCourse from "../components/DetailCourse";
-import { useEffect, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { CourseContext } from "../provider/AppProvider";
 import Course from "../models/Course";
-import TestMock from "../services/TestMock";
-
 
 export default function TrainPlanifieScreen() {
-  const [listCourse, setListCourse] = useState<Course[]>([]);
+  const courseService = useContext(CourseContext);
+
+  const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
     // init du composant.
-    setListCourse(TestMock.getCourses());
+    console.log("Mount: train");
+    if (courseService) {
+      const loadedCourses = courseService.getCourses();
+      console.log(loadedCourses);
+      setCourses(loadedCourses);
+    }
   }, []);
 
+  const renderItem = ({ item }: { item: Course }) => (
+    <DetailCourse course={item} />
+  );
+
+  const handleOnRefresh = () => {
+    if (courseService) {
+      setCourses(courseService.loadCourses());
+      console.log("refresh");
+    }
+  };
+
   return (
-    <ScrollView style={style.container}>
-      {listCourse.map((course) => (
-        <DetailCourse course={course} key={course.id} />
-      ))}
-    </ScrollView>
+    <FlatList
+      data={courses}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id.toString()}
+      onRefresh={handleOnRefresh}
+      refreshing={false}
+    />
   );
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    gap: 5,
-  },
-});

@@ -1,23 +1,31 @@
-import axios from "axios";
-
 import Course from "../models/Course";
-import TestMock from "./TestMock";
+import StorageService from "./StorageServices";
 
-export const getCourses = async (url: string): Promise<Course[]> => {
-  let courses: Course[] = [];
-  try {
-    const data = await axios.get(`${url}/api/courses`);
-    for (const course of data.data.data) {
-      const body: Course = {
-        id: course.id,
-        ...course.attributes,
-      };
-      courses.push(body);
-    }
-    return courses;
-  } catch (err) {
-    console.log(err);
-    courses = TestMock.getCourses();
-    return courses;
+export default class CourseService {
+  private storage: StorageService;
+  private courses: Course[];
+
+  constructor(storage: StorageService) {
+    this.storage = storage;
+    this.courses = [];
   }
-};
+
+  getCourses() {
+    return this.courses;
+  }
+
+  updateCourse(id: number, course: Course) {
+    //TODO: update la course.
+    // récupérer la course en fonction de ID de l'objet.
+    // changer  la valeur du tableau.
+    // enregistrer dans la Db du téléphone
+  }
+
+  loadCourses() {
+    //TODO: implémenter la fonction
+    // on tente un Fetch, si pas de 4G (on récupere sur la db Téléphone )
+    console.log("Chargement des courses depuis Storage Service");
+    this.courses = this.storage.getAllCourse();
+    return this.courses;
+  }
+}

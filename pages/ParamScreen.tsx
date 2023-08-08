@@ -1,40 +1,68 @@
 import { View, ScrollView, StyleSheet } from "react-native";
 import { Text, TextInput, Button, Surface, Snackbar } from "react-native-paper";
 import { useEffect, useContext, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ConfigurationContext } from "../provider/ConfigurationProvider";
+import { ConfigurationContext } from "../provider/AppProvider";
+import ConfigurationType from "../models/ConfigurationType";
+
+type SnackBar = {
+  visible: boolean;
+  label: string;
+  icon: string;
+};
 
 export default function ParamScreen() {
-  const { configuration, setConfiguration } = useContext(ConfigurationContext);
-  const [visibleSnackBar, setVisibleSnackBar] = useState(false);
-  const [labelSnackBar, setLabelSnackBar] = useState("");
-  const [iconSnackBar, setIconSnackBar] = useState("");
+  const config = useContext(ConfigurationContext);
+
+  const [valueForm, setValueForm] = useState<ConfigurationType>({
+    urlApi: "",
+    user: "",
+  });
+
+  const [snackBar, setSnackBar] = useState<SnackBar>({
+    visible: false,
+    label: "",
+    icon: "",
+  });
+
+  useEffect(() => {
+    // Init de la page
+    if (config) {
+      // la config est préent
+      console.log("Init ParamScreem");
+      setValueForm(config.getConfiguration());
+    }
+
+    // récupération de la configuration au niveau du Provider
+  }, []);
 
   const handleOnChangeURL = (newValue: string) => {
-    setConfiguration({ ...configuration, urlApi: newValue });
+    setValueForm({ ...valueForm, urlApi: newValue });
+    //TODO: rajouter vérification sur URL
   };
 
-  const handleOnChangeInvertigator = (newValue: string) => {
-    setConfiguration({ ...configuration, invertigator: newValue });
+  const handleOnChangeUser = (newValue: string) => {
+    setValueForm({ ...valueForm, user: newValue });
+    //TODO: rajouter vérification sur user
+  };
+
+  const handleOnClickSubmit = () => {
+    // stockage dans le AsyncStorage
+    config?.saveConfiguration(valueForm, succesSave, failureSave);
+  };
+
+  const succesSave = () => {
+    console.info("succes de la sauvegarde");
+
+    displaySnackBar("Paramètre sauvegardé", "content-save");
+  };
+
+  const failureSave = (e: Error) => {
+    displaySnackBar("Erreur d'enregistrement", "alert-circle");
   };
 
   const displaySnackBar = (label: string, icon: string) => {
     // mettre a jour le state
-    setLabelSnackBar(label);
-    setIconSnackBar(icon);
-
-    // affichage de la snackBar
-    setVisibleSnackBar(true);
-  };
-
-  const saveConfiguration = async () => {
-    try {
-      const jsonValue = JSON.stringify(configuration);
-      await AsyncStorage.setItem("configuration", jsonValue);
-      displaySnackBar("Paramètre sauvegardé", "content-save");
-    } catch (e) {
-      displaySnackBar("Echec d'enregistrement", "alert-circle");
-    }
+    setSnackBar({ label: label, icon: icon, visible: true });
   };
 
   return (
@@ -47,7 +75,7 @@ export default function ParamScreen() {
             label="Endpoint API"
             placeholder="URL API"
             onChangeText={handleOnChangeURL}
-            value={configuration.urlApi}
+            value={valueForm.urlApi}
           />
         </View>
         <View>
@@ -57,8 +85,8 @@ export default function ParamScreen() {
             label="enqueteur"
             placeholder="trigramme enqueteur
            ou nom enqueteur"
-            onChangeText={handleOnChangeInvertigator}
-            value={configuration.invertigator}
+            onChangeText={handleOnChangeUser}
+            value={valueForm.user}
           />
         </View>
         <View style={style.buttonArea}>
@@ -71,7 +99,7 @@ export default function ParamScreen() {
             </Button>
           </View>
           <View>
-            <Button mode="contained-tonal" onPress={saveConfiguration}>
+            <Button mode="contained-tonal" onPress={handleOnClickSubmit}>
               Enregistrer
             </Button>
           </View>
@@ -80,19 +108,19 @@ export default function ParamScreen() {
       <Button mode="contained">Syncronisation enquête</Button>
       <Button mode="contained">Recherche mise à jour application</Button>
       <Snackbar
-        visible={visibleSnackBar}
-        onDismiss={() => setVisibleSnackBar(false)}
-        icon={iconSnackBar}
-        onIconPress={() => setVisibleSnackBar(false)}
+        visible={snackBar.visible}
+        onDismiss={() => setSnackBar({ ...snackBar, visible: false })}
+        icon={snackBar.icon}
+        onIconPress={() => setSnackBar({ ...snackBar, visible: false })}
         duration={2000}
         action={{
           label: "fermer",
           onPress: () => {
-            setVisibleSnackBar(false);
+            setSnackBar({ ...snackBar, visible: false });
           },
         }}
       >
-        {labelSnackBar}
+        {snackBar.label}
       </Snackbar>
     </ScrollView>
   );
