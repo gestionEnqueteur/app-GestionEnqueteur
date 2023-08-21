@@ -1,13 +1,9 @@
-import {
-  ReactNode,
-  createContext,
-  useEffect,
-  useMemo,
-} from "react";
+import { ReactNode, createContext, useEffect, useMemo } from "react";
 import ConfigurationService from "../services/ConfigurationService";
 import AxiosService from "../services/AxiosService";
 import StorageService from "../services/StorageServices";
 import CourseService from "../services/CourseService";
+import { url } from "inspector";
 
 type Props = {
   children: ReactNode;
@@ -37,7 +33,10 @@ export const CourseContext = createContext<CourseService | undefined>(
 export default function AppProvider(props: Props) {
   // création de l'instance Configuration service
 
-  const configService = useMemo(() =>new ConfigurationService({ urlApi: "", user: "" }), []);
+  const configService = useMemo(
+    () => new ConfigurationService({ urlApi: "", user: "" }),
+    []
+  );
   const axiosService = useMemo(() => new AxiosService(""), []);
   const storageService = useMemo(() => new StorageService(), []);
   const courseService = useMemo(() => new CourseService(storageService), []);
@@ -48,14 +47,17 @@ export default function AppProvider(props: Props) {
     await configService.loadConfiguration();
     console.log(`urlApi: ${configService.getConfiguration().urlApi}`);
     console.log(`user: ${configService.getConfiguration().user}`);
+
+    axiosService.setUrlApi(configService.getConfiguration().urlApi);
+    console.log(axiosService.pingService());
+
     // Load les courses
-    courseService.loadCourses(); 
+    courseService.loadCourses();
   };
 
   useEffect(() => {
     // Init de l'application
     console.log("Mount: AppProvider");
-
     init();
   }, []);
 
