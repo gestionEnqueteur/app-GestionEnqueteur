@@ -21,15 +21,15 @@ export default class AxiosService {
     );
   }
 
+  setUrlApi(urlApi: string): void {
+    this.urlApi = urlApi;
+    this.setNewAxiosInstance(this.urlApi);
+  }
+
   private setNewAxiosInstance(url: string): void {
     this.instanceAxios = axios.create({
       baseURL: this.urlApi,
     });
-  }
-
-  setUrlApi(urlApi: string): void {
-    this.urlApi = urlApi;
-    this.setNewAxiosInstance(this.urlApi);
   }
 
   private getInstance(): AxiosInstance {
