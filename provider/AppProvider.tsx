@@ -3,7 +3,6 @@ import ConfigurationService from "../services/ConfigurationService";
 import AxiosService from "../services/AxiosService";
 import StorageService from "../services/StorageServices";
 import CourseService from "../services/CourseService";
-import { url } from "inspector";
 
 type Props = {
   children: ReactNode;
