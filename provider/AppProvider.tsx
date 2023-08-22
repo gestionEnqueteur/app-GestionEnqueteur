@@ -48,8 +48,8 @@ export default function AppProvider(props: Props) {
     console.log(`user: ${configService.getConfiguration().user}`);
 
     axiosService.setUrlApi(configService.getConfiguration().urlApi);
-    console.log(axiosService.pingService());
 
+    axiosService.pingService();
     // Load les courses
     courseService.loadCourses();
   };
