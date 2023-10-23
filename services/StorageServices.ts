@@ -1,63 +1,141 @@
-import { WebSQLDatabase, openDatabase } from "expo-sqlite";
+import * as SQLite from "expo-sqlite";
 import TestMock from "./TestMock";
+import Course from "../models/Course";
 
 export default class StorageService {
-  private db: WebSQLDatabase | null;
-  private fileSqlite: string;
+  private db: SQLite.SQLiteDatabase;
 
   constructor() {
-    this.fileSqlite = "db";
-    this.db = openDatabase(
-      this.fileSqlite,
-      "V1",
-      "storage téléphone",
-      undefined,
-      (db) => {
-        console.log("ouverture DB");
-        this.db = db;
+    this.db = SQLite.openDatabase("db", "V1", "database", undefined, (db) => {
+      console.log(`ouverture de la BD: ${db}`);
+    });
+  }
+
+  async getData(entity: string) {}
+
+  async getAllData() {
+    this.db.exec(
+      [{ sql: "SELECT * FROM course;", args: [] }],
+      true,
+      (error, result) => {
+        if (error) {
+          throw error;
+        }
+
+        // parcours des request.
+        result?.forEach((item) => {
+          if ("rows" in item) {
+            const resultSet = item;
+            console.log(resultSet.rows);
+            // création de la liste des course
+            const listCourse: Course[] = [];
+            //parcours des course de result set
+            resultSet.rows.forEach((courseSQL) => {
+              console.info(courseSQL);
+              const newCourse: Course = {
+                id: courseSQL.id,
+                affectation: courseSQL.affectation,
+                mission: courseSQL.mission,
+                objectif: courseSQL.objectif,
+                pds: courseSQL.pds,
+                vac: courseSQL.vac,
+                service: courseSQL.service,
+                status: courseSQL.status,
+                infoHoraireCourse: {
+                  datetimeDepartEnq: courseSQL.hd,
+                  datetimeArriveEnq: courseSQL.ha,
+                  gareDepartEnq: courseSQL.gareDepartEnq,
+                  gareArriveEnq: courseSQL.gareArriveEnq,
+                  gareOrigine: courseSQL.gareOrigine,
+                  gareTerminus: courseSQL.gareTerminus,
+                },
+              };
+              listCourse.push(newCourse);
+            });
+            return listCourse;
+          } else {
+            console.error("Erreur SQL");
+          }
+        });
       }
     );
   }
 
-  testRequest() {
-    this.db?.exec([{ sql: "SELECT 2 + 5, 8", args: [] }], false, (error, result) => {
-      console.log("execution request SQL");
-      console.log(result[0].rows);
-    });
-  }
-
- 
-
-  async getData(entity: string) {}
-  async postData(entity: string, data: any) {
-    //TODO: faire la fonction postData
-  }
-  async updateData(entity: string, id: number, data: any) {
-    //TODO: faire la fonction updateData
-  }
-  async deleteData(entity: string, id: number) {
-    //TODO: faire la fonction deleteData
-  }
-
   async createDatabase() {
-    //TODO: création de la BDD
-    this.db?.exec([{sql: `CREATE TABLE course (
-      id INT PRIMARY KEY NOT NULL, 
+    this.db.exec(
+      [
+        {
+          sql: `CREATE TABLE course (
+      id INTEGER PRIMARY KEY, 
       mission VARCHAR(255), 
       pds VARCHAR(255), 
       vac VARCHAR(255), 
       affectation VARCHAR(255),
       status VARCHAR(255), 
       ligne VARCHAR(255),
-      service VARCHAR(255), 
       objectif INT, 
-      commentaire TEXT
-    );`, args: []}], false, (error, result) => {
-      console.log(result);
-    })
+      commentaire TEXT, 
+      hd TEXT,
+      ha TEXT, 
+      gareDepartEnq TEXT, 
+      gareArriveEnq TEXT,
+      gareOrigine TEXT, 
+      gareTerminus TEXT
+    );`,
+          args: [],
+        },
+      ],
+      false,
+      (error, result) => {
+        console.log(result);
+      }
+    );
   }
-  dropDatabase() {
-    //TODO: supression de la BDD
+  async insertCourse(course: Course) {
+    console.log("tentative d'insertion");
+    console.log(this.db);
+    const result = await this.db.execAsync(
+      [
+        {
+          sql: `
+    INSERT INTO course (id, mission, pds, vac, affectation, status, service, objectif, hd, ha, gareDepartEnq, gareArriveEnq, gareOrigine, gareTerminus)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ?, ?, ?) ;
+    `,
+          args: [
+            course.id,
+            course.mission,
+            course.pds,
+            course.vac,
+            course.affectation,
+            course.status,
+            course.service,
+            course.objectif,
+            course.infoHoraireCourse?.datetimeDepartEnq,
+            course.infoHoraireCourse?.datetimeArriveEnq,
+            course.infoHoraireCourse?.gareDepartEnq,
+            course.infoHoraireCourse?.gareArriveEnq,
+            course.infoHoraireCourse?.gareOrigine,
+            course.infoHoraireCourse?.gareTerminus,
+          ],
+        },
+      ],
+      false
+    );
+    console.log(result);
+  }
+  async dropDatabase() {
+    const result = await this.db.execAsync(
+      [
+        {
+          sql: `
+    DROP TABLE course; 
+    `,
+          args: [],
+        },
+      ],
+      false
+    );
+    console.log(result);
   }
 
   /**
