@@ -6,27 +6,43 @@ import MenuBurger from "./MenuBurger";
 import CardNumeroLine from "./CardNumeroLine";
 import Quotas from "./Quotas";
 import TypeCourse from "./TypeCourse";
+import { RootStackParamList } from "../pages/navigations/StackNavigation";
+
+import { useNavigation } from "@react-navigation/native";
+
+
 
 import Course from "../models/Course";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type Props = {
   course: Course;
 };
 
-export default function DetailCourse(props: Props) {
+export default function DetailCourse(props: Readonly<Props>) {
   const { course } = props;
 
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(); 
+
   const handleGoToAction = () => {
-    // appuie sur le composant
-    switch (course.mission) {
-      case "BSC HDF":
-        console.log("Basculement vers la page saisi");
-        break;
-      case "HLP VS":
-        console.log("afficher le link waze ou cordonner GPS");
-        break;
-      default:
-        console.log("pas action pour ce type de mission");
+    if (navigation) {
+      // appuie sur le composant
+      switch (course.mission) {
+        case "BSC HDF":
+          console.log("Basculement vers la page saisi");
+          navigation.navigate("SaisiBsc"); 
+  
+          break;
+        case "HLP VS":
+          console.log("afficher le link waze ou cordonner GPS");
+          break;
+        default:
+          console.log("pas action pour ce type de mission");
+      }
+
+    }
+    else {
+      console.error("La navigation n'est pas défine"); 
     }
   };
 

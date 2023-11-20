@@ -4,7 +4,15 @@ import MenuBottomTabs from './MenuBottomTabs';
 import HomeScreen from '../HomeScreen';
 import SaisiBscScreen from '../bsc/SaisiBscScren';
 
-const Stack = createNativeStackNavigator();
+
+export type RootStackParamList = {
+  HomeStack: undefined;
+  Test: undefined;
+  SaisiBsc: undefined
+}
+
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function MyMainStack() {
   return (
@@ -15,4 +23,5 @@ export default function MyMainStack() {
     </Stack.Navigator>
   );
 }
+
 

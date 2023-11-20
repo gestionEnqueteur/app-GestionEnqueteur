@@ -3,7 +3,12 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import TrainPlanifieScreen from "../TrainPlanifieScreen";
 import TrainASaisiScreen from "../TrainASaisiScreen";
 
-const Tab = createMaterialTopTabNavigator();
+export type TabVacParamList = {
+  trainPlanifié: undefined;
+  trainASaisi: undefined;
+}
+
+const Tab = createMaterialTopTabNavigator<TabVacParamList>();
 
 export default function OngletsTopTabPlaniSaisi() {
   return (

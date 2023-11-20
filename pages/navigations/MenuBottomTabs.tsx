@@ -5,7 +5,13 @@ import SettingsScreen from '../SaisiScreen';
 import OngletsTopTabPlaniSaisi from './OngletsTopTabsPlanifSaisi';
 import ParamScreen from '../ParamScreen';
 
-const Tab = createMaterialBottomTabNavigator();
+export type TabParamList = { 
+  Vacation: undefined;
+  Saisi: undefined;
+  Param: undefined; 
+}
+
+const Tab = createMaterialBottomTabNavigator<TabParamList>();
 
 export default function MenuBottomTabs() {
   return (
