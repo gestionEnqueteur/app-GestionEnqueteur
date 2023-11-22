@@ -1,8 +1,7 @@
 import { View, StyleSheet } from "react-native";
-import { Text, Avatar } from "react-native-paper";
+import { Text } from "react-native-paper";
 import MesureBSC from "../../models/bsc/MesureBsc";
 import InfoHoraireCourse from "../../models/InfoHoraireCourse";
-import { useEffect } from "react";
 import CompositionTrain from "./CompositionTrain";
 
 type Props = {
