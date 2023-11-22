@@ -53,9 +53,8 @@ export default function DetailCourse(props: Readonly<Props>) {
           <View style={style.detailTime}>
             {course.infoHoraireCourse && (
               <ChronoTopDepart
-                currentDatetime={new Date()} //TODO: a refactoriser.
-                datetimeArrival={course.infoHoraireCourse.datetimeArriveEnq}
-                datetimeDepart={course.infoHoraireCourse.datetimeDepartEnq}
+                depart={course.infoHoraireCourse.datetimeArriveEnq}
+                arrival={course.infoHoraireCourse.datetimeDepartEnq}
               />
             )}
             {course.infoHoraireCourse && (

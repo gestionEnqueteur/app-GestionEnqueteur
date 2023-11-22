@@ -1,136 +1,75 @@
-import { View, Text, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
+import { Avatar } from "react-native-paper";
+import { calculDifferenceTime } from "../helpers/timeHelper";
 
-type propsTimerRunning = {
-  remainingTime: Date;
+
+type Props = {
+  depart: Date;
+  arrival: Date;
 };
 
-type propsBeforeDepature = {
-  timeBeforeDeparture: Date;
-};
+export default function ChronoTopDepart(props: Readonly<Props>) {
+  const { depart, arrival } = props;
 
-type propsDisplayDate = {
-  dateCourse: Date;
-};
+  // state global
+  const [output, setOutput] = useState("init");
 
-type props = {
-  datetimeDepart: Date;
-  datetimeArrival: Date;
-  currentDatetime: Date;
-};
+  const sixtyMinuteBeforeDeparture = (currentTime: Date) => {
+    // 60 minutes avant le départ
+    const deltaBeforeDeparture = calculDifferenceTime(currentTime, depart);
+    setOutput(`${deltaBeforeDeparture.getMinutes()} min`);
+  };
 
-enum VersionChrono {
-  Running,
-  BeforeDepature,
-  Date,
-}
-// mode du chrono : date | 60 minute avant départ | temps restant | date
+  const timeBeforeArrival = (currentTime: Date) => {
+    const deltaBeforeArrival = calculDifferenceTime(currentTime, arrival);
 
-export default function ChronoTopDepart(props: props) {
-  const { datetimeDepart, datetimeArrival, currentDatetime } = props;
+    setOutput(`${deltaBeforeArrival.getHours()}:${deltaBeforeArrival.getMinutes()}`);
+  };
 
-  const [timeRemaningBeforeDepature, setTimeRemaningBeforeDeparture] = useState(
-    new Date()
-  );
-  const [timeRemaningBeforeArrival, setTimeRemaningBefoireArrival] = useState(
-    new Date()
-  );
-  const [versionChrono, setVersionChrono] = useState(VersionChrono.Date);
+  const displayDate = () => {
+    setOutput(`${depart.getDate()}/${depart.getMonth() + 1}`);
+  };
 
-  const ONE_HOUR = new Date(0, 0, 0, 1);
+  const tick = () => {
+    // fonction executer tous les secondes.
+    const currentTime = new Date();
+    const ONE_HOUR = new Date(0, 0, 0, 1);
+    const oneHoureBeforeDeparture = new Date(
+      depart.getTime() - ONE_HOUR.getTime()
+    );
+
+    // vérification du mode
+    if (
+      currentTime.getTime() > oneHoureBeforeDeparture.getTime() &&
+      currentTime.getTime() < depart.getTime()
+    ) {
+      // on affiche le chrono avant le départ.
+      sixtyMinuteBeforeDeparture(currentTime);
+    } else if (
+      currentTime.getTime() > depart.getTime() &&
+      currentTime.getTime() <= arrival.getTime()
+    ) {
+      // on affiche le temps restant avant arriver
+      timeBeforeArrival(currentTime);
+    } else {
+      // on affiche la date
+      displayDate();
+    }
+  };
 
   useEffect(() => {
-    const isSixtyMinuteBeforeDeparture =
-      currentDatetime.getTime() >
-        datetimeDepart.getTime() - ONE_HOUR.getTime() &&
-      currentDatetime.getTime() < datetimeDepart.getTime();
+    // iniT
 
-    const isTrainRunning = currentDatetime.getTime() > datetimeDepart.getTime() &&
-    currentDatetime.getTime() < datetimeArrival.getTime(); 
+    // mise en place du chrono.
+    const intervalIdenfier = setInterval(tick, 1000);
 
-    // choix du composant à afficher 
-    if (isTrainRunning) {
-      setVersionChrono(VersionChrono.Running);
-    }
-    else if (isSixtyMinuteBeforeDeparture ) {
-      setVersionChrono(VersionChrono.BeforeDepature);
-    }
-    else {
-      setVersionChrono(VersionChrono.Date); 
-    }
+    return () => {
+      // suppression du setInterval
+      clearInterval(intervalIdenfier);
+    };
+  }, []);
 
-    // calcul du temps avant départ
-    setTimeRemaningBeforeDeparture(
-      new Date(datetimeDepart.getTime() - currentDatetime.getTime())
-    );
-    // calcul du temps avant arrivé
-    setTimeRemaningBefoireArrival(
-      new Date(datetimeArrival.getTime() - currentDatetime.getTime())
-    );
-  }, [currentDatetime]);
-
-  function TimerRunningTrain(propsTimerRunning: propsTimerRunning) {
-    const timeRemaining = propsTimerRunning.remainingTime;
-    return (
-      <View style={style.container}>
-        <Text style={style.reste}>RESTE</Text>
-        <Text style={style.text}>
-          {timeRemaining.getHours()}:{timeRemaining.getMinutes()}
-        </Text>
-      </View>
-    );
-  }
-
-  function BeforeDepature(props: propsBeforeDepature) {
-    return (
-      <View style={style.container}>
-        <Text style={style.text}>
-          {timeRemaningBeforeDepature.getMinutes()}
-        </Text>
-        <Text style={style.reste}>Min</Text>
-      </View>
-    );
-  }
-
-  function DisplayDateCourse(props: propsDisplayDate) {
-    return (
-      <View style={style.container}>
-        <Text style={style.text}>
-          {datetimeDepart.getDate()}/{datetimeDepart.getMonth() + 1}
-        </Text>
-      </View>
-    );
-  }
-
-  switch (versionChrono) {
-    case VersionChrono.BeforeDepature:
-      return <BeforeDepature timeBeforeDeparture={timeRemaningBeforeDepature} />;
-    case VersionChrono.Running:
-      return <TimerRunningTrain remainingTime={timeRemaningBeforeArrival} />;
-    default:
-      return <DisplayDateCourse dateCourse={datetimeDepart} />;
-  }
+  return (
+    <Avatar.Text label={output} size={64} labelStyle={{ fontSize: 16 }} />
+  );
 }
-
-const style = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "blue",
-    borderRadius: 50,
-    padding: 2,
-    height: 61,
-    width: 61,
-  },
-  text: {
-    color: "white",
-    fontSize: 19,
-    bottom: 4,
-  },
-  reste: {
-    fontSize: 10,
-    color: "white",
-    top: -2,
-  },
-});
