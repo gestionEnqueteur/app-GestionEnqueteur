@@ -20,6 +20,12 @@ import InfoTrain from "../../components/bsc/InfoTrain";
 import MesureBSC from "../../models/bsc/MesureBsc";
 import Questionnaires from "../../models/bsc/Questionnaire";
 
+type FormQuestion = {
+  vides: string;
+  inexploitables: string;
+  distribuees: string;
+};
+
 type Props = NativeStackScreenProps<RootStackParamList, "SaisiBsc">;
 type CourseProps = {
   course: Course;
@@ -29,10 +35,14 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
   const [course, setCourse] = useState<Course | undefined>(undefined);
   const serviceSource = useContext(CourseContext);
 
+  if (!serviceSource){
+    throw new Error("Erreur de chargement courseService");
+  }
+
   useEffect(() => {
     // init de la page
     const theCourse = serviceSource
-      ?.getCourses()
+      .getCourses()
       .find((item) => item.id === route.params.idCourse);
     console.log(theCourse); // a supprimer juste pour le test
     if (theCourse == undefined) {
@@ -42,6 +52,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
     }
 
     setCourse(theCourse);
+    
 
     return () => {
       console.log("destruction page Saisi");
@@ -93,6 +104,34 @@ function ThePage(props: Readonly<CourseProps>) {
     }
   }, []);
 
+  // Fonction
+  const saveQuestionnaire = (course: Course, formQuestion: FormQuestion) => {
+    const questionnaire: Questionnaires = {
+      vides: Number(formQuestion.vides),
+      distribuees: Number(formQuestion.distribuees),
+      inexploitables: Number(formQuestion.inexploitables),
+    };
+
+    console.log(questionnaire); 
+    // on vérifie les valeur
+    if (
+      Number.isNaN(questionnaire.vides) ||
+      Number.isNaN(questionnaire.distribuees) ||
+      Number.isNaN(questionnaire.inexploitables)
+    ) {
+      throw new Error("Format incorrect");
+    }
+
+    // on sauvegarde la valeur dans la course
+    // Vérification de la présence de la mesure et création des questionnaires si nécessaire
+    if (course.mesure) {
+      (course.mesure as MesureBSC).questionnaires = questionnaire; 
+    }
+    else {
+      throw new Error("Objet course n'est pas complet, manque la mesure"); 
+    }
+  };
+
   const handleChangeFieldEmpty = (newValue: string) => {
     setForm({ ...form, vides: newValue });
   };
@@ -116,36 +155,10 @@ function ThePage(props: Readonly<CourseProps>) {
     console.log(form);
 
     try {
-      // on essaye la sauvegarde
-      const questionnaire: Questionnaires = {
-        vides: Number(form.vides),
-        inexploitables: Number(form.inexploitables),
-        distribuees: Number(form.distribuees),
-      };
-
-      if (course.mesure && "questionnaires" in course.mesure) {
-        console.log("la mesure est bien présent");
-        course.mesure.questionnaires = questionnaire;
-        console.log(course);
-
-        // on vérifie si c'est bien un nombre entier
-        if (
-          !Number.isInteger(course.mesure.questionnaires.distribuees) ||
-          !Number.isInteger(course.mesure.questionnaires.vides) ||
-          !Number.isInteger(course.mesure.questionnaires.inexploitables)
-        ) {
-          // ce n'est pas un nombre, on lève une Error
-          throw new Error(
-            "Formulaire invalide, les champ doivent etre des nombre entier"
-          );
-        }
-        // on sauvegarde dans le storage.
-        courseService?.updateCourse(course);
-      }
-
-      // vérification que c'est bien des nombre
-    } catch (e) {
-      console.error(e);
+      saveQuestionnaire(course, form);
+      courseService?.updateCourse(course);
+    } catch (err) {
+      console.error(err);
     }
   };
 

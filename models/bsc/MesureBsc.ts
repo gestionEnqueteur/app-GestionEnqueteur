@@ -5,7 +5,7 @@ import Questionnaires from "./Questionnaire";
 import Retard from "./Retard";
 
 export default interface MesureBSC {
-  infoEnqueteur: InfoEnqueteur;
+  infoEnqueteur?: InfoEnqueteur;
   infoTrain: InfoTrain;
   perturbation?: Perturbation;
   retards?: Retard;

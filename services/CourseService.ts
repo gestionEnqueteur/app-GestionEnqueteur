@@ -33,17 +33,13 @@ export default class CourseService {
 
   addMesureBscToCourse(course: Course) {
     const mesure: MesureBSC = {
-      questionnaires: {
-        vides: 0,
-        distribuees: 0,
-        inexploitables: 0
-      },
+      infoEnqueteur: {}, 
       infoTrain: {
         composition: CompositionEnum.US,
         numMaterial: ""
-      },
-      infoEnqueteur: {}
+      }
     }
+
 
     course.mesure = mesure; 
   }
