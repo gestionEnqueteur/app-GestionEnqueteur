@@ -10,7 +10,7 @@ export default interface Course {
   pds?: string;
   vac?: string;
   affectation?: string;
-  infoHoraireCourse?: InfoHoraireCourse;
+  infoHoraireCourse: InfoHoraireCourse;
   status?: StatusEnum;
   ligne?: string;
   mesure?: MesureBSC | MesureMQ | MesureOD;
