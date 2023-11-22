@@ -1,5 +1,7 @@
 import Course from "../models/Course";
 import StorageService from "./StorageServices";
+import MesureBSC from "../models/bsc/MesureBsc";
+import { CompositionEnum } from "../models/enum";
 
 export default class CourseService {
   private storage: StorageService;
@@ -14,11 +16,47 @@ export default class CourseService {
     return this.courses;
   }
 
+  getCourse(id: number): Course | undefined {
+    return this.courses.find((item) => item.id === id);
+  }
+
   updateCourse(id: number, course: Course) {
-    //TODO: update la course.
-    // récupérer la course en fonction de ID de l'objet.
-    // changer  la valeur du tableau.
-    // enregistrer dans la Db du téléphone
+    const index = this.courses.findIndex((item) => item.id === id);
+    if (index === -1) {
+      // faire quelque chose pour le mauvais ID
+      throw new Error(`pas de course trouver pour ID: ${id}`);
+    }
+
+    // on remplace la valeur
+    this.courses[index] = course;
+  }
+
+  addMesureBscToCourse(course: Course) {
+    const mesure: MesureBSC = {
+      questionnaires: {
+        vides: 0,
+        distribuees: 0,
+        inexploitables: 0
+      },
+      infoTrain: {
+        composition: CompositionEnum.US,
+        numMaterial: ""
+      },
+      infoEnqueteur: {}
+    }
+
+    course.mesure = mesure; 
+  }
+
+  addMesureAllCourse() {
+    const newListCourse: Course[] = this.courses.map((course: Course) => {
+      if (course.mission === "HDF BSC") {
+        this.addMesureBscToCourse(course); 
+      }
+      return course; 
+    }); 
+
+    this.courses = newListCourse; 
   }
 
   loadCourses() {
