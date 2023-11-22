@@ -30,7 +30,7 @@ export default function DetailCourse(props: Readonly<Props>) {
       switch (course.mission) {
         case "BSC HDF":
           console.log("Basculement vers la page saisi");
-          navigation.navigate("SaisiBsc"); 
+          navigation.navigate("SaisiBsc", {idCourse: course.id}); 
   
           break;
         case "HLP VS":
