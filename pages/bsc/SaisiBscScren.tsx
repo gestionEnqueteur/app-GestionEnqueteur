@@ -90,6 +90,20 @@ function ThePage(props: Readonly<CourseProps>) {
     distribuees: "",
   });
 
+  useEffect(() => {
+    // Init du composant SaisiBscScreen 
+    if (course.mesure &&  "questionnaires" in course.mesure && course.mesure.questionnaires) {
+      const questionnaire: Questionnaires = course.mesure.questionnaires; 
+
+      // on met les valeur dans le formulaire 
+      setForm({
+        vides: questionnaire.vides.toString(), 
+        inexploitables: questionnaire.inexploitables.toString(), 
+        distribuees: questionnaire.distribuees.toString()
+      })
+    }
+  })
+
   const handleChangeFieldEmpty = (newValue: string) => { 
     setForm({...form, vides: newValue})
   }
@@ -135,9 +149,22 @@ function ThePage(props: Readonly<CourseProps>) {
         console.log("la mesure est bien présent"); 
         course.mesure.questionnaires = questionnaire; 
         console.log(course); 
+
+        // on vérifie si c'est bien un nombre entier
+        if (
+          !Number.isInteger(course.mesure.questionnaires.distribuees) ||
+          !Number.isInteger(course.mesure.questionnaires.vides) || 
+          !Number.isInteger(course.mesure.questionnaires.inexploitables)
+        ) {
+          // ce n'est pas un nombre, on lève une Error 
+          throw new Error("Formulaire invalide, les champ doivent etre des nombre entier");
+        }
         // on sauvegarde dans le storage. 
         courseService?.updateCourse(course.id, course);
       }
+
+      // vérification que c'est bien des nombre 
+
       
     }
     catch (e) {
@@ -159,9 +186,8 @@ function ThePage(props: Readonly<CourseProps>) {
         <View style={style.infoCourse}>
           <View style={style.detailTime}>
             <ChronoTopDepart
-              currentDatetime={new Date()}
-              datetimeArrival={infoHoraireCourse.datetimeArriveEnq}
-              datetimeDepart={infoHoraireCourse.datetimeDepartEnq}
+              arrival={infoHoraireCourse.datetimeArriveEnq}
+              depart={infoHoraireCourse.datetimeDepartEnq}
             />
             {course.infoHoraireCourse && (
               <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
