@@ -1,11 +1,31 @@
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Avatar, Button, Surface, Text, TextInput } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Button,
+  Surface,
+  Text,
+  TextInput,
+} from "react-native-paper";
+import { useContext, useEffect, useState } from "react";
 
 import CardNumeroLine from "../../components/CardNumeroLine";
 import ChronoTopDepart from "../../components/ChronoTopDepart";
 import DetailTrajet from "../../components/DetailTrajet";
 import MenuBurger from "../../components/MenuBurger";
 import InfoHoraireCourse from "../../models/InfoHoraireCourse";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigations/StackNavigation";
+import Course from "../../models/Course";
+import { CourseContext } from "../../provider/AppProvider";
+import InfoTrain from "../../components/bsc/InfoTrain";
+import MesureBSC from "../../models/bsc/MesureBsc";
+import { CompositionEnum } from "../../models/enum";
+import Questionnaires from "../../models/bsc/Questionnaire";
+
+type Props = NativeStackScreenProps<RootStackParamList, "SaisiBsc">;
+type CourseProps = {
+  course: Course;
+};
 
 // TODO: code a modifié.
 const infoHoraireCourse: InfoHoraireCourse = {
@@ -16,15 +36,125 @@ const infoHoraireCourse: InfoHoraireCourse = {
 };
 
 // test composant
+const infoSuperTrain: MesureBSC = {
+  infoTrain: {
+    numMaterial: "Z520069",
+    composition: CompositionEnum.US,
+  },
+  infoEnqueteur: {
+    enqueteur: "RPE",
+  },
+  commentaireNoSuccess: "Fiesta dans le train",
+  retards: {
+    departReel: new Date(),
+    arriveReel: new Date(),
+  },
+};
 
-export default function SaisiBscScreen() {
+export default function SaisiBscScreen({ route }: Readonly<Props>) {
+  const [course, setCourse] = useState<Course | undefined>(undefined);
+  const serviceSource = useContext(CourseContext);
+
+  useEffect(() => {
+    // init de la page
+    const theCourse = serviceSource
+      ?.getCourses()
+      .find((item) => item.id === route.params.idCourse);
+    console.log(theCourse); // a supprimer juste pour le test
+    if (theCourse == undefined) {
+      throw new Error(
+        `Erreur: pas de course avec cette ID : ${route.params.idCourse}`
+      );
+    }
+
+    setCourse(theCourse);
+
+    return () => {
+      console.log("destruction page Saisi");
+    };
+  }, []);
+
+  if (course) {
+    return <ThePage course={course} />;
+  }
+  return <ActivityIndicator size="large" />;
+}
+
+function ThePage(props: Readonly<CourseProps>) {
+  const { course } = props;
+  const courseService = useContext(CourseContext); 
+
+  const [form, setForm] = useState({
+    vides: "",
+    inexploitables: "",
+    distribuees: "",
+  });
+
+  const handleChangeFieldEmpty = (newValue: string) => { 
+    setForm({...form, vides: newValue})
+  }
+
+  const handleChangeFieldDistri = (newValue: string) => {
+    setForm({...form, distribuees: newValue}); 
+  }
+  
+  const handleChangeFieldInexploitables = (newValue: string) => {
+    setForm({...form, inexploitables: newValue}); 
+  }
+
+
+  const handleOnSubmitForm = () => {
+    // sousmission du formulaire
+    console.log("Sousmission du formulaire"); 
+
+  
+  
+
+  }
+
+  const handleOnSaveForm = () => {
+    // enregistrement 
+    console.log("Enregistrement du formulaire");
+    console.log(form); 
+
+    try {
+      // on essaye la sauvegarde
+      const questionnaire: Questionnaires = {
+        vides: Number(form.vides),
+        inexploitables: Number(form.inexploitables),
+        distribuees: Number(form.distribuees)
+      }
+      
+      // si mesure n'existe pas, on lui met la mesure 
+      if (!course.mesure) 
+      {
+        console.log("mesure n'existe pas"); 
+        courseService?.addMesureBscToCourse(course);
+      }
+      if (course.mesure && "questionnaires" in course.mesure){
+        console.log("la mesure est bien présent"); 
+        course.mesure.questionnaires = questionnaire; 
+        console.log(course); 
+        // on sauvegarde dans le storage. 
+        courseService?.updateCourse(course.id, course);
+      }
+      
+    }
+    catch (e) {
+      console.error(e);
+    }
+
+
+  }
+
+
   return (
     <View style={style.container}>
       <Surface style={style.header} mode="elevated" elevation={4}>
         <View style={style.circulation}>
-          <CardNumeroLine lineNumber="K12" />
+          {course.ligne && <CardNumeroLine lineNumber={course.ligne} />}
 
-          <Text variant="displaySmall">814206</Text>
+          <Text variant="displaySmall">{course.trainCourse}</Text>
         </View>
         <View style={style.infoCourse}>
           <View style={style.detailTime}>
@@ -33,47 +163,51 @@ export default function SaisiBscScreen() {
               datetimeArrival={infoHoraireCourse.datetimeArriveEnq}
               datetimeDepart={infoHoraireCourse.datetimeDepartEnq}
             />
-            <DetailTrajet infoHoraireCourse={infoHoraireCourse} />
+            {course.infoHoraireCourse && (
+              <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
+            )}
           </View>
           <MenuBurger />
         </View>
       </Surface>
       <ScrollView style={style.mainContent}>
-        <View style={style.splitScreenVertical}>
-          <View style={style.infoTrain}>
-            <Text variant="labelMedium">Composition : </Text>
-            <Avatar.Text label="US" size={40} />
-            <Text variant="labelMedium">Numéro de matériel :</Text>
-            <Text style={style.offsetRight} variant="bodyLarge">
-              21 82 889
-            </Text>
-          </View>
-          <View style={style.retardTrain}>
-            <Text variant="labelMedium">Retard au départ :</Text>
-            <Text style={style.offsetRight} variant="bodyLarge">
-              10 min
-            </Text>
-            <Text variant="labelMedium">Retard à l'arrivé :</Text>
-            <Text style={style.offsetRight} variant="bodyLarge">
-              15 min
-            </Text>
-          </View>
-        </View>
+        <InfoTrain
+          mesure={infoSuperTrain}
+          infoHoraire={course.infoHoraireCourse}
+        />
         <View style={style.quotasBsc}>
-          <TextInput mode="outlined" label="Questionnaire distribué : " />
-          <TextInput mode="outlined" label="Questionnaire récupéré vide :" />
-          <TextInput mode="outlined" label="Questionnaire Inexploitable : " />
+          <TextInput
+            mode="outlined"
+            label="Questionnaire distribué : "
+            inputMode="numeric"
+            onChangeText={handleChangeFieldDistri}
+            value={form.distribuees}
+          />
+          <TextInput
+            mode="outlined"
+            label="Questionnaire récupéré vide :"
+            inputMode="numeric"
+            onChangeText={handleChangeFieldEmpty}
+            value={form.vides}
+          />
+          <TextInput
+            mode="outlined"
+            label="Questionnaire Inexploitable : "
+            inputMode="numeric"
+            onChangeText={handleChangeFieldInexploitables}
+            value={form.inexploitables}
+          />
         </View>
         <View style={style.areaButton}>
           <Button
             mode="contained"
-            onPress={() => console.log("Enregistrement du formulaire Saisi")}
+            onPress={handleOnSaveForm}
           >
             Enregister
           </Button>
           <Button
             mode="contained"
-            onPress={() => console.log("Sousmission du formulaire Saisi")}
+            onPress={handleOnSubmitForm}
           >
             Soumettre
           </Button>
