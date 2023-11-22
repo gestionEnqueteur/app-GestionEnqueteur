@@ -1,16 +1,15 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigatorScreenParams } from "@react-navigation/native";
 
-import MenuBottomTabs from './MenuBottomTabs';
-import HomeScreen from '../HomeScreen';
-import SaisiBscScreen from '../bsc/SaisiBscScren';
-
+import MenuBottomTabs, { TabParamList } from "./MenuBottomTabs";
+import HomeScreen from "../HomeScreen";
+import SaisiBscScreen from "../bsc/SaisiBscScren";
 
 export type RootStackParamList = {
-  HomeStack: undefined;
+  HomeStack: NavigatorScreenParams<TabParamList>;
   Test: undefined;
-  SaisiBsc: undefined
-}
-
+  SaisiBsc: {idCourse: number};
+};
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,5 +22,3 @@ export default function MyMainStack() {
     </Stack.Navigator>
   );
 }
-
-

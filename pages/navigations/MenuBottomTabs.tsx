@@ -1,28 +1,29 @@
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { NavigatorScreenParams } from "@react-navigation/native";
 
-import SettingsScreen from '../SaisiScreen';
-import OngletsTopTabPlaniSaisi from './OngletsTopTabsPlanifSaisi';
-import ParamScreen from '../ParamScreen';
+import SettingsScreen from "../SaisiScreen";
+import OngletsTopTabPlaniSaisi, {
+  TabVacParamList,
+} from "./OngletsTopTabsPlanifSaisi";
+import ParamScreen from "../ParamScreen";
 
-export type TabParamList = { 
-  Vacation: undefined;
+export type TabParamList = {
+  Vacation: NavigatorScreenParams<TabVacParamList>;
   Saisi: undefined;
-  Param: undefined; 
-}
+  Param: undefined;
+};
 
 const Tab = createMaterialBottomTabNavigator<TabParamList>();
 
 export default function MenuBottomTabs() {
   return (
-    <Tab.Navigator
-      initialRouteName="Vacation"
-    >
+    <Tab.Navigator initialRouteName="Vacation">
       <Tab.Screen
         name="Vacation"
         component={OngletsTopTabPlaniSaisi}
         options={{
-          tabBarLabel: 'Vacation',
+          tabBarLabel: "Vacation",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="train" color={color} size={26} />
           ),
@@ -32,7 +33,7 @@ export default function MenuBottomTabs() {
         name="Saisi"
         component={SettingsScreen}
         options={{
-          tabBarLabel: 'Saisi',
+          tabBarLabel: "Saisi",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="pen" color={color} size={26} />
           ),
@@ -42,7 +43,7 @@ export default function MenuBottomTabs() {
         name="Param"
         component={ParamScreen}
         options={{
-          tabBarLabel: 'Paramètre',
+          tabBarLabel: "Paramètre",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="cog" color={color} size={26} />
           ),
