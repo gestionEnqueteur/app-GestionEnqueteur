@@ -12,16 +12,13 @@ import CardNumeroLine from "../../components/CardNumeroLine";
 import ChronoTopDepart from "../../components/ChronoTopDepart";
 import DetailTrajet from "../../components/DetailTrajet";
 import MenuBurger from "../../components/MenuBurger";
-import InfoHoraireCourse from "../../models/InfoHoraireCourse";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigations/StackNavigation";
 import Course from "../../models/Course";
 import { CourseContext } from "../../provider/AppProvider";
 import InfoTrain from "../../components/bsc/InfoTrain";
 import MesureBSC from "../../models/bsc/MesureBsc";
-import { CompositionEnum } from "../../models/enum";
 import Questionnaires from "../../models/bsc/Questionnaire";
-import InfoTrainType from "../../models/bsc/InfoTrain";
 
 type Props = NativeStackScreenProps<RootStackParamList, "SaisiBsc">;
 type CourseProps = {
@@ -61,13 +58,13 @@ function ThePage(props: Readonly<CourseProps>) {
   const { course } = props;
   const courseService = useContext(CourseContext);
 
-  const [mesure, setMesure] = useState<MesureBSC | undefined>(undefined); 
+  const [mesure, setMesure] = useState<MesureBSC | undefined>(undefined);
   const [form, setForm] = useState({
     vides: "",
     inexploitables: "",
     distribuees: "",
   });
-  
+
   useEffect(() => {
     // si mesure n'existe pas, on lui met la mesure
     if (!course.mesure) {
@@ -90,12 +87,10 @@ function ThePage(props: Readonly<CourseProps>) {
       });
     }
 
-    // vérification de la mesure 
+    // vérification de la mesure
     if (course.mesure && "infoTrain" in course.mesure) {
-      setMesure(course.mesure); 
+      setMesure(course.mesure);
     }
-
-   
   }, []);
 
   const handleChangeFieldEmpty = (newValue: string) => {
@@ -177,11 +172,10 @@ function ThePage(props: Readonly<CourseProps>) {
       </Surface>
       <ScrollView style={style.mainContent}>
         {mesure ? (
-          <InfoTrain
-            mesure={mesure}
-            infoHoraire={course.infoHoraireCourse}
-          />
-        ): <Text>pas de mesure</Text>}
+          <InfoTrain mesure={mesure} infoHoraire={course.infoHoraireCourse} />
+        ) : (
+          <Text>pas de mesure</Text>
+        )}
         <View style={style.quotasBsc}>
           <TextInput
             mode="outlined"
