@@ -10,5 +10,5 @@ export default interface MesureBSC {
   perturbation?: Perturbation;
   retards?: Retard;
   questionnaires?: Questionnaires;
-  commentaireNoSuccess: string;
+  commentaireNoSuccess?: string;
 }
