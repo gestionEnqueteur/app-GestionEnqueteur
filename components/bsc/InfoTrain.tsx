@@ -19,17 +19,20 @@ export default function InfoTrain(props: Readonly<Props>) {
         <CompositionTrain composition={mesure.infoTrain.composition} />
         <Text variant="labelMedium">Numéro de matériel :</Text>
         <Text style={style.offsetRight} variant="bodyLarge">
-          {mesure.infoTrain.numMaterial ? mesure.infoTrain.numMaterial : "Non renseigné"}
+          {mesure.infoTrain.numMaterial
+            ? mesure.infoTrain.numMaterial
+            : "Non renseigné"}
         </Text>
       </View>
       <View style={style.retardTrain}>
         <Text variant="labelMedium">Retard au départ :</Text>
         <Text style={style.offsetRight} variant="bodyLarge">
-          { mesure.retards?.retardDepart ? mesure.retards.retardDepart : "?" } min
+          {mesure.retards?.retardDepart ? mesure.retards.retardDepart : "?"} min
         </Text>
         <Text variant="labelMedium">Retard à l'arrivé :</Text>
         <Text style={style.offsetRight} variant="bodyLarge">
-          { mesure.retards?.retardArriver ? mesure.retards.retardArriver : "?"} min
+          {mesure.retards?.retardArriver ? mesure.retards.retardArriver : "?"}{" "}
+          min
         </Text>
       </View>
     </View>

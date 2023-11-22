@@ -20,11 +20,11 @@ export default class CourseService {
     return this.courses.find((item) => item.id === id);
   }
 
-  updateCourse(id: number, course: Course) {
-    const index = this.courses.findIndex((item) => item.id === id);
+  updateCourse(course: Course) {
+    const index = this.courses.findIndex((item) => item.id === course.id);
     if (index === -1) {
       // faire quelque chose pour le mauvais ID
-      throw new Error(`pas de course trouver pour ID: ${id}`);
+      throw new Error(`pas de course trouver pour ID: ${course.id}`);
     }
 
     // on remplace la valeur

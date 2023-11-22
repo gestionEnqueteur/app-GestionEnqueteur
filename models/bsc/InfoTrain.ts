@@ -1,6 +1,6 @@
 import { CompositionEnum } from "../enum";
 
-export default interface InfoTrain {
+export default interface InfoTrainType {
   composition: CompositionEnum;
   numMaterial: string;
 }

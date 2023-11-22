@@ -21,34 +21,11 @@ import InfoTrain from "../../components/bsc/InfoTrain";
 import MesureBSC from "../../models/bsc/MesureBsc";
 import { CompositionEnum } from "../../models/enum";
 import Questionnaires from "../../models/bsc/Questionnaire";
+import InfoTrainType from "../../models/bsc/InfoTrain";
 
 type Props = NativeStackScreenProps<RootStackParamList, "SaisiBsc">;
 type CourseProps = {
   course: Course;
-};
-
-// TODO: code a modifié.
-const infoHoraireCourse: InfoHoraireCourse = {
-  datetimeArriveEnq: new Date(),
-  datetimeDepartEnq: new Date(),
-  gareDepartEnq: "Lille Flandres",
-  gareArriveEnq: "Paris",
-};
-
-// test composant
-const infoSuperTrain: MesureBSC = {
-  infoTrain: {
-    numMaterial: "Z520069",
-    composition: CompositionEnum.US,
-  },
-  infoEnqueteur: {
-    enqueteur: "RPE",
-  },
-  commentaireNoSuccess: "Fiesta dans le train",
-  retards: {
-    departReel: new Date(),
-    arriveReel: new Date(),
-  },
 };
 
 export default function SaisiBscScreen({ route }: Readonly<Props>) {
@@ -82,71 +59,100 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
 
 function ThePage(props: Readonly<CourseProps>) {
   const { course } = props;
-  const courseService = useContext(CourseContext); 
+  const courseService = useContext(CourseContext);
 
+  const [mesure, setMesure] = useState<MesureBSC | undefined>(undefined); 
   const [form, setForm] = useState({
     vides: "",
     inexploitables: "",
     distribuees: "",
   });
+  
+  useEffect(() => {
+    // si mesure n'existe pas, on lui met la mesure
+    if (!course.mesure) {
+      console.log("mesure n'existe pas");
+      courseService?.addMesureBscToCourse(course);
+    }
+    // Init du composant SaisiBscScreen
+    if (
+      course.mesure &&
+      "questionnaires" in course.mesure &&
+      course.mesure.questionnaires
+    ) {
+      const questionnaire: Questionnaires = course.mesure.questionnaires;
 
-  const handleChangeFieldEmpty = (newValue: string) => { 
-    setForm({...form, vides: newValue})
-  }
+      // on met les valeur dans le formulaire
+      setForm({
+        vides: questionnaire.vides.toString(),
+        inexploitables: questionnaire.inexploitables.toString(),
+        distribuees: questionnaire.distribuees.toString(),
+      });
+    }
+
+    // vérification de la mesure 
+    if (course.mesure && "infoTrain" in course.mesure) {
+      setMesure(course.mesure); 
+    }
+
+   
+  }, []);
+
+  const handleChangeFieldEmpty = (newValue: string) => {
+    setForm({ ...form, vides: newValue });
+  };
 
   const handleChangeFieldDistri = (newValue: string) => {
-    setForm({...form, distribuees: newValue}); 
-  }
-  
-  const handleChangeFieldInexploitables = (newValue: string) => {
-    setForm({...form, inexploitables: newValue}); 
-  }
+    setForm({ ...form, distribuees: newValue });
+  };
 
+  const handleChangeFieldInexploitables = (newValue: string) => {
+    setForm({ ...form, inexploitables: newValue });
+  };
 
   const handleOnSubmitForm = () => {
     // sousmission du formulaire
-    console.log("Sousmission du formulaire"); 
-
-  
-  
-
-  }
+    console.log("Sousmission du formulaire");
+  };
 
   const handleOnSaveForm = () => {
-    // enregistrement 
+    // enregistrement
     console.log("Enregistrement du formulaire");
-    console.log(form); 
+    console.log(form);
 
     try {
       // on essaye la sauvegarde
       const questionnaire: Questionnaires = {
         vides: Number(form.vides),
         inexploitables: Number(form.inexploitables),
-        distribuees: Number(form.distribuees)
+        distribuees: Number(form.distribuees),
+      };
+
+      if (course.mesure && "questionnaires" in course.mesure) {
+        console.log("la mesure est bien présent");
+        course.mesure.questionnaires = questionnaire;
+        console.log(course);
+
+        // on vérifie si c'est bien un nombre entier
+        if (
+          !Number.isInteger(course.mesure.questionnaires.distribuees) ||
+          !Number.isInteger(course.mesure.questionnaires.vides) ||
+          !Number.isInteger(course.mesure.questionnaires.inexploitables)
+        ) {
+          // ce n'est pas un nombre, on lève une Error
+          throw new Error(
+            "Formulaire invalide, les champ doivent etre des nombre entier"
+          );
+        }
+        // on sauvegarde dans le storage.
+        courseService?.updateCourse(course);
       }
-      
-      // si mesure n'existe pas, on lui met la mesure 
-      if (!course.mesure) 
-      {
-        console.log("mesure n'existe pas"); 
-        courseService?.addMesureBscToCourse(course);
-      }
-      if (course.mesure && "questionnaires" in course.mesure){
-        console.log("la mesure est bien présent"); 
-        course.mesure.questionnaires = questionnaire; 
-        console.log(course); 
-        // on sauvegarde dans le storage. 
-        courseService?.updateCourse(course.id, course);
-      }
-      
-    }
-    catch (e) {
+
+      // vérification que c'est bien des nombre
+    } catch (e) {
       console.error(e);
     }
-
-
-  }
-
+  };
 
   return (
     <View style={style.container}>
@@ -159,9 +165,8 @@ function ThePage(props: Readonly<CourseProps>) {
         <View style={style.infoCourse}>
           <View style={style.detailTime}>
             <ChronoTopDepart
-              currentDatetime={new Date()}
-              datetimeArrival={infoHoraireCourse.datetimeArriveEnq}
-              datetimeDepart={infoHoraireCourse.datetimeDepartEnq}
+              arrival={course.infoHoraireCourse.datetimeArriveEnq}
+              depart={course.infoHoraireCourse.datetimeDepartEnq}
             />
             {course.infoHoraireCourse && (
               <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
@@ -171,10 +176,12 @@ function ThePage(props: Readonly<CourseProps>) {
         </View>
       </Surface>
       <ScrollView style={style.mainContent}>
-        <InfoTrain
-          mesure={infoSuperTrain}
-          infoHoraire={course.infoHoraireCourse}
-        />
+        {mesure ? (
+          <InfoTrain
+            mesure={mesure}
+            infoHoraire={course.infoHoraireCourse}
+          />
+        ): <Text>pas de mesure</Text>}
         <View style={style.quotasBsc}>
           <TextInput
             mode="outlined"
@@ -199,16 +206,10 @@ function ThePage(props: Readonly<CourseProps>) {
           />
         </View>
         <View style={style.areaButton}>
-          <Button
-            mode="contained"
-            onPress={handleOnSaveForm}
-          >
+          <Button mode="contained" onPress={handleOnSaveForm}>
             Enregister
           </Button>
-          <Button
-            mode="contained"
-            onPress={handleOnSubmitForm}
-          >
+          <Button mode="contained" onPress={handleOnSubmitForm}>
             Soumettre
           </Button>
         </View>
