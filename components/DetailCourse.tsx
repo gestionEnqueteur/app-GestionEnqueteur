@@ -13,7 +13,7 @@ type Props = {
   course: Course;
 };
 
-export default function DetailCourse(props: Props) {
+export default function DetailCourse(props: Readonly<Props>) {
   const { course } = props;
 
   const handleGoToAction = () => {

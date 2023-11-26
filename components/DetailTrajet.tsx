@@ -8,7 +8,7 @@ type Props = {
   infoHoraireCourse: InfoHoraireCourse;
 };
 
-const DetailTrajet = (props: Props) => {
+const DetailTrajet = (props: Readonly<Props>) => {
   const { infoHoraireCourse } = props;
 
   return (

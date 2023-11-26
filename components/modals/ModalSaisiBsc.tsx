@@ -14,7 +14,7 @@ type props = {
   setVisible: Function
 };
 
-export default function ModalSaisiBsc(props: props) {
+export default function ModalSaisiBsc(props: Readonly<props>) {
   const { select, visible } = props;
 
   return (

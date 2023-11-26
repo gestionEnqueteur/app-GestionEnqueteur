@@ -10,7 +10,7 @@ type Props = {
   onChangeValue: Function; 
 }
 
-export default function TopRetard(props: Props) {
+export default function TopRetard(props: Readonly<Props>) {
 
   const [valueInput, setValueInput] = useState(0);
 
