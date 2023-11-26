@@ -13,15 +13,6 @@ type Props = {
   children: ReactNode;
 };
 
-export type AllServices = {
-  configurationService: ConfigurationService;
-  axiosService: AxiosService;
-  courseService: CourseService;
-  storageService: StorageService;
-};
-// création du context App
-export const AppContext = createContext<any>(null);
-
 // création des context pour chaque service
 export const ConfigurationContext = createContext<
   ConfigurationService | undefined
@@ -34,7 +25,7 @@ export const CourseContext = createContext<CourseService | undefined>(
   undefined
 );
 
-export default function AppProvider(props: Props) {
+export default function AppProvider(props: Readonly<Props>) {
   // création de l'instance Configuration service
 
   const configService = useMemo(() =>new ConfigurationService({ urlApi: "", user: "" }), []);
