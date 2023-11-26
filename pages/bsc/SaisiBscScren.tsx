@@ -180,7 +180,7 @@ function ThePage(props: Readonly<CourseProps>) {
               <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
             )}
           </View>
-          <MenuBurger />
+          <MenuBurger course={course}/>
         </View>
       </Surface>
       <ScrollView style={style.mainContent}>
