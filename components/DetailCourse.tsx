@@ -61,7 +61,7 @@ export default function DetailCourse(props: Readonly<Props>) {
               <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
             )}
           </View>
-          <View>{course.mission === "BSC HDF" && <MenuBurger />}</View>
+          <View>{course.mission === "BSC HDF" && <MenuBurger course={course} />}</View>
         </View>
         <View style={style.infoLine}>
           <TypeCourse mission={course.mission} />

@@ -2,8 +2,13 @@ import { useState } from "react";
 import { Menu, IconButton } from "react-native-paper";
 import { View } from "react-native";
 import ModalSaisiBsc from "./modals/ModalSaisiBsc";
+import Course from "../models/Course";
 
-export default function MenuBurger() {
+type Props = {
+  course: Course;
+}
+
+export default function MenuBurger({course}: Readonly<Props>) {
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalSeleted, setModalSeleted] = useState("info");
@@ -46,7 +51,12 @@ export default function MenuBurger() {
 
   return (
     <View>
-      <ModalSaisiBsc visible={modalVisible} select={modalSeleted} setVisible={setModalVisible} />
+      <ModalSaisiBsc
+        visible={modalVisible}
+        select={modalSeleted}
+        setVisible={setModalVisible}
+        course={course}
+      />
       <Menu visible={visible} anchor={buttom} onDismiss={closeMenu}>
         <Menu.Item
           leadingIcon="delete"
