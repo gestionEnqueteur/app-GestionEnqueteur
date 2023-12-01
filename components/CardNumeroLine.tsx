@@ -11,7 +11,7 @@ type ColorCard = {
   text: string; // default black
 };
 
-export default function CardNumeroLine(props: Props) {
+export default function CardNumeroLine(props: Readonly<Props>) {
   const { lineNumber } = props;
 
   // state

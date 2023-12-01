@@ -5,7 +5,7 @@ type Props = {
   mission: string;
 };
 
-export default function TypeCourse({ mission }: Props) {
+export default function TypeCourse({ mission }: Readonly<Props>) {
   let icon: string;
 
   switch (mission) {

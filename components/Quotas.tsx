@@ -5,7 +5,7 @@ type PropsQuotas = {
   value: number;
 };
 
-export default function Quotas({ value }: PropsQuotas) {
+export default function Quotas({ value }: Readonly<PropsQuotas>) {
   return (
     <Chip mode="outlined" icon="bullseye-arrow">
       {value}

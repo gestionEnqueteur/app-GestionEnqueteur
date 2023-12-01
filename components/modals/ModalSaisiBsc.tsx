@@ -1,5 +1,4 @@
 import React from "react";
-import { View } from "react-native";
 import { Modal, Portal } from "react-native-paper";
 import SupressionTrain from "./SupressionTrain";
 import RetardTrain from "./RetardTrain";
@@ -11,18 +10,15 @@ import GareDeDescente from "./GareDeDescente";
 type props = {
   visible: boolean;
   select: string;
-  setVisible: Function
+  setVisible: Function;
 };
 
-export default function ModalSaisiBsc(props: props) {
+export default function ModalSaisiBsc(props: Readonly<props>) {
   const { select, visible } = props;
 
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={() => props.setVisible(false)}
-      >
+      <Modal visible={visible} onDismiss={() => props.setVisible(false)}>
         {select === "supression" && <SupressionTrain />}
         {select === "retard" && <RetardTrain />}
         {select === "info" && <InfoTrain />}
