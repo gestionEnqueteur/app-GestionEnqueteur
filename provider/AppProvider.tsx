@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useReducer, Dispatch, useMemo } from "react";
+import { ReactNode, createContext, useReducer, Dispatch, useMemo, useEffect } from "react";
 import ConfigurationService from "../services/ConfigurationService";
 import AxiosService from "../services/AxiosService";
 import StorageService from "../services/StorageServices";
@@ -22,8 +22,8 @@ const storageService = new StorageService();
 const courseService = new CourseService(storageService);
 
 // création du state global
-const initialState: Course[] = [];
-export const StoreContext = createContext<StoreContextType>({
+let initialState: Course[] = [];
+export const StoreCourseContext = createContext<StoreContextType>({
   state: initialState,
   dispatch: () => {},
 });
@@ -40,10 +40,6 @@ const init = async () => {
   console.log("Init App");
   // Chargement la configuration dans le asyncStorage
   await configService.loadConfiguration();
-  console.log(`urlApi: ${configService.getConfiguration().urlApi}`); // pour le test à supprimer
-  console.log(`user: ${configService.getConfiguration().user}`); // pour le test à supprimer
-  // Load les courses
-  courseService.loadCourses();
 };
 
 init();
@@ -54,10 +50,15 @@ export default function AppProvider(props: Readonly<Props>) {
   // le Reducer
   const [state, dispatch] = useReducer(reducerCourse, initialState);
 
+  useEffect(() => {
+    console.log("use effect App")
+    dispatch({type: "load", courses: courseService.loadCourses()}); 
+  }, [])
+
   const storeContextValue = useMemo(() => ({state, dispatch}), [state] )
 
   return (
-    <StoreContext.Provider value={storeContextValue}>
+    <StoreCourseContext.Provider value={storeContextValue}>
       <ConfigurationContext.Provider value={configService}>
         <AxiosContext.Provider value={axiosService}>
           <StorageContext.Provider value={storageService}>
@@ -67,6 +68,6 @@ export default function AppProvider(props: Readonly<Props>) {
           </StorageContext.Provider>
         </AxiosContext.Provider>
       </ConfigurationContext.Provider>
-    </StoreContext.Provider>
+    </StoreCourseContext.Provider>
   );
 }
