@@ -1,4 +1,11 @@
-import { ReactNode, createContext, useReducer, Dispatch, useMemo, useEffect } from "react";
+import {
+  ReactNode,
+  createContext,
+  useReducer,
+  Dispatch,
+  useMemo,
+  useEffect,
+} from "react";
 import ConfigurationService from "../services/ConfigurationService";
 import AxiosService from "../services/AxiosService";
 import StorageService from "../services/StorageServices";
@@ -47,15 +54,22 @@ init();
 export default function AppProvider(props: Readonly<Props>) {
   // Composant AppProvider
 
-  // le Reducer
+  // le store Course
   const [state, dispatch] = useReducer(reducerCourse, initialState);
 
-  useEffect(() => {
-    console.log("use effect App")
-    dispatch({type: "load", courses: courseService.loadCourses()}); 
-  }, [])
+  const loadCourses = async () => {
+    const loadedCourses: Course[] = await storageService.loadData("courses");
+    return loadedCourses;
+  };
 
-  const storeContextValue = useMemo(() => ({state, dispatch}), [state] )
+  useEffect(() => {
+    // chargement des courses
+    loadCourses().then((courses) => {
+      dispatch({ type: "load", courses: courses });
+    });
+  }, []);
+
+  const storeContextValue = useMemo(() => ({ state, dispatch }), [state]);
 
   return (
     <StoreCourseContext.Provider value={storeContextValue}>
