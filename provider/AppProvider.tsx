@@ -54,18 +54,32 @@ init();
 export default function AppProvider(props: Readonly<Props>) {
   // Composant AppProvider
 
-  // le store Course
-  const [state, dispatch] = useReducer(reducerCourse, initialState);
-
   const loadCourses = async () => {
     const loadedCourses: Course[] = await storageService.loadData("courses");
     return loadedCourses;
   };
 
+  const reducerWithMiddleWare = (prevState: Course[], action: ActionCourse) => {
+    // utilisation du reducer original
+    const newState = reducerCourse(prevState, action);
+
+    // appel du middleware
+    if (action.type !== "load") middlewareAfterUpdate(newState);
+
+    return newState;
+  };
+
+  const middlewareAfterUpdate = (newState: Course[]) => {
+    // on sauvegarde la data
+    storageService.saveData(newState, "courses");
+  };
+  // le store Course
+  const [state, dispatch] = useReducer(reducerWithMiddleWare, initialState);
+
   useEffect(() => {
     // chargement des courses
     loadCourses().then((courses) => {
-      dispatch({ type: "load", courses: courses });
+      if (courses) dispatch({ type: "load", courses: courses });
     });
   }, []);
 
