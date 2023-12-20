@@ -4,12 +4,13 @@ import { calculDifferenceTime } from "../helpers/timeHelper";
 
 
 type Props = {
-  depart: Date;
-  arrival: Date;
+  depart: string;
+  arrival: string;
 };
 
 export default function ChronoTopDepart(props: Readonly<Props>) {
-  const { depart, arrival } = props;
+  const depart = new Date(props.depart);
+  const arrival = new Date(props.arrival);
 
   // state global
   const [output, setOutput] = useState("init");

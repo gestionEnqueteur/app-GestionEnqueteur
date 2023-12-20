@@ -17,8 +17,8 @@ export default class TestMock {
         trainCourse: coursePlanning.trainCourse,
         objectif: coursePlanning.prQuota,
         infoHoraireCourse: {
-          datetimeArriveEnq: new Date(coursePlanning.ha),
-          datetimeDepartEnq: new Date(coursePlanning.hd),
+          datetimeArriveEnq: coursePlanning.ha,
+          datetimeDepartEnq: coursePlanning.hd,
           gareDepartEnq: coursePlanning.depart,
           gareArriveEnq: coursePlanning.arrivee,
         },
