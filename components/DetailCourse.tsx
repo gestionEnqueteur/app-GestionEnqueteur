@@ -16,6 +16,8 @@ type Props = {
 export default function DetailCourse(props: Readonly<Props>) {
   const { course } = props;
 
+  console.log(`création composant : ${course.id}`)
+
   const handleGoToAction = () => {
     // appuie sur le composant
     switch (course.mission) {

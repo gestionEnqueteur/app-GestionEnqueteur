@@ -1,33 +1,28 @@
 import { FlatList } from "react-native";
 import DetailCourse from "../components/DetailCourse";
-import { useContext, useEffect, useState } from "react";
-import { CourseContext } from "../provider/AppProvider";
+import { useContext } from "react";
+import { CourseContext, StoreCourseContext } from "../provider/AppProvider";
 import Course from "../models/Course";
+import { Text } from "react-native-paper";
 
 export default function TrainPlanifieScreen() {
   const courseService = useContext(CourseContext);
+  const storeCourse = useContext(StoreCourseContext); 
 
-  const [courses, setCourses] = useState<Course[]>([]);
+  const courses = storeCourse.state; 
 
-  useEffect(() => {
-    // init du composant.
-    console.log("Mount: train");
-    if (courseService) {
-      const loadedCourses = courseService.getCourses();
-      console.log(loadedCourses);
-      setCourses(loadedCourses);
-    }
-  }, []);
+  console.log("création de la FlatList"); 
+
 
   const renderItem = ({ item }: { item: Course }) => (
     <DetailCourse course={item} />
   );
 
   const handleOnRefresh = () => {
-    if (courseService) {
-      setCourses(courseService.loadCourses());
       console.log("refresh");
-    }
+      storeCourse.dispatch({type: "load", courses: courseService.loadCourses()})
+      
+    
   };
 
   return (
@@ -37,6 +32,7 @@ export default function TrainPlanifieScreen() {
       keyExtractor={(item) => item.id.toString()}
       onRefresh={handleOnRefresh}
       refreshing={false}
+      ListEmptyComponent={<Text>La liste est vide </Text>}
     />
   );
 }
