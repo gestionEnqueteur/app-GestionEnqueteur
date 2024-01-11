@@ -12,6 +12,8 @@ import StorageService from "../services/StorageServices";
 import CourseService from "../services/CourseService";
 import Course from "../models/Course";
 import reducerCourse, { ActionCourse } from "../reducer/courseReducer";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { configurationState } from "../store/storeAtom";
 
 type Props = {
   children: ReactNode;
@@ -42,14 +44,14 @@ export const AxiosContext = createContext(axiosService);
 export const StorageContext = createContext<StorageService>(storageService);
 export const CourseContext = createContext<CourseService>(courseService);
 
-// Init de l'application
-const init = async () => {
-  console.log("Init App");
-  // Chargement la configuration dans le asyncStorage
-  await configService.loadConfiguration();
-};
+// Init de l'application ( old code ) 
+// const init = async () => {
+//   console.log("Init App");
+//   // Chargement la configuration dans le asyncStorage
+//   await configService.loadConfiguration();
+// };
 
-init();
+// init();
 
 export default function AppProvider(props: Readonly<Props>) {
   // Composant AppProvider
@@ -75,12 +77,19 @@ export default function AppProvider(props: Readonly<Props>) {
   };
   // le store Course
   const [state, dispatch] = useReducer(reducerWithMiddleWare, initialState);
+  const setConfiguration = useSetRecoilState(configurationState); 
+
 
   useEffect(() => {
-    // chargement des courses
+    // chargement des courses ( dans un reducer React )
     loadCourses().then((courses) => {
       if (courses) dispatch({ type: "load", courses: courses });
     });
+
+    // chargement de la configuration ( dans un state Recoil )
+    storageService.loadData("configuration").then((configLoaded) => {
+      if (configLoaded) setConfiguration(configLoaded); 
+    }); 
   }, []);
 
   const storeContextValue = useMemo(() => ({ state, dispatch }), [state]);

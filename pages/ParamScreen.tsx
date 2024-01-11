@@ -1,8 +1,10 @@
 import { View, ScrollView, StyleSheet } from "react-native";
 import { Text, TextInput, Button, Surface, Snackbar } from "react-native-paper";
 import { useEffect, useContext, useState } from "react";
-import { ConfigurationContext } from "../provider/AppProvider";
+import { StorageContext } from "../provider/AppProvider";
 import ConfigurationType from "../models/ConfigurationType";
+import { useRecoilState } from "recoil";
+import { configurationState } from "../store/storeAtom";
 
 type SnackBar = {
   visible: boolean;
@@ -11,7 +13,9 @@ type SnackBar = {
 };
 
 export default function ParamScreen() {
-  const config = useContext(ConfigurationContext);
+  const storageService = useContext(StorageContext);
+
+  const [config, setConfig] = useRecoilState(configurationState);
 
   const [valueForm, setValueForm] = useState<ConfigurationType>({
     urlApi: "",
@@ -26,13 +30,9 @@ export default function ParamScreen() {
 
   useEffect(() => {
     // Init de la page
-    if (config) {
-      // la config est préent
-      console.log("Init ParamScreem");
-      setValueForm(config.getConfiguration());
-    }
 
-    // récupération de la configuration au niveau du Provider
+    console.log("Init ParamScreem");
+    setValueForm(config);
   }, []);
 
   const handleOnChangeURL = (newValue: string) => {
@@ -47,7 +47,14 @@ export default function ParamScreen() {
 
   const handleOnClickSubmit = () => {
     // stockage dans le AsyncStorage
-    config?.saveConfiguration(valueForm, succesSave, failureSave);
+    //TODO: appliquer une vérification de la cohérence, via des regex par exemple
+    storageService.saveData(
+      valueForm,
+      "configuration",
+      succesSave,
+      failureSave
+    );
+    setConfig(valueForm);
   };
 
   const succesSave = () => {
@@ -61,7 +68,6 @@ export default function ParamScreen() {
   };
 
   const displaySnackBar = (label: string, icon: string) => {
-    // mettre a jour le state
     setSnackBar({ label: label, icon: icon, visible: true });
   };
 
