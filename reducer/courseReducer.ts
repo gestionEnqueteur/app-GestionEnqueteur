@@ -7,7 +7,7 @@ export type ActionCourse =
   | { type: "load"; courses: Course[]}
   | { type: "reset"}
 
-export default function reducerCourse(state: Course[], action: ActionCourse) {
+export default function courseReducer(state: Course[], action: ActionCourse) {
   let newState: Course[];
 
   switch (action.type) {
