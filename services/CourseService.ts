@@ -1,31 +1,52 @@
 import Course from "../models/Course";
+import { CompositionEnum } from "../models/enum";
 import StorageService from "./StorageServices";
 
 export default class CourseService {
   private storage: StorageService;
-  private courses: Course[];
 
   constructor(storage: StorageService) {
     this.storage = storage;
-    this.courses = [];
   }
 
-  getCourses() {
-    return this.courses;
+  addStructureBsc(course: Course) {
+    course.mesure = {
+      infoEnqueteur: {},
+      retard: {
+        retardDepart: null,
+        retardArrive: null
+      }, 
+      infoTrain: {
+        composition: CompositionEnum.US,
+        numMaterial: "",
+      },
+      commentaireNoSuccess: "",
+    };
   }
 
-  updateCourse(id: number, course: Course) {
-    //TODO: update la course.
-    // récupérer la course en fonction de ID de l'objet.
-    // changer  la valeur du tableau.
-    // enregistrer dans la Db du téléphone
+  addStructure(course: Course) {
+    switch (course.mission) {
+      case "BSC HDF":
+        this.addStructureBsc(course);
+        break;
+      case "MQ HDF":
+        console.log("structure pour la MQ HDF");
+        break;
+      case "TEST":
+        console.log("test ajout structure");
+        break;
+      default:
+        console.log("structure non géré pour ce type de mission");
+    }
+    return course;
   }
 
   loadCourses() {
     //TODO: implémenter la fonction
     // on tente un Fetch, si pas de 4G (on récupere sur la db Téléphone )
     console.log("Chargement des courses depuis Storage Service");
-    this.courses = this.storage.getAllCourse();
-    return this.courses;
+    return this.storage
+      .getAllCourse()
+      .map((course) => this.addStructure(course));
   }
 }

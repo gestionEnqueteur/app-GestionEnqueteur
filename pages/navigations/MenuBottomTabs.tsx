@@ -2,8 +2,15 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import SettingsScreen from '../SaisiScreen';
-import OngletsTopTabPlaniSaisi from './OngletsTopTabsPlanifSaisi';
+import OngletsTopTabPlaniSaisi, { TabVacParamList } from './OngletsTopTabsPlanifSaisi';
 import ParamScreen from '../ParamScreen';
+import { NavigatorScreenParams } from '@react-navigation/native';
+
+export type TabParamList = {
+  Vacation: NavigatorScreenParams<TabVacParamList>;
+  Saisi: undefined; 
+  Param: undefined;
+}
 
 const Tab = createMaterialBottomTabNavigator();
 

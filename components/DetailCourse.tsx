@@ -8,6 +8,9 @@ import Quotas from "./Quotas";
 import TypeCourse from "./TypeCourse";
 
 import Course from "../models/Course";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../pages/navigations/StackNavigation";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 type Props = {
   course: Course;
@@ -16,13 +19,18 @@ type Props = {
 export default function DetailCourse(props: Readonly<Props>) {
   const { course } = props;
 
+  // utilisation du hook use navigation 
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(); 
+
   console.log(`création composant : ${course.id}`)
 
   const handleGoToAction = () => {
     // appuie sur le composant
     switch (course.mission) {
       case "BSC HDF":
-        console.log("Basculement vers la page saisi");
+        console.log("Basculement vers la page de saisie");
+        navigation.navigate("SaisiBsc", {courseId: course.id} ); 
+        
         break;
       case "HLP VS":
         console.log("afficher le link waze ou cordonner GPS");

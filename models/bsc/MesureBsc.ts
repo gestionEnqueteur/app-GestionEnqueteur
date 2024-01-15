@@ -8,7 +8,7 @@ export default interface MesureBSC {
   infoEnqueteur: InfoEnqueteur;
   infoTrain: InfoTrain;
   perturbation?: Perturbation;
-  retards?: Retard;
+  retards: Retard;
   questionnaires?: Questionnaires;
   commentaireNoSuccess: string;
 }

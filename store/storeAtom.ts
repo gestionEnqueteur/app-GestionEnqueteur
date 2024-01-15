@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 // import des types
 import ConfigurationType from "../models/ConfigurationType";
@@ -15,4 +15,17 @@ export const coursesState = atom<Course[]>({
   key: 'coursesState',
   default: [],
 }); 
+
+
+
+
+// petit test d'un selecteur pour filtrage des Courses avec seulement BSC
+export const coursesBscSelector = selector({
+  key: 'coursesBscSelector',
+  get: ({get}) => {
+    const courses = get(coursesState); 
+
+    return courses.filter((item) => item.mission === "BSC HDF"); 
+  }
+})
 

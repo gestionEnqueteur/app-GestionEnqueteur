@@ -1,4 +1,6 @@
 export default interface Retard {
-  departReel: Date;
-  arriveReel: Date;
+  departReel?: string;
+  arriveReel?: string;
+  retardDepart?: number;
+  retardArrive?: number;
 }
