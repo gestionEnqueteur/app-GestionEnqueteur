@@ -19,7 +19,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
   // raccoursie 
   const {retards, infoTrain} = course.mesure; 
 
-  console.log(retards?.retardDepart);
+  console.log("re-render pas saisiBSC"); 
 
   return (
     <View style={style.container}>
@@ -37,7 +37,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
             />
             <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
           </View>
-          <MenuBurger />
+          <MenuBurger course={course}/>
         </View>
       </Surface>
       <ScrollView style={style.mainContent}>

@@ -23,6 +23,7 @@ export default function courseReducer(state: Course[], action: ActionCourse) {
       newState = state.map((item) =>
         item.id === action.course.id ? action.course : item
       );
+      console.log("action update"); 
       return newState;
 
     case "load": 

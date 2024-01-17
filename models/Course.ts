@@ -10,7 +10,6 @@ export default interface Course {
   infoHoraireCourse?: InfoHoraireCourse;
   status?: StatusEnum;
   ligne?: string;
-  mesure?: {};
   service?: string;
   trainCourse?: string;
   objectif?: number;

@@ -11,6 +11,7 @@ import Course from "../models/Course";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../pages/navigations/StackNavigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import CourseBsc from "../models/bsc/CourseBsc";
 
 type Props = {
   course: Course;
@@ -22,7 +23,7 @@ export default function DetailCourse(props: Readonly<Props>) {
   // utilisation du hook use navigation 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(); 
 
-  console.log(`création composant : ${course.id}`)
+  //console.log(`création composant : ${course.id}`)
 
   const handleGoToAction = () => {
     // appuie sur le composant
@@ -55,7 +56,7 @@ export default function DetailCourse(props: Readonly<Props>) {
               <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
             )}
           </View>
-          <View>{course.mission === "BSC HDF" && <MenuBurger />}</View>
+          <View>{course.mission === "BSC HDF" && <MenuBurger course={course as CourseBsc}/>}</View>
         </View>
         <View style={style.infoLine}>
           <TypeCourse mission={course.mission} />

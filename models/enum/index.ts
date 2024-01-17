@@ -11,7 +11,7 @@ export enum StatusEnum {
 }
 
 export enum CompositionEnum {
-  US,
-  UM2,
-  UM3,
+  US = "US",
+  UM2 = "UM2",
+  UM3 = "UM3",
 }

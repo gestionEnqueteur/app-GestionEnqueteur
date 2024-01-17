@@ -20,7 +20,7 @@ export default class CourseService {
         composition: CompositionEnum.US,
         numMaterial: "",
       },
-      commentaireNoSuccess: "",
+      commentaireNoSuccess: "toto",
     };
   }
 

@@ -27,7 +27,7 @@ export default function useCheckAndAddStructureBscFunction() {
         
         infoTrain: {
           composition: CompositionEnum.US,
-          numMaterial: "TGV Webman",
+          numMaterial: "16420",
         },
         questionnaires: {
           distribuees: 0,
