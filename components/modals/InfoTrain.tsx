@@ -1,18 +1,30 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, TextInput, Text, SegmentedButtons } from "react-native-paper";
+import { produce } from "immer";
 import styles from "./modalStyle";
 import CourseBsc from "../../models/bsc/CourseBsc";
-import { CompositionEnum } from "../../models/enum";
+
 import { useDipatchCourses } from "../../hook/useDispatchCourses";
 
-export default function InfoTrain({ course }: Readonly<{ course: CourseBsc }>) {
-  const [composition, setComposition] = useState("US");
+type Props = {
+  course: CourseBsc;
+  setVisibleModal: Function;
+};
+
+export default function InfoTrain({
+  course,
+  setVisibleModal,
+}: Readonly<Props>) {
+  
+  const [composition, setComposition] = useState<string>(
+    course.mesure.infoTrain.composition
+  );
   const [numMaterial, setNumMaterial] = useState<string>(
     course.mesure.infoTrain.numMaterial
   );
 
-  const dispach = useDipatchCourses();
+  const dispatch = useDipatchCourses();
 
   const onSubmit = () => {
     // test :
@@ -20,18 +32,16 @@ export default function InfoTrain({ course }: Readonly<{ course: CourseBsc }>) {
     console.log(numMaterial);
 
     // mise a jour du state
-    let copyCourse: CourseBsc = course;
-    //copyCourse.infoHoraireCourse.gareDepartEnq = "Marseille"; 
-    Object.assign(copyCourse,{numMaterial: "test"});
+    const nextCourse: CourseBsc = produce(course, (draft) => {
+      draft.mesure.infoTrain.composition = composition as "US" | "UM2" | "UM3";
+      draft.mesure.infoTrain.numMaterial = numMaterial;
+    });
 
-     
+    console.log(nextCourse);
 
-    console.log(JSON.stringify(course.infoHoraireCourse));
-    console.log("ensuite la copie");
-    console.log(JSON.stringify(copyCourse.infoHoraireCourse));
+    dispatch({ type: "update", course: nextCourse });
 
-    // dispach la mise a jour
-    dispach({ type: "update", course: copyCourse });
+    setVisibleModal(false);
   };
 
   return (
@@ -40,18 +50,18 @@ export default function InfoTrain({ course }: Readonly<{ course: CourseBsc }>) {
       <Text variant="titleSmall">Composition : </Text>
       <SegmentedButtons
         value={composition}
-        onValueChange={setComposition}
+        onValueChange={(value) => setComposition(value)}
         buttons={[
           {
-            value: CompositionEnum.US,
+            value: "US",
             label: "US",
           },
           {
-            value: CompositionEnum.UM2,
+            value: "UM2",
             label: "UM2",
           },
           {
-            value: CompositionEnum.UM3,
+            value: "UM3",
             label: "UM3",
           },
         ]}

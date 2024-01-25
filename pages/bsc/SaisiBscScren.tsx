@@ -1,5 +1,5 @@
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Button, Surface, Text, TextInput } from "react-native-paper";
+import { Avatar, Button, Surface, Text, TextInput } from "react-native-paper";
 
 import CardNumeroLine from "../../components/CardNumeroLine";
 import ChronoTopDepart from "../../components/ChronoTopDepart";
@@ -8,7 +8,6 @@ import MenuBurger from "../../components/MenuBurger";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigations/StackNavigation";
 import { useCourseById } from "../../hook/useCourseById";
-import AvatarComposition from "../../components/bsc/AvatarComposition";
 import CourseBsc from "../../models/bsc/CourseBsc";
 
 type Props = NativeStackScreenProps<RootStackParamList, "SaisiBsc">;
@@ -16,10 +15,10 @@ type Props = NativeStackScreenProps<RootStackParamList, "SaisiBsc">;
 export default function SaisiBscScreen({ route }: Readonly<Props>) {
   const course = useCourseById(route.params.courseId) as CourseBsc;
 
-  // raccoursie 
-  const {retards, infoTrain} = course.mesure; 
+  // raccoursie
+  const { retards, infoTrain } = course.mesure;
 
-  console.log("re-render pas saisiBSC"); 
+  console.log("re-render pas saisiBSC");
 
   return (
     <View style={style.container}>
@@ -37,29 +36,31 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
             />
             <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
           </View>
-          <MenuBurger course={course}/>
+          <MenuBurger course={course} />
         </View>
       </Surface>
       <ScrollView style={style.mainContent}>
         <View style={style.splitScreenVertical}>
           <View style={style.infoTrain}>
             <Text variant="labelMedium">Composition : </Text>
-            <AvatarComposition
-              composition={course.mesure.infoTrain.composition}
-            />
+            <Avatar.Text label={infoTrain.composition} size={48}  />
             <Text variant="labelMedium">Numéro de matériel :</Text>
             <Text style={style.offsetRight} variant="bodyLarge">
-              {infoTrain.numMaterial ? infoTrain.numMaterial  : "non renseigné"}
+              {infoTrain.numMaterial ? infoTrain.numMaterial : "non renseigné"}
             </Text>
           </View>
           <View style={style.retardTrain}>
             <Text variant="labelMedium">Retard au départ :</Text>
             <Text style={style.offsetRight} variant="bodyLarge">
-              {retards?.retardDepart ? `${retards.retardDepart} min` : "non renseigné"}
+              {retards?.retardDepart
+                ? `${retards.retardDepart} min`
+                : "non renseigné"}
             </Text>
             <Text variant="labelMedium">Retard à l'arrivé :</Text>
             <Text style={style.offsetRight} variant="bodyLarge">
-              {retards?.retardArrive ? `${retards.retardArrive} min` : "non renseigné"}
+              {retards?.retardArrive
+                ? `${retards.retardArrive} min`
+                : "non renseigné"}
             </Text>
           </View>
         </View>

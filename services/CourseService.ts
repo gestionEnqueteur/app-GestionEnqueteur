@@ -1,5 +1,5 @@
 import Course from "../models/Course";
-import { CompositionEnum } from "../models/enum";
+import MesureBSC from "../models/bsc/MesureBsc";
 import StorageService from "./StorageServices";
 
 export default class CourseService {
@@ -10,18 +10,20 @@ export default class CourseService {
   }
 
   addStructureBsc(course: Course) {
-    course.mesure = {
+    const mesure: MesureBSC = {
       infoEnqueteur: {},
-      retard: {
-        retardDepart: null,
-        retardArrive: null
+      retards: {
+        retardDepart: undefined,
+        retardArrive: undefined
       }, 
       infoTrain: {
-        composition: CompositionEnum.US,
+        composition: "US",
         numMaterial: "",
       },
-      commentaireNoSuccess: "toto",
+      commentaireNoSuccess: "",
     };
+
+    course.mesure = mesure; 
   }
 
   addStructure(course: Course) {

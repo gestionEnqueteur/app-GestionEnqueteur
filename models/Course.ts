@@ -8,10 +8,11 @@ export default interface Course {
   vac: string;
   affectation?: string;
   infoHoraireCourse?: InfoHoraireCourse;
-  status?: StatusEnum;
+  status: StatusEnum;
   ligne?: string;
   service?: string;
   trainCourse?: string;
   objectif?: number;
   commentaire?: string;
+  mesure?: {};
 }
