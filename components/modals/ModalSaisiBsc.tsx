@@ -21,7 +21,7 @@ export default function ModalSaisiBsc(props: Readonly<props>) {
   return (
     <Portal>
       <Modal visible={visible} onDismiss={() => props.setVisible(false)}>
-        {select === "supression" && <SupressionTrain />}
+        {select === "suppression" && <SupressionTrain />}
         {select === "retard" && <RetardTrain course={props.course} />}
         {select === "info" && <InfoTrain  course={props.course} setVisibleModal={props.setVisible} />}
         {select === "descent" && <GareDeDescente />}

@@ -15,37 +15,12 @@ export default function MenuBurger({
   const closeMenu = () => setVisible(false);
 
   //function button
-  function openModalSuppressionTrain() {
-    closeMenu();
-    setModalSeleted("supression");
-    setModalVisible(true);
-  }
-
-  function openModalInfoTrain() {
-    closeMenu();
-    setModalSeleted("info");
-    setModalVisible(true);
-  }
-
-  function openModalRetardTrain() {
-    closeMenu();
-    setModalSeleted("retard");
-    setModalVisible(true);
-  }
-
-  function openModalGareDescente() {
-    closeMenu();
-    setModalSeleted("descent");
-    setModalVisible(true);
-  }
 
   const openModal = (modal: string) => {
-    closeMenu(); 
-    setModalSeleted(modal); 
-    setModalVisible(true); 
-  }
-
-  //TODO: fonction a refactoriser, ils font la même choses. ne respecte pas le principe DRY
+    closeMenu();
+    setModalSeleted(modal);
+    setModalVisible(true);
+  };
 
   const buttom = (
     <IconButton
@@ -54,8 +29,6 @@ export default function MenuBurger({
       onPress={openMenu}
     />
   );
-
-  
 
   return (
     <View>
@@ -68,7 +41,7 @@ export default function MenuBurger({
       <Menu visible={visible} anchor={buttom} onDismiss={closeMenu}>
         <Menu.Item
           leadingIcon="delete"
-          onPress={() => openModal("suppresion")}
+          onPress={() => openModal("suppression")}
           title="Train supprimer"
         />
         <Menu.Item
@@ -83,7 +56,7 @@ export default function MenuBurger({
         />
         <Menu.Item
           leadingIcon="clock"
-          onPress={openModalRetardTrain}
+          onPress={() => openModal("retard")}
           title="Retard"
         />
       </Menu>
