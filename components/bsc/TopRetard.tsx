@@ -6,11 +6,11 @@ type Props = {
   labelInput: string;
   labelButton: string;
   time: Date;
-  onChangeValue: Function;
+  onChangeValue: (value: number) => void;
 };
 
 export default function TopRetard(props: Readonly<Props>) {
-  const [valueInput, setValueInput] = useState(0);
+  const [valueInput, setValueInput] = useState(0); // remonter le state dans RetardTrain
 
   const handleButton = () => {
     const currentTime = new Date();

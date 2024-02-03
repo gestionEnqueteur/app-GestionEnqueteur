@@ -9,9 +9,3 @@ export enum StatusEnum {
   CANCELED,
   TERMINED,
 }
-
-export enum CompositionEnum {
-  US,
-  UM2,
-  UM3,
-}

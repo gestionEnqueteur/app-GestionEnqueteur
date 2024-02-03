@@ -5,57 +5,62 @@ import CardNumeroLine from "../../components/CardNumeroLine";
 import ChronoTopDepart from "../../components/ChronoTopDepart";
 import DetailTrajet from "../../components/DetailTrajet";
 import MenuBurger from "../../components/MenuBurger";
-import InfoHoraireCourse from "../../models/InfoHoraireCourse";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigations/StackNavigation";
+import { useCourseById } from "../../hook/useCourseById";
+import CourseBsc from "../../models/bsc/CourseBsc";
 
-// TODO: code a modifié.
-const infoHoraireCourse: InfoHoraireCourse = {
-  datetimeArriveEnq: new Date(),
-  datetimeDepartEnq: new Date(),
-  gareDepartEnq: "Lille Flandres",
-  gareArriveEnq: "Paris",
-};
+type Props = NativeStackScreenProps<RootStackParamList, "SaisiBsc">;
 
-// test composant
+export default function SaisiBscScreen({ route }: Readonly<Props>) {
+  const course = useCourseById(route.params.courseId) as CourseBsc;
 
-export default function SaisiBscScreen() {
+  // raccoursie
+  const { retards, infoTrain } = course.mesure;
+
+  console.log("re-render pas saisiBSC");
+
   return (
     <View style={style.container}>
       <Surface style={style.header} mode="elevated" elevation={4}>
         <View style={style.circulation}>
-          <CardNumeroLine lineNumber="K12" />
+          <CardNumeroLine lineNumber={course.ligne} />
 
-          <Text variant="displaySmall">814206</Text>
+          <Text variant="displaySmall">{course.trainCourse}</Text>
         </View>
         <View style={style.infoCourse}>
           <View style={style.detailTime}>
             <ChronoTopDepart
-              currentDatetime={new Date()}
-              datetimeArrival={infoHoraireCourse.datetimeArriveEnq}
-              datetimeDepart={infoHoraireCourse.datetimeDepartEnq}
+              depart={course.infoHoraireCourse.datetimeArriveEnq}
+              arrival={course.infoHoraireCourse.datetimeDepartEnq}
             />
-            <DetailTrajet infoHoraireCourse={infoHoraireCourse} />
+            <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
           </View>
-          <MenuBurger />
+          <MenuBurger course={course} />
         </View>
       </Surface>
       <ScrollView style={style.mainContent}>
         <View style={style.splitScreenVertical}>
           <View style={style.infoTrain}>
             <Text variant="labelMedium">Composition : </Text>
-            <Avatar.Text label="US" size={40} />
+            <Avatar.Text label={infoTrain.composition} size={48}  />
             <Text variant="labelMedium">Numéro de matériel :</Text>
             <Text style={style.offsetRight} variant="bodyLarge">
-              21 82 889
+              {infoTrain.numMaterial ? infoTrain.numMaterial : "non renseigné"}
             </Text>
           </View>
           <View style={style.retardTrain}>
             <Text variant="labelMedium">Retard au départ :</Text>
             <Text style={style.offsetRight} variant="bodyLarge">
-              10 min
+              {retards?.retardDepart
+                ? `${retards.retardDepart} min`
+                : "non renseigné"}
             </Text>
             <Text variant="labelMedium">Retard à l'arrivé :</Text>
             <Text style={style.offsetRight} variant="bodyLarge">
-              15 min
+              {retards?.retardArrive
+                ? `${retards.retardArrive} min`
+                : "non renseigné"}
             </Text>
           </View>
         </View>

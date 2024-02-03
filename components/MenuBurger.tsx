@@ -2,8 +2,11 @@ import { useState } from "react";
 import { Menu, IconButton } from "react-native-paper";
 import { View } from "react-native";
 import ModalSaisiBsc from "./modals/ModalSaisiBsc";
+import CourseBsc from "../models/bsc/CourseBsc";
 
-export default function MenuBurger() {
+export default function MenuBurger({
+  course,
+}: Readonly<{ course: CourseBsc }>) {
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalSeleted, setModalSeleted] = useState("info");
@@ -12,29 +15,12 @@ export default function MenuBurger() {
   const closeMenu = () => setVisible(false);
 
   //function button
-  function openModalSuppressionTrain() {
-    closeMenu();
-    setModalSeleted("supression");
-    setModalVisible(true);
-  }
 
-  function openModalInfoTrain() {
+  const openModal = (modal: string) => {
     closeMenu();
-    setModalSeleted("info");
+    setModalSeleted(modal);
     setModalVisible(true);
-  }
-
-  function openModalRetardTrain() {
-    closeMenu();
-    setModalSeleted("retard");
-    setModalVisible(true);
-  }
-
-  function openModalGareDescente() {
-    closeMenu();
-    setModalSeleted("descent");
-    setModalVisible(true);
-  }
+  };
 
   const buttom = (
     <IconButton
@@ -46,26 +32,31 @@ export default function MenuBurger() {
 
   return (
     <View>
-      <ModalSaisiBsc visible={modalVisible} select={modalSeleted} setVisible={setModalVisible} />
+      <ModalSaisiBsc
+        visible={modalVisible}
+        select={modalSeleted}
+        setVisible={setModalVisible}
+        course={course}
+      />
       <Menu visible={visible} anchor={buttom} onDismiss={closeMenu}>
         <Menu.Item
           leadingIcon="delete"
-          onPress={openModalSuppressionTrain}
+          onPress={() => openModal("suppression")}
           title="Train supprimer"
         />
         <Menu.Item
           leadingIcon="train-car-passenger-variant"
-          onPress={openModalInfoTrain}
+          onPress={() => openModal("info")}
           title="Info train"
         />
         <Menu.Item
           leadingIcon="transit-transfer"
-          onPress={openModalGareDescente}
+          onPress={() => openModal("descent")}
           title="gare de descente"
         />
         <Menu.Item
           leadingIcon="clock"
-          onPress={openModalRetardTrain}
+          onPress={() => openModal("retard")}
           title="Retard"
         />
       </Menu>
