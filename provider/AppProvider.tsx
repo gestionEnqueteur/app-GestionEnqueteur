@@ -28,12 +28,12 @@ export default function AppProvider(props: Readonly<Props>) {
   const dispatchCourses = useDipatchCourses();
 
   useEffect(() => {
-    // chargement des courses ( dans un reducer React )
+    // chargement des courses 
     storageService.loadData("courses").then((courses) => {
       if (courses) dispatchCourses({ type: "load", courses: courses });
     });
 
-    // chargement de la configuration ( dans un state Recoil )
+    // chargement de la configuration
     storageService.loadData("configuration").then((configLoaded) => {
       if (configLoaded) setConfiguration(configLoaded);
     });
