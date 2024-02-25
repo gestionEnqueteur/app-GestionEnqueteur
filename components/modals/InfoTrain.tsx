@@ -9,7 +9,7 @@ import { useDipatchCourses } from "../../hook/useDispatchCourses";
 
 type Props = {
   course: CourseBsc;
-  setVisibleModal: Function;
+  setVisibleModal: (value: boolean) => void;
 };
 
 export default function InfoTrain({
