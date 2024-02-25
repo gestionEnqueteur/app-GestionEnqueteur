@@ -11,7 +11,7 @@ import CourseBsc from "../../models/bsc/CourseBsc";
 type props = {
   visible: boolean;
   select: string;
-  setVisible: Function;
+  setVisible: (value: boolean) => void;
   course: CourseBsc; 
 };
 
@@ -22,7 +22,7 @@ export default function ModalSaisiBsc(props: Readonly<props>) {
     <Portal>
       <Modal visible={visible} onDismiss={() => props.setVisible(false)}>
         {select === "suppression" && <SupressionTrain />}
-        {select === "retard" && <RetardTrain course={props.course} />}
+        {select === "retard" && <RetardTrain course={props.course} setVisibleModal={props.setVisible} />}
         {select === "info" && <InfoTrain  course={props.course} setVisibleModal={props.setVisible} />}
         {select === "descent" && <GareDeDescente />}
       </Modal>
