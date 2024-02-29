@@ -9,16 +9,81 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigations/StackNavigation";
 import { useCourseById } from "../../hook/useCourseById";
 import CourseBsc from "../../models/bsc/CourseBsc";
+import { useState } from "react";
+import Questionnaires from "../../models/bsc/Questionnaire";
+import { produce } from "immer";
+import { useDipatchCourses } from "../../hook/useDispatchCourses";
 
 type Props = NativeStackScreenProps<RootStackParamList, "SaisiBsc">;
 
 export default function SaisiBscScreen({ route }: Readonly<Props>) {
   const course = useCourseById(route.params.courseId) as CourseBsc;
+  const dispatch = useDipatchCourses();
 
   // raccoursie
   const { retards, infoTrain } = course.mesure;
 
+  // state form questionnaire
+  const [questionnaire, setQuestionnaire] = useState<Questionnaires>({
+    vides: 0,
+    inexploitables: 0,
+    distribuees: 0,
+  });
+
+  // state error questionnaire
+  const [errorDistribuee, setErrorDistribuee] = useState(false);
+  const [errorVide, setErrorVide] = useState(false);
+  const [errorInexploitable, setErrorInexploitable] = useState(false);
+
   console.log("re-render pas saisiBSC");
+
+  // handleOnChangeQuestionnaire
+  const handleOnChangeVide = (newValue: string) => {
+    const vide = +newValue;
+    Number.isNaN(vide) ? setErrorVide(true) : setErrorVide(false);
+    setQuestionnaire({ ...questionnaire, vides: vide });
+  };
+  const handleOnChnageInexploitable = (newValue: string) => {
+    const inexploitables = +newValue;
+    Number.isNaN(inexploitables)
+      ? setErrorInexploitable(true)
+      : setErrorInexploitable(false);
+    setQuestionnaire({ ...questionnaire, inexploitables: inexploitables });
+  };
+
+  const handleOnChnageDistribuee = (newValue: string) => {
+    const distribuee = +newValue;
+    // check error
+    Number.isNaN(distribuee)
+      ? setErrorDistribuee(true)
+      : setErrorDistribuee(false);
+    // update state du formulaire
+    setQuestionnaire({ ...questionnaire, distribuees: distribuee });
+  };
+
+  const handleOnSaveSaisiBsc = () => {
+    // vérification des error
+    if (errorDistribuee || errorInexploitable || errorVide) {
+      console.log("erreur du formulaire saisi BSC");
+      //TODO: mettre en place la notification SnackBar pour erreur de saisi
+      return;
+    }
+
+    console.log(`questionnaire: ${JSON.stringify(questionnaire)}`);
+
+    const newCourse = produce(course, (draft) => {
+      draft.mesure.questionnaires = questionnaire;
+    });
+    dispatch({ type: "update", course: newCourse });
+
+    //TODO: mettre en place la notification avec la SnackBar pour la bonne sauvegarde.
+  };
+
+  const handleOnSubmitSaisiBsc = () => {
+    handleOnSaveSaisiBsc();
+
+    //TODO: faire la logique de la sousmission
+  };
 
   return (
     <View style={style.container}>
@@ -43,7 +108,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
         <View style={style.splitScreenVertical}>
           <View style={style.infoTrain}>
             <Text variant="labelMedium">Composition : </Text>
-            <Avatar.Text label={infoTrain.composition} size={48}  />
+            <Avatar.Text label={infoTrain.composition} size={48} />
             <Text variant="labelMedium">Numéro de matériel :</Text>
             <Text style={style.offsetRight} variant="bodyLarge">
               {infoTrain.numMaterial ? infoTrain.numMaterial : "non renseigné"}
@@ -52,34 +117,43 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
           <View style={style.retardTrain}>
             <Text variant="labelMedium">Retard au départ :</Text>
             <Text style={style.offsetRight} variant="bodyLarge">
-              {retards?.retardDepart
-                ? `${retards.retardDepart} min`
-                : "non renseigné"}
+              {retards.retardDepart === undefined
+                ? `0 min`
+                : `${retards.retardDepart} min`}
             </Text>
             <Text variant="labelMedium">Retard à l'arrivé :</Text>
             <Text style={style.offsetRight} variant="bodyLarge">
-              {retards?.retardArrive
-                ? `${retards.retardArrive} min`
-                : "non renseigné"}
+              {retards.retardArrive === undefined
+                ? `0 min`
+                : `${retards.retardArrive} min`}
             </Text>
           </View>
         </View>
         <View style={style.quotasBsc}>
-          <TextInput mode="outlined" label="Questionnaire distribué : " />
-          <TextInput mode="outlined" label="Questionnaire récupéré vide :" />
-          <TextInput mode="outlined" label="Questionnaire Inexploitable : " />
+          <TextInput
+            mode="outlined"
+            label="Questionnaire distribué : "
+            onChangeText={handleOnChnageDistribuee}
+            error={errorDistribuee}
+          />
+          <TextInput
+            mode="outlined"
+            label="Questionnaire récupéré vide :"
+            onChangeText={handleOnChangeVide}
+            error={errorVide}
+          />
+          <TextInput
+            mode="outlined"
+            label="Questionnaire Inexploitable : "
+            onChangeText={handleOnChnageInexploitable}
+            error={errorInexploitable}
+          />
         </View>
         <View style={style.areaButton}>
-          <Button
-            mode="contained"
-            onPress={() => console.log("Enregistrement du formulaire Saisi")}
-          >
+          <Button mode="contained" onPress={handleOnSaveSaisiBsc}>
             Enregister
           </Button>
-          <Button
-            mode="contained"
-            onPress={() => console.log("Sousmission du formulaire Saisi")}
-          >
+          <Button mode="contained" onPress={handleOnSubmitSaisiBsc}>
             Soumettre
           </Button>
         </View>
