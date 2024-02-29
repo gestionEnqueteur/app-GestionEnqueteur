@@ -24,11 +24,13 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
   const { retards, infoTrain } = course.mesure;
 
   // state form questionnaire
-  const [questionnaire, setQuestionnaire] = useState<Questionnaires>({
-    vides: 0,
-    inexploitables: 0,
-    distribuees: 0,
-  });
+  const [questionnaire, setQuestionnaire] = useState<Questionnaires>(
+    course.mesure.questionnaires ?? {
+      vides: 0,
+      inexploitables: 0,
+      distribuees: 0,
+    }
+  );
 
   // state error questionnaire
   const [errorDistribuee, setErrorDistribuee] = useState(false);
@@ -135,18 +137,21 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
             label="Questionnaire distribué : "
             onChangeText={handleOnChnageDistribuee}
             error={errorDistribuee}
+            defaultValue={course.mesure.questionnaires?.distribuees.toString()}
           />
           <TextInput
             mode="outlined"
             label="Questionnaire récupéré vide :"
             onChangeText={handleOnChangeVide}
             error={errorVide}
+            defaultValue={course.mesure.questionnaires?.vides.toString()}
           />
           <TextInput
             mode="outlined"
             label="Questionnaire Inexploitable : "
             onChangeText={handleOnChnageInexploitable}
             error={errorInexploitable}
+            defaultValue={course.mesure.questionnaires?.inexploitables.toString()}
           />
         </View>
         <View style={style.areaButton}>
