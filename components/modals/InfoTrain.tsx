@@ -5,7 +5,7 @@ import { produce } from "immer";
 import styles from "./modalStyle";
 import CourseBsc from "../../models/bsc/CourseBsc";
 
-import { useDipatchCourses } from "../../hook/useDispatchCourses";
+import { useDispatchCourses } from "../../hook/useDispatchCourses";
 
 type Props = {
   course: CourseBsc;
@@ -16,7 +16,6 @@ export default function InfoTrain({
   course,
   setVisibleModal,
 }: Readonly<Props>) {
-  
   const [composition, setComposition] = useState<string>(
     course.mesure.infoTrain.composition
   );
@@ -24,7 +23,7 @@ export default function InfoTrain({
     course.mesure.infoTrain.numMaterial
   );
 
-  const dispatch = useDipatchCourses();
+  const dispatch = useDispatchCourses();
 
   const onSubmit = () => {
     // test :

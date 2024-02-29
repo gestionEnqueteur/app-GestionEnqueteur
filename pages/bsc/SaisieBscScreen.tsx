@@ -12,13 +12,13 @@ import CourseBsc from "../../models/bsc/CourseBsc";
 import { useState } from "react";
 import Questionnaires from "../../models/bsc/Questionnaire";
 import { produce } from "immer";
-import { useDipatchCourses } from "../../hook/useDispatchCourses";
+import { useDispatchCourses } from "../../hook/useDispatchCourses";
 
-type Props = NativeStackScreenProps<RootStackParamList, "SaisiBsc">;
+type Props = NativeStackScreenProps<RootStackParamList, "SaisieBsc">;
 
 export default function SaisiBscScreen({ route }: Readonly<Props>) {
   const course = useCourseById(route.params.courseId) as CourseBsc;
-  const dispatch = useDipatchCourses();
+  const dispatch = useDispatchCourses();
 
   // raccoursie
   const { retards, infoTrain } = course.mesure;
@@ -37,7 +37,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
   const [errorVide, setErrorVide] = useState(false);
   const [errorInexploitable, setErrorInexploitable] = useState(false);
 
-  console.log("re-render pas saisiBSC");
+  console.log("re-render page saisieBSC");
 
   // handleOnChangeQuestionnaire
   const handleOnChangeVide = (newValue: string) => {

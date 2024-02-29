@@ -5,7 +5,7 @@ import styles from "./modalStyle";
 
 import TopRetard from "../bsc/TopRetard";
 import CourseBsc from "../../models/bsc/CourseBsc";
-import { useDipatchCourses } from "../../hook/useDispatchCourses";
+import { useDispatchCourses } from "../../hook/useDispatchCourses";
 import { produce } from "immer";
 
 type Props = {
@@ -17,11 +17,15 @@ export default function RetardTrain({
   course,
   setVisibleModal,
 }: Readonly<Props>) {
-  const dispatch = useDipatchCourses();
+  const dispatch = useDispatchCourses();
 
   // state form
-  const [retardDepart, setRetardDepart] = useState(course.mesure.retards.retardDepart ?? 0);
-  const [retardArrive, setRetardArrive] = useState(course.mesure.retards.retardArrive ?? 0);
+  const [retardDepart, setRetardDepart] = useState(
+    course.mesure.retards.retardDepart ?? 0
+  );
+  const [retardArrive, setRetardArrive] = useState(
+    course.mesure.retards.retardArrive ?? 0
+  );
 
   const handleOnValidate = () => {
     console.log("validation");
