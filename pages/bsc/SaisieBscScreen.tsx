@@ -138,6 +138,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
             onChangeText={handleOnChnageDistribuee}
             error={errorDistribuee}
             defaultValue={course.mesure.questionnaires?.distribuees.toString()}
+            keyboardType="number-pad"
           />
           <TextInput
             mode="outlined"
@@ -145,6 +146,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
             onChangeText={handleOnChangeVide}
             error={errorVide}
             defaultValue={course.mesure.questionnaires?.vides.toString()}
+            keyboardType="number-pad"
           />
           <TextInput
             mode="outlined"
@@ -152,6 +154,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
             onChangeText={handleOnChnageInexploitable}
             error={errorInexploitable}
             defaultValue={course.mesure.questionnaires?.inexploitables.toString()}
+            keyboardType="number-pad"
           />
         </View>
         <View style={style.areaButton}>
