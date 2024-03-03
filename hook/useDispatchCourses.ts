@@ -3,7 +3,7 @@ import { ActionCourse } from "../reducer/courseReducer";
 import { coursesState } from "../store/storeAtom";
 import { courseReducerWithSave } from "../reducer/courseReducerWithSave";
 
-export function useDipatchCourses(): (action: ActionCourse) => void {
+export function useDispatchCourses(): (action: ActionCourse) => void {
   // récupération du state Recoil
   const [courses, setCourses] = useRecoilState(coursesState);
 

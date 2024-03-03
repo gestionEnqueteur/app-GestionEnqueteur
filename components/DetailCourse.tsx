@@ -20,8 +20,9 @@ type Props = {
 export default function DetailCourse(props: Readonly<Props>) {
   const { course } = props;
 
-  // utilisation du hook use navigation 
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>(); 
+  // utilisation du hook use navigation
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   //console.log(`création composant : ${course.id}`)
 
@@ -30,8 +31,8 @@ export default function DetailCourse(props: Readonly<Props>) {
     switch (course.mission) {
       case "BSC HDF":
         console.log("Basculement vers la page de saisie");
-        navigation.navigate("SaisiBsc", {courseId: course.id} ); 
-        
+        navigation.navigate("SaisieBsc", { courseId: course.id });
+
         break;
       case "HLP VS":
         console.log("afficher le link waze ou cordonner GPS");
@@ -56,7 +57,11 @@ export default function DetailCourse(props: Readonly<Props>) {
               <DetailTrajet infoHoraireCourse={course.infoHoraireCourse} />
             )}
           </View>
-          <View>{course.mission === "BSC HDF" && <MenuBurger course={course as CourseBsc}/>}</View>
+          <View>
+            {course.mission === "BSC HDF" && (
+              <MenuBurger course={course as CourseBsc} />
+            )}
+          </View>
         </View>
         <View style={style.infoLine}>
           <TypeCourse mission={course.mission} />

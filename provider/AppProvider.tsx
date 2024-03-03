@@ -4,7 +4,7 @@ import StorageService from "../services/StorageServices";
 import CourseService from "../services/CourseService";
 import { useSetRecoilState } from "recoil";
 import { configurationState } from "../store/storeAtom";
-import { useDipatchCourses } from "../hook/useDispatchCourses";
+import { useDispatchCourses } from "../hook/useDispatchCourses";
 
 type Props = {
   children: ReactNode;
@@ -25,7 +25,7 @@ export default function AppProvider(props: Readonly<Props>) {
 
   // déclaration des states et dispatch
   const setConfiguration = useSetRecoilState(configurationState);
-  const dispatchCourses = useDipatchCourses();
+  const dispatchCourses = useDispatchCourses();
 
   useEffect(() => {
     // chargement des courses 
