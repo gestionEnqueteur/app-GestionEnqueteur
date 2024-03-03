@@ -28,6 +28,10 @@ export default function ParamScreen() {
     icon: "",
   });
 
+  const [urlError, setUrlError] = useState(false);
+
+  const [userError, setUserError] = useState(false);
+
   useEffect(() => {
     // Init de la page
 
@@ -36,18 +40,48 @@ export default function ParamScreen() {
   }, []);
 
   const handleOnChangeURL = (newValue: string) => {
+
     setValueForm({ ...valueForm, urlApi: newValue });
-    //TODO: rajouter vérification sur URL
+
+    const urlRegex = /^(https?:\/\/)?[a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/]*)$/;
+    // Vérifier si l'URL est valide selon la regex
+    const matches = urlRegex.test(newValue);
+    // Si une correspondance est trouvée, mettre à jour le valeur de urlApi
+    if (matches) {
+      setValueForm({ ...valueForm, urlApi: newValue });
+      setUrlError(false);
+    } else {
+      // Sinon, afficher un message d'erreur
+      console.log("L'URL n'est pas valide");
+      setUrlError(true);
+    }
   };
 
   const handleOnChangeUser = (newValue: string) => {
+    
     setValueForm({ ...valueForm, user: newValue });
-    //TODO: rajouter vérification sur user
+
+    const urlRegex = /^(?:[A-Z]{3}|[A-Z][a-z]+(?: [A-Z][a-z]+)*)$/;
+    // Vérifier si l'URL est valide selon la regex
+    const matches = urlRegex.test(newValue);
+    // Si une correspondance est trouvée, mettre à jour le valeur de urlApi
+    if (matches) {
+      setValueForm({ ...valueForm, user: newValue.toLowerCase()});
+      setUserError(false);
+    } else {
+      // Sinon, afficher un message d'erreur
+      console.log("L'URL n'est pas valide");
+      setUserError(true);
+    }
   };
 
   const handleOnClickSubmit = () => {
     // stockage dans le AsyncStorage
-    //TODO: appliquer une vérification de la cohérence, via des regex par exemple
+   
+    if (userError || urlError) {
+      displaySnackBar('Erreur de saisie dans le formulaire !', "alert-circle");
+      return 
+    }
     storageService.saveData(
       valueForm,
       "configuration",
@@ -55,6 +89,7 @@ export default function ParamScreen() {
       failureSave
     );
     setConfig(valueForm);
+
   };
 
   const succesSave = () => {
@@ -69,6 +104,7 @@ export default function ParamScreen() {
 
   const displaySnackBar = (label: string, icon: string) => {
     setSnackBar({ label: label, icon: icon, visible: true });
+
   };
 
   return (
@@ -81,7 +117,9 @@ export default function ParamScreen() {
             label="Endpoint API"
             placeholder="URL API"
             onChangeText={handleOnChangeURL}
-            value={valueForm.urlApi}
+            value={valueForm.urlApi.toLowerCase()}
+            error={urlError}
+            autoCapitalize="none"
           />
         </View>
         <View>
@@ -93,6 +131,7 @@ export default function ParamScreen() {
            ou nom enqueteur"
             onChangeText={handleOnChangeUser}
             value={valueForm.user}
+            error={userError}
           />
         </View>
         <View style={style.buttonArea}>
