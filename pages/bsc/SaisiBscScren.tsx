@@ -14,11 +14,25 @@ type Props = NativeStackScreenProps<RootStackParamList, "SaisiBsc">;
 
 export default function SaisiBscScreen({ route }: Readonly<Props>) {
   const course = useCourseById(route.params.courseId) as CourseBsc;
+  
 
-  // raccoursie
+  // raccourci
   const { retards, infoTrain } = course.mesure;
 
   console.log("re-render pas saisiBSC");
+  
+  const handleInputChange = (text:string) => {
+    // Vérifier si la valeur est un nombre
+    if (!isNaN(Number(text)) {
+      // C'est un nombre, mettre à jour l'état
+      return text
+    }
+    // Si vous souhaitez ignorer les caractères non numériques, ne rien faire ici
+  };
+  const handleSubmit = () => {
+    // Utiliser la valeur numérique pour d'autres actions
+    
+  };
 
   return (
     <View style={style.container}>
@@ -65,14 +79,20 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
           </View>
         </View>
         <View style={style.quotasBsc}>
-          <TextInput mode="outlined" label="Questionnaire distribué : " />
-          <TextInput mode="outlined" label="Questionnaire récupéré vide :" />
-          <TextInput mode="outlined" label="Questionnaire Inexploitable : " />
+          <TextInput mode="outlined" label="Questionnaire distribué : "
+          keyboardType="number-pad"         
+          />
+          <TextInput mode="outlined" label="Questionnaire récupéré vide :"
+          keyboardType="number-pad" 
+          />
+          <TextInput mode="outlined" label="Questionnaire Inexploitable : " 
+          keyboardType="number-pad"
+          />
         </View>
         <View style={style.areaButton}>
           <Button
             mode="contained"
-            onPress={() => console.log("Enregistrement du formulaire Saisi")}
+            onPress={handleSubmit/*() => console.log("Enregistrement du formulaire Saisi")*/}
           >
             Enregister
           </Button>

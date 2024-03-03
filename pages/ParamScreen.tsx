@@ -28,9 +28,9 @@ export default function ParamScreen() {
     icon: "",
   });
 
-  const [urlerror, setUrlError] = useState(false);
+  const [urlError, setUrlError] = useState(false);
 
-  const [usererror, setUserError] = useState(false);
+  const [userError, setUserError] = useState(false);
 
   useEffect(() => {
     // Init de la page
@@ -43,7 +43,7 @@ export default function ParamScreen() {
 
     setValueForm({ ...valueForm, urlApi: newValue });
 
-    const urlRegex = /^(https?:\/\/)?[a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+\+.~#?&//=]*)$/;
+    const urlRegex = /^(https?:\/\/)?[a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/]*)$/;
     // Vérifier si l'URL est valide selon la regex
     const matches = urlRegex.test(newValue);
     // Si une correspondance est trouvée, mettre à jour le valeur de urlApi
@@ -78,7 +78,7 @@ export default function ParamScreen() {
   const handleOnClickSubmit = () => {
     // stockage dans le AsyncStorage
    
-    if (usererror || urlerror) {
+    if (userError || urlError) {
       displaySnackBar('Erreur de saisie dans le formulaire !', "alert-circle");
       return 
     }
@@ -118,7 +118,7 @@ export default function ParamScreen() {
             placeholder="URL API"
             onChangeText={handleOnChangeURL}
             value={valueForm.urlApi.toLowerCase()}
-            error={urlerror}
+            error={urlError}
             autoCapitalize="none"
           />
         </View>
@@ -131,7 +131,7 @@ export default function ParamScreen() {
            ou nom enqueteur"
             onChangeText={handleOnChangeUser}
             value={valueForm.user}
-            error={usererror}
+            error={userError}
           />
         </View>
         <View style={style.buttonArea}>

@@ -17,7 +17,7 @@ export default function InfoTrain({
   setVisibleModal,
 }: Readonly<Props>) {
   
-  const [composition, setComposition] = useState<string>(
+  const [composition, setComposition] = useState<string>( 
     course.mesure.infoTrain.composition
   );
   const [numMaterial, setNumMaterial] = useState<string>(
