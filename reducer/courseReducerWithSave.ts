@@ -16,9 +16,6 @@ export function courseReducerWithSave(
 }
 
 const middlewareAfterUpdate = (newState: Course[]) => {
-  // on instance le service
-  const storageService = new StorageService();
-
   // on sauvegarde la data
-  storageService.saveData(newState, "courses");
+  StorageService.saveData(newState, "courses");
 };

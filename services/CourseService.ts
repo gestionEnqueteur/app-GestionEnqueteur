@@ -3,19 +3,14 @@ import MesureBSC from "../models/bsc/MesureBsc";
 import StorageService from "./StorageServices";
 
 export default class CourseService {
-  private storage: StorageService;
-
-  constructor(storage: StorageService) {
-    this.storage = storage;
-  }
-
-  addStructureBsc(course: Course) {
+  
+  static addStructureBsc(course: Course) {
     const mesure: MesureBSC = {
       infoEnqueteur: {},
       retards: {
         retardDepart: undefined,
-        retardArrive: undefined
-      }, 
+        retardArrive: undefined,
+      },
       infoTrain: {
         composition: "US",
         numMaterial: "",
@@ -23,10 +18,10 @@ export default class CourseService {
       commentaireNoSuccess: "",
     };
 
-    course.mesure = mesure; 
+    course.mesure = mesure;
   }
 
-  addStructure(course: Course) {
+  static addStructure(course: Course) {
     switch (course.mission) {
       case "BSC HDF":
         this.addStructureBsc(course);
@@ -43,12 +38,30 @@ export default class CourseService {
     return course;
   }
 
-  loadCourses() {
+  static createDataTransfertObjet(course: Course) {
+    const dataTransfert = {
+      mission: course.mission,
+      status: "DRAFT",
+      ligne: course.ligne,
+      trainCourse: course.trainCourse,
+      commentaire: course.commentaire,
+      infoHoraireCourse: {
+        gareDepartEnq: course.infoHoraireCourse?.gareDepartEnq,
+        gareArriveEnq: course.infoHoraireCourse?.gareArriveEnq,
+        datetimeDepartEnq: course.infoHoraireCourse?.datetimeDepartEnq,
+        datetimeArriveEnq: course.infoHoraireCourse?.datetimeArriveEnq,
+      },
+    };
+
+    return dataTransfert; 
+  }
+
+  static loadCourses() {
     //TODO: implémenter la fonction
     // on tente un Fetch, si pas de 4G (on récupere sur la db Téléphone )
     console.log("Chargement des courses depuis Storage Service");
-    return this.storage
-      .getAllCourse()
-      .map((course) => this.addStructure(course));
+    return StorageService.getAllCourse().map((course) =>
+      CourseService.addStructure(course)
+    );
   }
 }

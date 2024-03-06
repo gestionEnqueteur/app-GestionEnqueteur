@@ -1,10 +1,10 @@
 import { View, ScrollView, StyleSheet } from "react-native";
 import { Text, TextInput, Button, Surface, Snackbar } from "react-native-paper";
-import { useEffect, useContext, useState } from "react";
-import { StorageContext } from "../provider/AppProvider";
+import { useEffect, useState } from "react";
 import ConfigurationType from "../models/ConfigurationType";
 import { useRecoilState } from "recoil";
 import { configurationState } from "../store/storeAtom";
+import StorageService from "../services/StorageServices";
 
 type SnackBar = {
   visible: boolean;
@@ -13,7 +13,6 @@ type SnackBar = {
 };
 
 export default function ParamScreen() {
-  const storageService = useContext(StorageContext);
 
   const [config, setConfig] = useRecoilState(configurationState);
 
@@ -48,7 +47,7 @@ export default function ParamScreen() {
   const handleOnClickSubmit = () => {
     // stockage dans le AsyncStorage
     //TODO: appliquer une vérification de la cohérence, via des regex par exemple
-    storageService.saveData(
+    StorageService.saveData(
       valueForm,
       "configuration",
       succesSave,

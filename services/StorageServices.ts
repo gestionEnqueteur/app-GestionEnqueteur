@@ -1,11 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TestMock from "./TestMock";
+import Course from "../models/Course";
 
 export default class StorageService {
 
-  async saveData(
+  static async saveData(
     newValue: any,
-    key: string, 
+    key: string,
     succesCallback?: Function,
     failureCallback?: Function
   ) {
@@ -20,20 +21,19 @@ export default class StorageService {
     }
   }
 
-  async loadData(key: string) {
+  static async loadData(key: string) {
     console.log("load data");
 
     try {
-      
       const jsonValue = await AsyncStorage.getItem(key);
       const value = jsonValue != null ? JSON.parse(jsonValue) : null;
       //console.log(`value data : ${value}`)
       if (value) {
-        return value; 
+        return value;
       }
     } catch (e) {
       console.error(e);
-      return null 
+      return null;
     }
   }
 
@@ -42,7 +42,7 @@ export default class StorageService {
    * @returns the list des courses from mock
    * @deprecated ne pas utiliser, sera supprimer très prochainement !!!!
    */
-  getAllCourse() {
+  static getAllCourse() {
     //TODO: supprimer la fonction
 
     return TestMock.getCourses();

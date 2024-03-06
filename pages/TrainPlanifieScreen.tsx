@@ -5,14 +5,12 @@ import { Text } from "react-native-paper";
 import { useRecoilValue } from "recoil";
 import { coursesBscSelector, coursesState } from "../store/storeAtom";
 import { useDispatchCourses } from "../hook/useDispatchCourses";
-import { CourseContext } from "../provider/AppProvider";
-import { useContext } from "react";
+import CourseService from "../services/CourseService";
 
 export default function TrainPlanifieScreen() {
   const stateCourses = useRecoilValue(coursesState);
   const selectorCourses = useRecoilValue(coursesBscSelector); 
   const dispatchCourses = useDispatchCourses();
-  const courseService = useContext(CourseContext);
 
   const renderItem = ({ item }: { item: Course }) => (
     <DetailCourse course={item} />
@@ -20,7 +18,8 @@ export default function TrainPlanifieScreen() {
 
   const handleOnRefresh = () => {
     console.log("refresh");
-    dispatchCourses({ type: "load", courses: courseService.loadCourses() });
+    dispatchCourses({ type: "load", courses: CourseService.loadCourses() });
+    console.log("syncho courses"); 
     //TODO: courseService.loadCourses est un échaffauge, a refactoriser par la suite. 
   };
 
