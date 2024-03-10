@@ -15,4 +15,5 @@ export default interface Course {
   objectif?: number;
   commentaire?: string;
   mesure?: {};
+  isSyncro: boolean;
 }
