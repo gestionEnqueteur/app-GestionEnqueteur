@@ -1,9 +1,15 @@
+import ApiCourseResponse from "../models/ApiCourseResponse";
 import Course from "../models/Course";
 import MesureBSC from "../models/bsc/MesureBsc";
+import { StatusEnum } from "../models/enum";
 import StorageService from "./StorageServices";
 
+function isValidApiResponse(response: any): response is ApiCourseResponse {
+  return typeof response.id === "number";
+  //TODO: continuer la vérif après
+}
+
 export default class CourseService {
-  
   static addStructureBsc(course: Course) {
     const mesure: MesureBSC = {
       infoEnqueteur: {},
@@ -53,7 +59,36 @@ export default class CourseService {
       },
     };
 
-    return dataTransfert; 
+    return dataTransfert;
+  }
+
+  static createObjetStateFromApi(dataApi: unknown): Course | undefined {
+    if (isValidApiResponse(dataApi)) {
+      // on sais que la réponse est de type ApiResponse
+      const course: Course = {
+        vac: "X",
+        id: dataApi.id,
+        mission: dataApi.attributes.mission,
+        pds: "X",
+        ligne: dataApi.attributes.ligne,
+        trainCourse: dataApi.attributes.trainCourse,
+        status: StatusEnum.DRAFT,
+        isSyncro: true,
+        infoHoraireCourse: {
+          gareDepartEnq:
+            dataApi.attributes.infoHoraireCourse.gareDepartEnq,
+          gareArriveEnq:
+            dataApi.attributes.infoHoraireCourse.gareArriveEnq,
+          datetimeDepartEnq:
+            dataApi.attributes.infoHoraireCourse.datetimeDepartEnq,
+          datetimeArriveEnq:
+            dataApi.attributes.infoHoraireCourse.datetimeArriveEnq,
+        },
+      };
+      return course;
+    } else {
+      console.log("Réponse API invalide");
+    }
   }
 
   static loadCourses() {
