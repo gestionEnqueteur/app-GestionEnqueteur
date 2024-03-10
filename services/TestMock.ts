@@ -8,6 +8,7 @@ export default class TestMock {
     const listCourse = planning.map((coursePlanning) => {
       const course: Course = {
         id: count,
+        isSyncro: true,
         mission: coursePlanning.mission,
         pds: coursePlanning.pds,
         vac: coursePlanning.vac,

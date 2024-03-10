@@ -21,7 +21,7 @@ export default function courseReducer(state: Course[], action: ActionCourse) {
 
     case "update":
       newState = state.map((item) =>
-        item.id === action.course.id ? action.course : item
+        item.id === action.course.id ? {...action.course, isSyncro: false} : item
       );
       console.log("action update"); 
       return newState;
