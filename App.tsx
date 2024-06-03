@@ -1,10 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { PaperProvider } from "react-native-paper";
-import MyMainStack from "./pages/navigations/StackNavigation";
+import StackNavigation from "./pages/navigations/StackNavigation";
 import AppProvider from "./provider/AppProvider";
 import { RecoilRoot } from "recoil";
-
-
 
 export default function App() {
   return (
@@ -12,7 +10,7 @@ export default function App() {
       <PaperProvider>
         <AppProvider>
           <NavigationContainer>
-            <MyMainStack />
+            <StackNavigation />
           </NavigationContainer>
         </AppProvider>
       </PaperProvider>
