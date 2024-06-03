@@ -1,9 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-import MenuBottomTabs, { TabParamList } from "./MenuBottomTabs";
+import { NavigatorScreenParams } from "@react-navigation/native";
 import HomeScreen from "../HomeScreen";
 import SaisieBscScreen from "../bsc/SaisieBscScreen";
-import { NavigatorScreenParams } from "@react-navigation/native";
+import MenuBottomTabs, { TabParamList } from "./MenuBottomTabs";
 
 // type des param des pages
 export type RootStackParamList = {
@@ -14,7 +13,7 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function MyMainStack() {
+export default function StackNavigation() {
   return (
     <Stack.Navigator initialRouteName="HomeStack">
       <Stack.Screen name="HomeStack" component={MenuBottomTabs} />
