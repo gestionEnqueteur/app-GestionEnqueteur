@@ -1,8 +1,11 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import SaisieBscScreen from "@/screens/bsc/SaisieBscScreen";
+import HomeScreen from "@/screens/HomeScreen";
+import MenuBottomTabs, {
+  TabParamList,
+} from "@/screens/navigations/MenuBottomTabs";
 import { NavigatorScreenParams } from "@react-navigation/native";
-import HomeScreen from "../HomeScreen";
-import SaisieBscScreen from "../bsc/SaisieBscScreen";
-import MenuBottomTabs, { TabParamList } from "./MenuBottomTabs";
 
 // type des param des pages
 export type RootStackParamList = {

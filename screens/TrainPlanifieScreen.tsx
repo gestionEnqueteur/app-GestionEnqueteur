@@ -17,12 +17,13 @@ export default function TrainPlanifieScreen() {
   const renderItem = ({ item }: { item: Course }) => (
     <DetailCourse course={item} />
   );
-
-  const handleOnRefresh = () => {
+  
+  const handleOnRefresh = async () => {    
     console.log("refresh");
     dispatchCourses({ type: "load", courses: courseService.loadCourses() });
     //TODO: courseService.loadCourses est un échaffauge, a refactoriser par la suite. 
   };
+  
 
   return (
     <FlatList
