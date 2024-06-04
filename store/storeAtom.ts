@@ -3,6 +3,7 @@ import { atom, selector } from "recoil";
 // import des types
 import ConfigurationType from "../models/ConfigurationType";
 import Course from "../models/Course";
+import User from "../models/User";
 
 // création du state configuration
 export const configurationState = atom<ConfigurationType>({
@@ -16,7 +17,10 @@ export const coursesState = atom<Course[]>({
   default: [],
 }); 
 
-
+export const userState = atom<User | undefined>({
+  key: 'userState',
+  default: undefined
+})
 
 
 // petit test d'un selecteur pour filtrage des Courses avec seulement BSC
