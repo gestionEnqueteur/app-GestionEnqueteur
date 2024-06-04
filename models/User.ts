@@ -11,4 +11,5 @@ export default interface User {
   agence?: AgenceInterim;
   username: string;
   password?: string;
+  token?: string;
 }
