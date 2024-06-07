@@ -22,6 +22,11 @@ export const userState = atom<User | undefined>({
   default: undefined
 })
 
+export const jwtState = atom<String | undefined>({
+  key: 'jwtState',
+  default: undefined
+})
+
 
 // petit test d'un selecteur pour filtrage des Courses avec seulement BSC
 export const coursesBscSelector = selector({
