@@ -7,7 +7,6 @@ type CustomSnackBarProps = Omit<SnackbarProps, 'onDismiss' | 'visible'> & {
   onDismiss?: () => void;
 };
 
-
 export default function useSnackBar() {
   // je veux que l'utilisateur puis envoyé les props de SnackbarPros. mais remplir la fonction onDismmis de mon hook par défaut. comment faire.
 
