@@ -24,6 +24,7 @@ export const snackBarState = atom<SnackbarProps>({
     visible: false,
     children: "Hello World",
     onDismiss: () => console.error("Doit etre redéfinir"),
+    icon: "alert-circle"
   },
 })
 

@@ -5,6 +5,7 @@ import { StorageContext } from "../provider/AppProvider";
 import ConfigurationType from "../models/ConfigurationType";
 import { useRecoilState } from "recoil";
 import { configurationState } from "../store/storeAtom";
+import useSnackBar from "../hook/useSnackBar";
 
 type SnackBar = {
   visible: boolean;
@@ -27,6 +28,8 @@ export default function ParamScreen() {
     label: "",
     icon: "",
   });
+
+  const displaySnackBarCommun = useSnackBar();
 
   useEffect(() => {
     // Init de la page
@@ -68,7 +71,17 @@ export default function ParamScreen() {
   };
 
   const displaySnackBar = (label: string, icon: string) => {
-    setSnackBar({ label: label, icon: icon, visible: true });
+     // setSnackBar({ label: label, icon: icon, visible: true });
+    displaySnackBarCommun({
+      children: label,
+      icon: icon,
+      action: {
+        label: "fermer",
+        onPress: () => {
+          setSnackBar({ ...snackBar, visible: false });
+        },
+      },
+    });
   };
 
   return (
