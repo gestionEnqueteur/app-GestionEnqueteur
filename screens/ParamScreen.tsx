@@ -64,10 +64,6 @@ export default function ParamScreen() {
       icon: icon,
       duration: 2000,
       onIconPress: () => {},
-      action: {
-        label: "fermer",
-        onPress: () => {},
-      },
     });
   };
 
