@@ -1,5 +1,5 @@
 import { View, ScrollView, StyleSheet } from "react-native";
-import { Text, TextInput, Button, Surface, Snackbar } from "react-native-paper";
+import { Text, TextInput, Button, Surface } from "react-native-paper";
 import { useEffect, useContext, useState } from "react";
 import { StorageContext } from "../provider/AppProvider";
 import ConfigurationType from "../models/ConfigurationType";
