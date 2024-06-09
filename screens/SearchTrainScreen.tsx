@@ -19,7 +19,7 @@ export default function SearchTrainScreen() {
     new Date()
   );
 
-  const [isTimePickerVisible, setTimePickerVisible] = useState(false);
+  const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
 
   const toggleModeSearch = () => {
     setIsModeSearchNumberTrain((prevMode) => !prevMode);
@@ -30,7 +30,7 @@ export default function SearchTrainScreen() {
   };
 
   const onTimeDismiss = () => {
-    setTimePickerVisible(false);
+    setIsTimePickerVisible(false);
   };
 
   const onTimeConfirm = ({
@@ -48,7 +48,7 @@ export default function SearchTrainScreen() {
     newDate.setMinutes(minutes);
     setSelectedDate(newDate);
 
-    setTimePickerVisible(false);
+    setIsTimePickerVisible(false);
   };
 
   return (
@@ -94,7 +94,7 @@ export default function SearchTrainScreen() {
             <View style={styles.searchTime}>
               <IconButton
                 style={styles.clockIcon}
-                onPress={() => setTimePickerVisible(true)}
+                onPress={() => setIsTimePickerVisible(true)}
                 icon="clock-outline"
                 size={50}
               />
