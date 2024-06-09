@@ -1,88 +1,76 @@
 import { useState } from "react";
-import { View, StyleSheet, Switch, Text } from "react-native";
 import {
-  TextInput,
-  Button,
-  Provider as PaperProvider,
-} from "react-native-paper";
-import { DatePickerModal, TimePickerModal } from "react-native-paper-dates";
-import { formatTime } from "../helpers/formatHelper";
-import { CalendarDate } from "react-native-paper-dates/lib/typescript/Date/Calendar";
+  View,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import { TextInput, Button, IconButton } from "react-native-paper";
+import { DatePickerInput, TimePickerModal } from "react-native-paper-dates";
 
 export default function SearchTrainScreen() {
-  const [formData, setFormData] = useState({
-    departureStation: "",
-    arrivalStation: "",
-    numberCirculation: "",
-    isModeSearchNumberTrain: false,
-    selectedDate: new Date(),
-    selectedTime: { hours: 0, minutes: 0 } ,
-  });
+  const [departureStation, setDepartureStation] = useState("");
+  const [arrivalStation, setArrivalStation] = useState("");
+  const [numberCirculation, setNumberCirculation] = useState("");
+  const [isModeSearchNumberTrain, setIsModeSearchNumberTrain] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
+  );
 
-  const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [isTimePickerVisible, setTimePickerVisible] = useState(false);
 
-  const handleChange = (
-    key: string,
-    value: string | boolean | CalendarDate
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
   const toggleModeSearch = () => {
-    handleChange("isModeSearchNumberTrain", !formData.isModeSearchNumberTrain);
+    setIsModeSearchNumberTrain((prevMode) => !prevMode);
   };
 
   const handleSearch = () => {
     // TODO: Logic for search
   };
 
-  const onDateDismiss = () => {
-    setDatePickerVisible(false);
-  };
-
-  const onDateConfirm = (date: Date) => {
-    handleChange("selectedDate", date);
-    setDatePickerVisible(false);
-  };
-
   const onTimeDismiss = () => {
     setTimePickerVisible(false);
   };
 
-  const onTimeConfirm = ({ hours, minutes } : { hours: number, minutes: number}) => {
-    handleChange("selectedTime", { hours, minutes });
+  const onTimeConfirm = ({
+    hours,
+    minutes,
+  }: {
+    hours: number;
+    minutes: number;
+  }) => {
+    let newDate = new Date();
+    if (selectedDate?.getDate()) {
+      newDate.setDate(selectedDate?.getDate());
+    }
+    newDate.setHours(hours);
+    newDate.setMinutes(minutes);
+    setSelectedDate(newDate);
+
     setTimePickerVisible(false);
   };
 
   return (
-    <PaperProvider>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <View style={styles.switchContainer}>
           <Text style={styles.label}>Gare</Text>
           <Switch
             style={styles.switch}
-            value={formData.isModeSearchNumberTrain}
-            onValueChange={() =>
-              handleChange(
-                "isModeSearchNumberTrain",
-                !formData.isModeSearchNumberTrain
-              )
-            }
+            value={isModeSearchNumberTrain}
+            onValueChange={toggleModeSearch}
           />
           <Text style={styles.label}>N° de Train</Text>
         </View>
-        {formData.isModeSearchNumberTrain ? (
-          <View style={styles.searchSection}>
+        {isModeSearchNumberTrain ? (
+          <View style={styles.searchCirculation}>
             <TextInput
               mode="outlined"
               placeholder="Entrez le numéro de circulation"
               label="Numéro de circulation"
-              onChangeText={(value) => handleChange("numberCirculation", value)}
-              value={formData.numberCirculation}
+              onChangeText={(newValue) => setNumberCirculation(newValue)}
+              value={numberCirculation}
               keyboardType="number-pad"
             />
           </View>
@@ -93,71 +81,66 @@ export default function SearchTrainScreen() {
               mode="outlined"
               label="Gare de départ"
               placeholder="Entrez la gare de départ"
-              value={formData.departureStation}
-              onChangeText={(value) => handleChange("departureStation", value)}
+              value={departureStation}
+              onChangeText={(newValue) => setDepartureStation(newValue)}
             />
             <TextInput
               mode="outlined"
               label="Gare d'arrivée"
               placeholder="Entrez la gare d'arrivée"
-              value={formData.arrivalStation}
-              onChangeText={(value) => handleChange("arrivalStation", value)}
+              value={arrivalStation}
+              onChangeText={(newValue) => setArrivalStation(newValue)}
+            />
+            <View style={styles.searchTime}>
+              <IconButton
+                style={styles.clockIcon}
+                onPress={() => setTimePickerVisible(true)}
+                icon="clock-outline"
+                size={50}
+              />
+              <Text>
+                {`${selectedDate?.getHours()}: ${selectedDate?.getMinutes()} `}
+              </Text>
+            </View>
+
+            <TimePickerModal
+              visible={isTimePickerVisible}
+              onDismiss={onTimeDismiss}
+              onConfirm={onTimeConfirm}
+              hours={selectedDate?.getHours()}
+              minutes={selectedDate?.getMinutes()}
+              label="Sélectionner l'heure"
+              cancelLabel="Annuler"
+              confirmLabel="Confirmer"
+              animationType="fade"
             />
           </View>
         )}
         <View style={styles.dateTimeContainer}>
-          <Button onPress={() => setTimePickerVisible(true)}>
-            Choisir l'heure
-          </Button>
-          <Text style={styles.selectedDateText}>
-            Heure sélectionnée:{" "}
-            {formatTime(
-              new Date(
-                0,
-                0,
-                0,
-                formData.selectedTime.hours,
-                formData.selectedTime.minutes
-              ).toISOString()
-            )}
-          </Text>
-          <Button onPress={() => setDatePickerVisible(true)}>
-            Choisir la Date
-          </Button>
-          <Text style={styles.selectedDateText}>
-            Jour sélectionné: {formData.selectedDate.toLocaleDateString()}
-          </Text>
+          <DatePickerInput
+            locale="fr"
+            label="Sélectionner Date"
+            value={selectedDate}
+            onChange={(newValue: Date | undefined) => {
+              let newDate = new Date();
+              if (selectedDate?.getTime()) {
+                newDate?.setTime(selectedDate?.getTime());
+              }
+              if (newValue?.getDate()) {
+                newDate?.setDate(newValue?.getDate());
+              }
+              setSelectedDate(newDate);
+            }}
+            inputMode="start"
+          />
         </View>
-        <View>
+        <View style={styles.submit}>
           <Button mode="contained" onPress={handleSearch}>
             Rechercher
           </Button>
         </View>
-        <DatePickerModal
-          locale="fr"
-          mode="single"
-          visible={isDatePickerVisible}
-          onDismiss={onDateDismiss}
-          date={formData.selectedDate}
-          onConfirm={onDateConfirm}
-          saveLabel="Confirmer"
-          label="Sélectionner une date"
-          animationType="slide"
-        />
-
-        <TimePickerModal
-          visible={isTimePickerVisible}
-          onDismiss={onTimeDismiss}
-          onConfirm={onTimeConfirm}
-          hours={formData.selectedTime.hours}
-          minutes={formData.selectedTime.minutes}
-          label="Sélectionner l'heure"
-          cancelLabel="Annuler"
-          confirmLabel="Confirmer"
-          animationType="fade"
-        />
       </View>
-    </PaperProvider>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -170,26 +153,41 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 20,
+    marginBottom: 30,
   },
   switch: {
-    marginHorizontal: 10,
+    marginHorizontal: 20,
   },
   label: {
     fontSize: 16,
   },
   searchSection: {
-    marginBottom: 30,
+    marginBottom: 10,
   },
   dateTimeContainer: {
-    marginBottom: 20,
     alignItems: "center",
   },
-  selectedDateText: {
-    marginTop: 10,
+  selectedTimeText: {
     fontSize: 16,
+    marginLeft: 10,
+    justifyContent: "center",
+    alignSelf: "center",
   },
   inputDepartureStation: {
     marginBottom: 15,
+  },
+  submit: {
+    marginTop: 50,
+  },
+  searchTime: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  clockIcon: {
+    marginRight: 10,
+  },
+  searchCirculation: {
+    marginBottom: 50,
   },
 });
