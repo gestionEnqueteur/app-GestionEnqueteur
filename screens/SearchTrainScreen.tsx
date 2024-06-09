@@ -19,7 +19,7 @@ export default function SearchTrainScreen() {
     new Date()
   );
 
-  const [isTimePickerVisible, setTimePickerVisible] = useState(false);
+  const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
 
   const toggleModeSearch = () => {
     setIsModeSearchNumberTrain((prevMode) => !prevMode);
@@ -30,7 +30,7 @@ export default function SearchTrainScreen() {
   };
 
   const onTimeDismiss = () => {
-    setTimePickerVisible(false);
+    setIsTimePickerVisible(false);
   };
 
   const onTimeConfirm = ({
@@ -42,13 +42,13 @@ export default function SearchTrainScreen() {
   }) => {
     let newDate = new Date();
     if (selectedDate?.getDate()) {
-      newDate.setDate(selectedDate?.getDate());
+      newDate.setDate(selectedDate.getDate());
     }
     newDate.setHours(hours);
     newDate.setMinutes(minutes);
     setSelectedDate(newDate);
 
-    setTimePickerVisible(false);
+    setIsTimePickerVisible(false);
   };
 
   return (
@@ -94,12 +94,18 @@ export default function SearchTrainScreen() {
             <View style={styles.searchTime}>
               <IconButton
                 style={styles.clockIcon}
-                onPress={() => setTimePickerVisible(true)}
+                onPress={() => setIsTimePickerVisible(true)}
                 icon="clock-outline"
                 size={50}
               />
               <Text>
-                {`${selectedDate?.getHours()}: ${selectedDate?.getMinutes()} `}
+                {`${selectedDate
+                  ?.getHours()
+                  .toString()
+                  .padStart(2, "0")} : ${selectedDate
+                  ?.getMinutes()
+                  .toString()
+                  .padStart(2, "0")}`}
               </Text>
             </View>
 
@@ -122,14 +128,12 @@ export default function SearchTrainScreen() {
             label="Sélectionner Date"
             value={selectedDate}
             onChange={(newValue: Date | undefined) => {
-              let newDate = new Date();
-              if (selectedDate?.getTime()) {
-                newDate?.setTime(selectedDate?.getTime());
+              if (newValue && selectedDate) {
+                let newDate = new Date(newValue.getTime());
+                newDate.setHours(selectedDate.getHours());
+                newDate.setMinutes(selectedDate.getMinutes());
+                setSelectedDate(newDate);
               }
-              if (newValue?.getDate()) {
-                newDate?.setDate(newValue?.getDate());
-              }
-              setSelectedDate(newDate);
             }}
             inputMode="start"
           />
