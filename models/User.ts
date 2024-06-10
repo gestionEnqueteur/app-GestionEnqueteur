@@ -10,5 +10,4 @@ export default interface User {
   role?: RoleEnum[];
   agence?: AgenceInterim;
   username: string;
-  password?: string;
 }

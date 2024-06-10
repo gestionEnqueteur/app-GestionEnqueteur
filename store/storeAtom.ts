@@ -4,6 +4,7 @@ import { atom, selector } from "recoil";
 import ConfigurationType from "../models/ConfigurationType";
 import Course from "../models/Course";
 import { SnackbarProps } from "react-native-paper";
+import User from "../models/User";
 
 // création du state configuration
 export const configurationState = atom<ConfigurationType>({
@@ -25,6 +26,16 @@ export const snackBarState = atom<SnackbarProps>({
     children: "Hello World",
     onDismiss: () => console.error("Doit etre redéfinir"),
   },
+});
+
+export const userState = atom<User | undefined>({
+  key: 'userState',
+  default: undefined
+})
+
+export const jwtState = atom<string | undefined>({
+  key: 'jwtState',
+  default: undefined
 })
 
 
