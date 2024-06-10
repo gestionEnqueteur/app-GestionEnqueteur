@@ -22,7 +22,7 @@ export const userState = atom<User | undefined>({
   default: undefined
 })
 
-export const jwtState = atom<String | undefined>({
+export const jwtState = atom<string | undefined>({
   key: 'jwtState',
   default: undefined
 })
