@@ -7,9 +7,6 @@ import { StyleSheet, View } from "react-native";
 export default function MainSnackBar() {
   const snackBar = useRecoilValue(snackBarState);
 
-  console.log(snackBar);
-
-  // Ajout du style au SnackBar
   return (
     <View style={styles.container}>
       <Snackbar {...snackBar}>{snackBar.children}</Snackbar>
