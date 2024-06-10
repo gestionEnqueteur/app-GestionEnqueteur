@@ -19,7 +19,7 @@ export const coursesState = atom<Course[]>({
 
 // CommunSnackBar
 export const snackBarState = atom<SnackbarProps>({
-  key: "snackBarStarte",
+  key: "snackBarState",
   default: {
     visible: false,
     children: "Hello World",
