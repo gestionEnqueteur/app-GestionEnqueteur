@@ -12,12 +12,6 @@
     "testDebug": "jest -o --watch --coverage=false",
     "updateSnapshots": "jest -u --coverage=false"
   },
-  "jest": {
-    "preset": "jest-expo",
-    "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
-    ]
-  },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.22.3",
     "@react-native-masked-view/masked-view": "^0.3.0",
@@ -54,6 +48,7 @@
     "@types/react": "~18.2.79",
     "eslint-plugin-testing-library": "^6.2.2",
     "react-test-renderer": "18.2.0",
+    "ts-node": "^10.9.2",
     "typescript": "~5.3.3"
   },
   "private": true
