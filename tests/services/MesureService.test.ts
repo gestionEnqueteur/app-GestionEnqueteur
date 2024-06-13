@@ -45,7 +45,7 @@ describe("test de MesureService", () => {
             retardDepart: 0,
             retardArrive: 0,
             gareMonte: "Lille Flandres",
-            gareDescente: "Longueau", 
+            gareDescente: "Longueau",
             commentaireNoSuccess: "Mesure Test"
           },
         ],
@@ -57,6 +57,52 @@ describe("test de MesureService", () => {
     // Test 
 
     expect(MesureService.createDataTransfertObjet(mesureTestBsc)).toContainEqual(resultMesureApi);
+
+  });
+
+  test("test fonction CreateObjetStateFromApi", () => {
+
+
+
+    const resultApi = {
+      id: 0,
+      __component: "mesure.mesure-bsc",
+      composition: "UM2",
+      numMaterial: "16410",
+      questionnaireDistribuess: 30,
+      questionnaireVides: 2,
+      questionnaireInexploitables: 1,
+      questionnaireExploitables: 27,
+      retardDepart: 10,
+      retardArrive: 15,
+      gareMonte: "Longueau",
+      gareDescente: "Paris",
+      commentaireNoSuccess: "Mesure Test"
+    }
+
+    const mesureBscTransformed = {
+      infoEnqueteur: {
+        gareMonteeReel: "Longueau",
+        gareDescenteReel: "Paris",
+      },
+      infoTrain: {
+        composition: "UM2",
+        numMaterial: "16410"
+      },
+      retards: {
+        retardDepart: 10,
+        retardArrive: 15,
+      },
+      questionnaires: {
+        distribuees: 30,
+        vides: 2,
+        inexploitables: 1,
+        exploitables: 27
+      },
+      commentaireNoSuccess: "Mesure Test"
+    }
+
+    expect(MesureService.createObjetStateFromApi(resultApi)).toContainEqual(mesureBscTransformed);
 
   })
 
