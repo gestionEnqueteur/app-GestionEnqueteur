@@ -1,17 +1,17 @@
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
+import CardNumeroLine from "./CardNumeroLine";
 import ChronoTopDepart from "./ChronoTopDepart";
 import DetailTrajet from "./DetailTrajet";
 import MenuBurger from "./MenuBurger";
-import CardNumeroLine from "./CardNumeroLine";
 import Quotas from "./Quotas";
 import TypeCourse from "./TypeCourse";
 
-import Course from "../models/Course";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../pages/navigations/StackNavigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CourseBsc from "../models/bsc/CourseBsc";
+import Course from "../models/Course";
+import { RootStackParamList } from "../screens/navigations/StackNavigation";
 
 type Props = {
   course: Course;
