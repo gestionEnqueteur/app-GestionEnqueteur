@@ -4,7 +4,7 @@ import { PaperProvider } from "react-native-paper";
 
 
 
-const AllTheProviders = ({ children }: { children: React.ReactNode}): React.JSX.Element => {
+export const AllTheProviders = ({ children }: { children: React.ReactNode}): React.JSX.Element => {
   return (
     <RecoilRoot>
       <PaperProvider>
