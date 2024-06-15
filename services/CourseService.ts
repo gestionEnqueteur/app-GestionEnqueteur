@@ -4,9 +4,29 @@ import MesureBSC from "../models/bsc/MesureBsc";
 import { StatusEnum } from "../models/enum";
 import StorageService from "./StorageServices";
 
-function isValidApiResponse(response: any): response is ApiCourseResponse {
-  return typeof response.id === "number";
-  //TODO: continuer la vérif après
+export function isValidApiResponse(response: unknown): response is ApiCourseResponse {
+  if (typeof response !== 'object' || response === null) return false;
+
+  const obj = response as Record<string, unknown>;
+  const attributes = obj.attributes;
+  if (typeof attributes !== 'object' || attributes === null) return false;
+
+  const attrs = attributes as Record<string, unknown>;
+
+  return (
+    'attributes' in response &&
+    typeof attrs.mission === "string" &&
+    (typeof attrs.trainCourse === "string" || attrs.trainCourse === null) &&
+    (typeof attrs.commentaire === "string" || attrs.commentaire === null) &&
+    (typeof attrs.ligne === "string" || attrs.ligne === null) &&
+    typeof attrs.status === "string" &&
+    (typeof attrs.objectif === "number" || attrs.objectif === null) &&
+    typeof attrs.service === "string" &&
+    typeof attrs.hd === "string" &&
+    typeof attrs.ha === "string"
+
+  )
+
 }
 
 export default class CourseService {
@@ -25,6 +45,7 @@ export default class CourseService {
     };
 
     course.mesure = mesure;
+    return course
   }
 
   static addStructure(course: Course) {
@@ -47,47 +68,50 @@ export default class CourseService {
   static createDataTransfertObjet(course: Course) {
     const dataTransfert = {
       mission: course.mission,
-      status: "DRAFT",
-      ligne: course.ligne,
       trainCourse: course.trainCourse,
       commentaire: course.commentaire,
-      infoHoraireCourse: {
-        gareDepartEnq: course.infoHoraireCourse?.gareDepartEnq,
-        gareArriveEnq: course.infoHoraireCourse?.gareArriveEnq,
-        datetimeDepartEnq: course.infoHoraireCourse?.datetimeDepartEnq,
-        datetimeArriveEnq: course.infoHoraireCourse?.datetimeArriveEnq,
-      },
+      ligne: course.ligne,
+      status: course.status,
+      objectif: course.objectif,
+      service: course.service,
+      hd: course.infoHoraireCourse?.datetimeDepartEnq,
+      ha: course.infoHoraireCourse?.datetimeArriveEnq,
+      placeDeparture: course.infoHoraireCourse?.gareDepartEnq,
+      placeArrival: course.infoHoraireCourse?.gareArriveEnq,
     };
 
     return dataTransfert;
-  }
+  };
 
-  static createObjetStateFromApi(dataApi: unknown): Course | undefined {
+
+
+  static createObjetStateFromApi(dataApi: unknown): Course {
     if (isValidApiResponse(dataApi)) {
       // on sais que la réponse est de type ApiResponse
       const course: Course = {
-        vac: "X",
         id: dataApi.id,
         mission: dataApi.attributes.mission,
+        vac: "X", 
         pds: "X",
         ligne: dataApi.attributes.ligne,
         trainCourse: dataApi.attributes.trainCourse,
-        status: StatusEnum.DRAFT,
+        status: StatusEnum.DRAFT, // TODO: a modifié
+        objectif: dataApi.attributes.objectif,
         isSyncro: true,
         infoHoraireCourse: {
           gareDepartEnq:
-            dataApi.attributes.infoHoraireCourse.gareDepartEnq,
+            dataApi.attributes.placeDeparture,
           gareArriveEnq:
-            dataApi.attributes.infoHoraireCourse.gareArriveEnq,
+            dataApi.attributes.placeArrival,
           datetimeDepartEnq:
-            dataApi.attributes.infoHoraireCourse.datetimeDepartEnq,
+            dataApi.attributes.hd,
           datetimeArriveEnq:
-            dataApi.attributes.infoHoraireCourse.datetimeArriveEnq,
+            dataApi.attributes.ha,
         },
       };
       return course;
     } else {
-      console.log("Réponse API invalide");
+      throw new Error("Type invalide");
     }
   }
 
