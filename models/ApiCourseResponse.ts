@@ -1,5 +1,3 @@
-import ApiResponse from "./ApiResponse";
-
 export default interface ApiCourseResponse {
   id: number;
   attributes: {
@@ -10,11 +8,9 @@ export default interface ApiCourseResponse {
     objectif: number;
     mesure: string;
     commentaire: string;
-    infoHoraireCourse: {
-      gareDepartEnq: string;
-      gareArriveEnq: string;
-      datetimeDepartEnq: string;
-      datetimeArriveEnq: string;
-    };
+    hd: string;
+    ha: string;
+    placeDeparture: string;
+    placeArrival: string;
   };
-}
+};
