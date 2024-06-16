@@ -1,5 +1,4 @@
 import InfoEnqueteur from "../InfoEnqueteur";
-import Mesure from "../Mesure";
 import InfoTrain from "./InfoTrain";
 import Perturbation from "./Perturbation";
 import Questionnaires from "./Questionnaire";
