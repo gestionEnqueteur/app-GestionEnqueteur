@@ -1,18 +1,39 @@
+import ApiMesureResponse from "./ApiMesureResponse";
 import MesureInterface from "./MesureInterface";
-
+import MesureBsc from "./bsc/MesureBsc";
 export default abstract class Mesure implements MesureInterface {
 
-  type!: string; 
+  type!: string;
 
   constructor(mesure: MesureInterface) {
-    Object.assign(this, mesure); 
+    Object.assign(this, mesure);
   }
 
   toJson() {
-    return { ...this}; 
+    return { ...this };
   }
 
-  abstract convertDataToApi(): unknown; 
+  abstract convertDataToApi(): unknown;
 
-  abstract createMesureFromApi(dataApi: unknown): Mesure; 
+  static isValidReponseApi(dataApi: unknown): dataApi is ApiMesureResponse {
+
+    return true;
+  }
+
+  static createMesureFromApi(dataApi: unknown): Mesure {
+    if (!Mesure.isValidReponseApi(dataApi)) {
+      throw new Error("Type invalide");
+    }
+
+    switch (dataApi.attributes.__component) {
+      case 'mesure.mesure-bsc':
+        return MesureBsc.createMesureFromApi(dataApi);
+      case 'mesure.meusre-mq':
+        throw new Error("Not implemented");
+      default:
+        throw new Error("Mesure non supporté");
+    }
+
+  }
+
 }

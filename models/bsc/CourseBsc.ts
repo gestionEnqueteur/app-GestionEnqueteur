@@ -1,7 +1,6 @@
 import Course from "../Course";
 import InfoHoraireCourse from "../InfoHoraireCourse";
-import MesureBSC from "./MesureBsc";
-
+import MesureBSC from "./MesureBscInterface";
 
 export default interface CourseBsc extends Course {
   mesure: MesureBSC;

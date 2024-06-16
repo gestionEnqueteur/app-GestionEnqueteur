@@ -1,5 +1,6 @@
+import ApiMesureResponse from "./ApiMesureResponse";
 
-export default interface ApiMesureBscResponse {
+export default interface ApiMesureBscResponse extends ApiMesureResponse{
   id: number;
   attributes: {
     id: number;
