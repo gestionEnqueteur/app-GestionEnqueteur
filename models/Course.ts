@@ -80,6 +80,9 @@ export default class Course implements CourseInterface {
   }
 
   static isValidReponseApi(response: unknown): response is ApiCourseResponse {
+    console.log("type guarde de course : "); 
+    console.log(response);
+
     if (typeof response !== 'object' || response === null) return false;
 
     const obj = response as Record<string, unknown>;
@@ -96,7 +99,6 @@ export default class Course implements CourseInterface {
       (typeof attrs.ligne === "string" || attrs.ligne === null) &&
       typeof attrs.status === "string" &&
       (typeof attrs.objectif === "number" || attrs.objectif === null) &&
-      typeof attrs.service === "string" &&
       typeof attrs.hd === "string" &&
       typeof attrs.ha === "string"
 

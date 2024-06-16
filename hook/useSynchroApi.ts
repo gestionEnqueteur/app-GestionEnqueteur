@@ -1,67 +1,59 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { configurationState, coursesState } from "../store/storeAtom";
 import CourseService from "../services/CourseService";
-import axios from "axios";
 import Course from "../models/Course";
 import { useDispatchCourses } from "./useDispatchCourses";
+import useApi from '../hook/useApi'
 
 export default function useSynchroApi(): {
   synchroApiPush: Function;
   synchroApiPull: Function;
 } {
-  const [listCourse, setListCourse] = useRecoilState(coursesState);
+  const listCourse = useRecoilValue(coursesState);
   const { urlApi } = useRecoilValue(configurationState);
   const dispatch = useDispatchCourses();
+
+  const api = useApi();
 
   if (!urlApi) {
     //TODO: avertir l'utilisateur de la non configuration
     console.warn("URL non configuré");
   }
 
-  const synchroApiPush = () => {
-    // fonction de synchro Api pour synchroniser tous les datas
-
-    for (const course of listCourse) {
-      // pour chaque course, synchro si modifié
-      if (course.isSyncro) continue;
-
-      const dataTransfert = CourseService.createDataTransfertObjet(course);
-      axios
-        .put(`${urlApi}/api/courses/${course.id}`, dataTransfert)
-        .then((response) => {
-          console.log(response);
-
-          //TODO: faire la logique pour informer la bonne synchro ou echec
-        })
-        .catch((error) => console.error(error));
-    }
+  const synchroApiPush =  () => {
+    // Envoi des mesures 
+    throw new Error("Fonction non implémeneter"); 
+    
   };
 
-  const synchroApiPull = () => {
-    console.log(`pull data from API`); 
-    axios
-      .get(`${urlApi}/api/courses?populate=*`)
-      .then((response) => {
-        //traitement de la réponse
-        const listeCourseApiUnknown: unknown[] = response.data.data;
+  const synchroApiPull = async () => {
+    console.log(`pull data from API`);
+    const response = await api.get(`/api/courses?populate=*`);
 
-        // on itère sur les items de API
-        for (const responseBrute of listeCourseApiUnknown) {
-          // on essaye de les transformer en course
-          const responseNet =
-            CourseService.createObjetStateFromApi(responseBrute);
-          if (
-            responseNet &&
-            listCourse.find((item) => responseNet.id === item.id) === undefined
-          ) {
-            // objet n'existe pas dans le state on peut le rajouter
-            // ajout de la structure en fonction du type de course 
-            const newCourse = CourseService.addStructure(responseNet);
-            setListCourse(currentState => [...currentState, newCourse]); 
-          }
-        }
-      })
-      .catch((error) => console.error(error));
+    console.log(response.data.data); 
+
+    const newListCourse: Course[] = [];
+
+    //traitement de la réponse
+    const listeCourseApiUnknown: unknown[] = response.data.data; // ajout vérification 
+
+    // on itère sur les items de API
+    for (const responseBrute of listeCourseApiUnknown) {
+      // on essaye de les transformer en course
+      const responseNet = Course.createCourseFromApi(responseBrute);
+      if (
+        responseNet &&
+        listCourse.find((item) => responseNet.id === item.id) === undefined
+      ) {
+        // objet n'existe pas dans le state on peut le rajouter
+        // ajout de la structure en fonction du type de course
+        const newCourse = CourseService.addStructure(responseNet); //TODO: a refactoriser 
+        newListCourse.push(newCourse);
+      }
+    }
+
+    // a la toute fin on met à jour le state
+    dispatch({ type: "add", course: newListCourse });
   };
 
   return { synchroApiPull, synchroApiPush };
