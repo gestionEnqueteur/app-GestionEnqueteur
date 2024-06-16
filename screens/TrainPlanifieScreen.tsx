@@ -25,7 +25,7 @@ export default function TrainPlanifieScreen() {
 
   return (
     <FlatList
-      data={selectorCourses}
+      data={stateCourses}
       renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()}
       onRefresh={handleOnRefresh}
