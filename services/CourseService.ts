@@ -1,6 +1,8 @@
 import ApiCourseResponse from "../models/ApiCourseResponse";
 import Course from "../models/Course";
-import MesureBSC from "../models/bsc/MesureBsc";
+import CourseInterface from "../models/CourseInterface";
+import MesureBscInterface from "../models/bsc/MesureBscInterface";
+import MesureBSC from "../models/bsc/MesureBscInterface";
 import { StatusEnum } from "../models/enum";
 import StorageService from "./StorageServices";
 
@@ -28,10 +30,13 @@ export function isValidApiResponse(response: unknown): response is ApiCourseResp
   )
 
 }
-
+/**
+ * @deprecated Course service ne plus utiliser 
+ * utiliser la classe
+ */
 export default class CourseService {
   static addStructureBsc(course: Course) {
-    const mesure: MesureBSC = {
+    const mesure: MesureBscInterface = {
       infoEnqueteur: {},
       retards: {
         retardDepart: undefined,
@@ -42,6 +47,7 @@ export default class CourseService {
         numMaterial: "",
       },
       commentaireNoSuccess: "",
+      type: ""
     };
 
     course.mesure = mesure;
@@ -85,10 +91,10 @@ export default class CourseService {
 
 
 
-  static createObjetStateFromApi(dataApi: unknown): Course {
+  static createObjetStateFromApi(dataApi: unknown): CourseInterface {
     if (isValidApiResponse(dataApi)) {
       // on sais que la réponse est de type ApiResponse
-      const course: Course = {
+      const course: CourseInterface = {
         id: dataApi.id,
         mission: dataApi.attributes.mission,
         vac: "X", 
@@ -97,7 +103,7 @@ export default class CourseService {
         trainCourse: dataApi.attributes.trainCourse,
         status: StatusEnum.DRAFT, // TODO: a modifié
         objectif: dataApi.attributes.objectif,
-        isSyncro: true,
+        isSynchro: true,
         infoHoraireCourse: {
           gareDepartEnq:
             dataApi.attributes.placeDeparture,
