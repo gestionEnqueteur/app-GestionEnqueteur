@@ -1,16 +1,11 @@
 import { View, ScrollView, StyleSheet } from "react-native";
-import { Text, TextInput, Button, Surface, Snackbar } from "react-native-paper";
+import { Text, TextInput, Button, Surface } from "react-native-paper";
 import { useEffect, useContext, useState } from "react";
 import { StorageContext } from "../provider/AppProvider";
 import ConfigurationType from "../models/ConfigurationType";
 import { useRecoilState } from "recoil";
 import { configurationState } from "../store/storeAtom";
-
-type SnackBar = {
-  visible: boolean;
-  label: string;
-  icon: string;
-};
+import useSnackBar from "../hook/useSnackBar";
 
 export default function ParamScreen() {
   const storageService = useContext(StorageContext);
@@ -22,11 +17,7 @@ export default function ParamScreen() {
     user: "",
   });
 
-  const [snackBar, setSnackBar] = useState<SnackBar>({
-    visible: false,
-    label: "",
-    icon: "",
-  });
+  const displaySnackBarCommun = useSnackBar();
 
   useEffect(() => {
     // Init de la page
@@ -68,7 +59,12 @@ export default function ParamScreen() {
   };
 
   const displaySnackBar = (label: string, icon: string) => {
-    setSnackBar({ label: label, icon: icon, visible: true });
+    displaySnackBarCommun({
+      children: label,
+      icon: icon,
+      duration: 2000,
+      onIconPress: () => {},
+    });
   };
 
   return (
@@ -113,21 +109,6 @@ export default function ParamScreen() {
       </Surface>
       <Button mode="contained">Syncronisation enquête</Button>
       <Button mode="contained">Recherche mise à jour application</Button>
-      <Snackbar
-        visible={snackBar.visible}
-        onDismiss={() => setSnackBar({ ...snackBar, visible: false })}
-        icon={snackBar.icon}
-        onIconPress={() => setSnackBar({ ...snackBar, visible: false })}
-        duration={2000}
-        action={{
-          label: "fermer",
-          onPress: () => {
-            setSnackBar({ ...snackBar, visible: false });
-          },
-        }}
-      >
-        {snackBar.label}
-      </Snackbar>
     </ScrollView>
   );
 }
