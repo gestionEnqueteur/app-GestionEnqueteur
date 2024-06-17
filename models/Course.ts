@@ -5,7 +5,7 @@ import ApiCourseResponse from "./ApiCourseResponse";
 
 
 
-export default class Course implements CourseInterface {
+export default class Course implements CourseInterface{
 
   id!: number;
   mission!: string;
@@ -27,6 +27,9 @@ export default class Course implements CourseInterface {
   }
 
   toJson(): CourseInterface {
+    
+    console.log( { ...this } );
+    
     return { ...this }
   }
 

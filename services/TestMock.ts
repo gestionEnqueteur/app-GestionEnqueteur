@@ -1,14 +1,14 @@
 import planning from "../mock/planning.json";
-import Course from "../models/Course";
+import CourseInterface from "../models/CourseInterface";
 import { StatusEnum } from "../models/enum";
 
 export default class TestMock {
-  static getCourses(): Course[] {
+  static getCourses(): CourseInterface[] {
     let count = 1;
     const listCourse = planning.map((coursePlanning) => {
-      const course: Course = {
+      const course: CourseInterface = {
         id: count,
-        isSyncro: true,
+        isSynchro: true,
         mission: coursePlanning.mission,
         pds: coursePlanning.pds,
         vac: coursePlanning.vac,

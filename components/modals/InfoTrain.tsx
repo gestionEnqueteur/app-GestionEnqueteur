@@ -38,7 +38,7 @@ export default function InfoTrain({
 
     console.log(nextCourse);
 
-    dispatch({ type: "update", course: nextCourse });
+    dispatch({ type: "update", course: nextCourse.toJson() });
 
     setVisibleModal(false);
   };

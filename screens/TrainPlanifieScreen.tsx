@@ -3,13 +3,13 @@ import DetailCourse from "../components/DetailCourse";
 import Course from "../models/Course";
 import { Text } from "react-native-paper";
 import { useRecoilValue } from "recoil";
-import { coursesBscSelector, coursesState } from "../store/storeAtom";
+import { courseAllSelector, coursesBscSelector, coursesState } from "../store/storeAtom";
 import { useDispatchCourses } from "../hook/useDispatchCourses";
 import CourseService from "../services/CourseService";
 
 export default function TrainPlanifieScreen() {
   const stateCourses = useRecoilValue(coursesState);
-  const selectorCourses = useRecoilValue(coursesBscSelector); 
+  const selectorCourses = useRecoilValue(courseAllSelector); 
   const dispatchCourses = useDispatchCourses();
 
   const renderItem = ({ item }: { item: Course }) => (

@@ -1,14 +1,25 @@
 import Course from "../models/Course";
+import CourseInterface from "../models/CourseInterface";
 
 export type ActionCourse =
-  | { type: "update"; course: Course }
-  | { type: "delete"; course: Course }
-  | { type: "add"; course: Course | Course[] }
-  | { type: "load"; courses: Course[] }
+  | { type: "update"; course: CourseInterface }
+  | { type: "delete"; course: CourseInterface }
+  | { type: "add"; course: CourseInterface | CourseInterface[] }
+  | { type: "load"; courses: CourseInterface[] }
   | { type: "reset" };
 
-export default function courseReducer(state: Course[], action: ActionCourse) {
-  let newState: Course[];
+function removeMethod(payload: CourseInterface) {
+  // on vérfie si instance de Course 
+  if(payload instanceof Course) {
+    return payload.toJson(); 
+  }
+  return payload; 
+}
+
+export default function courseReducer(state: CourseInterface[], action: ActionCourse) {
+  let newState: CourseInterface[];
+
+  
 
   switch (action.type) {
     case "add":
@@ -22,7 +33,7 @@ export default function courseReducer(state: Course[], action: ActionCourse) {
     case "update":
       newState = state.map((item) =>
         item.id === action.course.id
-          ? { ...action.course, isSyncro: false }
+          ? { ...action.course, isSynchro: false }
           : item
       );
       console.log("action update");
@@ -42,11 +53,11 @@ export default function courseReducer(state: Course[], action: ActionCourse) {
 }
 
 // méthode interne pour le reducer
-function addCourse(prevState: Course[], courses: Course | Course[]) {
+function addCourse(prevState: CourseInterface[], courses: CourseInterface | CourseInterface[]) {
   // on vérifie le type
   if (courses instanceof Array) {
     // c'est un array
-    const newListCourse: Course[] = [];
+    const newListCourse: CourseInterface[] = [];
     // vérification des doublon
     for (const course of courses) {
       if (prevState.find((item) => item.id === course.id) === undefined) {

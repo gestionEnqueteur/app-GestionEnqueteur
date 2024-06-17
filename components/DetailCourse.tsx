@@ -66,7 +66,7 @@ export default function DetailCourse(props: Readonly<Props>) {
         <View style={style.infoLine}>
           <TypeCourse mission={course.mission} />
           {course.ligne && <CardNumeroLine lineNumber={course.ligne} />}
-          <Text variant="labelSmall">synchro: {course.isSyncro ? "OK" : "NO"}</Text>
+          <Text variant="labelSmall">synchro: {course.isSynchro ? "OK" : "NO"}</Text>
           {course.objectif && <Quotas value={course.objectif} />}
           <Text variant="headlineSmall">{course.trainCourse}</Text>
         </View>

@@ -17,7 +17,7 @@ export default abstract class Mesure implements MesureInterface {
 
   static isValidReponseApi(dataApi: unknown): dataApi is ApiMesureResponse {
 
-    return true;
+    return true; //TODO: a refactoriers
   }
 
   static createMesureFromApi(dataApi: unknown): Mesure {
@@ -28,7 +28,7 @@ export default abstract class Mesure implements MesureInterface {
     switch (dataApi.attributes.__component) {
       case 'mesure.mesure-bsc':
         return MesureBsc.createMesureFromApi(dataApi);
-      case 'mesure.meusre-mq':
+      case 'mesure.mesure-mq':
         throw new Error("Not implemented");
       default:
         throw new Error("Mesure non supporté");

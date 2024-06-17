@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { configurationState, coursesState } from "../store/storeAtom";
+import { configurationState, courseAllSelector, coursesState } from "../store/storeAtom";
 import CourseService from "../services/CourseService";
 import Course from "../models/Course";
 import { useDispatchCourses } from "./useDispatchCourses";
@@ -9,7 +9,7 @@ export default function useSynchroApi(): {
   synchroApiPush: Function;
   synchroApiPull: Function;
 } {
-  const listCourse = useRecoilValue(coursesState);
+  const listCourse = useRecoilValue(courseAllSelector);
   const { urlApi } = useRecoilValue(configurationState);
   const dispatch = useDispatchCourses();
 
@@ -28,9 +28,9 @@ export default function useSynchroApi(): {
 
   const synchroApiPull = async () => {
     console.log(`pull data from API`);
-    const response = await api.get(`/api/courses?populate=*`);
+    const response =  await api.get(`/api/courses?populate=*`);
 
-    console.log(response.data.data); 
+    console.log(response.data.data); // résultat non récupérer car non attendu
 
     const newListCourse: Course[] = [];
 
@@ -47,7 +47,8 @@ export default function useSynchroApi(): {
       ) {
         // objet n'existe pas dans le state on peut le rajouter
         // ajout de la structure en fonction du type de course
-        const newCourse = CourseService.addStructure(responseNet); //TODO: a refactoriser 
+        const newCourse = CourseService.addStructure(responseNet);
+        newCourse.isSynchro = true;  //TODO: a refactoriser 
         newListCourse.push(newCourse);
       }
     }

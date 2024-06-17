@@ -3,11 +3,11 @@ import { View, StyleSheet } from "react-native";
 import useSynchroApi from "../hook/useSynchroApi";
 import { useDispatchCourses } from "../hook/useDispatchCourses";
 import { useRecoilValue } from "recoil";
-import { coursesState } from "../store/storeAtom";
+import { courseAllSelector, coursesState } from "../store/storeAtom";
 
 export default function SaisiScreen() {
   const { synchroApiPush, synchroApiPull } = useSynchroApi();
-  const courses = useRecoilValue(coursesState); 
+  const courses = useRecoilValue(courseAllSelector); 
   const dispatch = useDispatchCourses();
 
 
@@ -34,6 +34,11 @@ export default function SaisiScreen() {
       </Button>
       <Button mode="contained" onPress={() => console.log(courses)} >
         Log courses
+      </Button>
+      <Button mode="contained" onPress={() => {
+          console.log(courses[0]);
+      }} >
+        Test function toJson
       </Button>
     </View>
   );
