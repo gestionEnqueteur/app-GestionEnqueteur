@@ -94,6 +94,6 @@ const style = StyleSheet.create({
   },
   detailTime: {
     flexDirection: "row",
-    width: 200,
+    // width: 200,
   },
 });
