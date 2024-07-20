@@ -29,7 +29,7 @@ export const jwtState = atom<string | undefined>({
 })
 
 
-// récupération de tous les courses 
+// récupération de tous les courses avec instenciation de l'objet Course
 export const courseAllSelector = selector({
   key: 'courseAllSelector', 
   get: ({get}) => {
@@ -44,7 +44,7 @@ export const courseAllSelector = selector({
 export const coursesBscSelector = selector({
   key: 'coursesBscSelector',
   get: ({get}) => {
-    const courses = get(coursesState); 
+    const courses = get(courseAllSelector); 
 
     return courses.filter((item) => item.mission === "BSC HDF"); 
   }

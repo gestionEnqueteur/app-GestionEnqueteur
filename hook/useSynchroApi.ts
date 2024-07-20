@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { configurationState, courseAllSelector, coursesState } from "../store/storeAtom";
+import { configurationState, courseAllSelector } from "../store/storeAtom";
 import Course from "../models/Course";
 import { useDispatchCourses } from "./useDispatchCourses";
 import useApi from '../hook/useApi'
@@ -19,15 +19,15 @@ export default function useSynchroApi(): {
     console.warn("URL non configuré");
   }
 
-  const synchroApiPush =  () => {
+  const synchroApiPush = () => {
     // Envoi des mesures 
-    throw new Error("Fonction non implémeneter"); 
-    
+    throw new Error("Fonction non implémeneter");
+
   };
 
   const synchroApiPull = async () => {
     console.log(`pull data from API`);
-    const response =  await api.get(`/api/courses?populate=*`);
+    const response = await api.get(`/api/courses?populate=*`);
 
     console.log(response.data.data); // résultat non récupérer car non attendu
 

@@ -7,7 +7,6 @@ import styles from "./modalStyle";
 import { useDispatchCourses } from "../../hook/useDispatchCourses";
 import Course from "../../models/Course";
 import CourseBsc from "../../models/bsc/CourseBsc";
-import { courseAllSelector } from "../../store/storeAtom";
 import MesureBsc from "../../models/bsc/MesureBsc";
 
 type Props = {
@@ -36,14 +35,13 @@ export default function InfoTrain({
     // test :
     console.log(course);
 
-    
-
-    
-
     // mise a jour du state
     const nextCourse: Course = produce(course, (draft) => {
       if (!(draft.mesure instanceof MesureBsc))
-      draft.mesure.infoTrain.composition = composition as "US" | "UM2" | "UM3";
+        draft.mesure.infoTrain.composition = composition as
+          | "US"
+          | "UM2"
+          | "UM3";
       draft.mesure.infoTrain.numMaterial = numMaterial;
     });
 

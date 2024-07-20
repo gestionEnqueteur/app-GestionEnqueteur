@@ -5,7 +5,6 @@ import { Text } from "react-native-paper";
 import { useRecoilValue } from "recoil";
 import { courseAllSelector } from "../store/storeAtom";
 import { useDispatchCourses } from "../hook/useDispatchCourses";
-import StorageService from "../services/StorageServices";
 import CourseInterface from "../models/CourseInterface";
 import TestMock from "../services/TestMock";
 
