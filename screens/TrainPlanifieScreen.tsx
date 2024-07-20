@@ -3,12 +3,13 @@ import DetailCourse from "../components/DetailCourse";
 import Course from "../models/Course";
 import { Text } from "react-native-paper";
 import { useRecoilValue } from "recoil";
-import { courseAllSelector, coursesBscSelector, coursesState } from "../store/storeAtom";
+import { courseAllSelector } from "../store/storeAtom";
 import { useDispatchCourses } from "../hook/useDispatchCourses";
-import CourseService from "../services/CourseService";
+import StorageService from "../services/StorageServices";
+import CourseInterface from "../models/CourseInterface";
+import TestMock from "../services/TestMock";
 
 export default function TrainPlanifieScreen() {
-  const stateCourses = useRecoilValue(coursesState);
   const selectorCourses = useRecoilValue(courseAllSelector); 
   const dispatchCourses = useDispatchCourses();
 
@@ -16,16 +17,19 @@ export default function TrainPlanifieScreen() {
     <DetailCourse course={item} />
   );
 
-  const handleOnRefresh = () => {
+  const handleOnRefresh = async () => {
     console.log("refresh");
-    dispatchCourses({ type: "load", courses: CourseService.loadCourses() });
+
+    const newcourses: CourseInterface[] = TestMock.getCourses(); 
+    dispatchCourses({type: "load", courses: newcourses}); 
+  
+
     console.log("syncho courses"); 
-    //TODO: courseService.loadCourses est un échaffauge, a refactoriser par la suite. 
   };
 
   return (
     <FlatList
-      data={stateCourses}
+      data={selectorCourses}
       renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()}
       onRefresh={handleOnRefresh}

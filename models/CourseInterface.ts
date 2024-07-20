@@ -1,4 +1,5 @@
 import InfoHoraireCourse from "./InfoHoraireCourse";
+import Mesure from "./Mesure";
 import { StatusEnum } from "./enum";
 
 export default interface CourseInterface {
@@ -15,6 +16,6 @@ export default interface CourseInterface {
   isSynchro: boolean; 
   objectif?: number;
   commentaire?: string;
-  mesure?: {};
+  mesure?: Mesure;
 }
 

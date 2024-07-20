@@ -1,6 +1,5 @@
 import { useRecoilValue } from "recoil";
 import { configurationState, courseAllSelector, coursesState } from "../store/storeAtom";
-import CourseService from "../services/CourseService";
 import Course from "../models/Course";
 import { useDispatchCourses } from "./useDispatchCourses";
 import useApi from '../hook/useApi'
@@ -47,7 +46,7 @@ export default function useSynchroApi(): {
       ) {
         // objet n'existe pas dans le state on peut le rajouter
         // ajout de la structure en fonction du type de course
-        const newCourse = CourseService.addStructure(responseNet);
+        const newCourse = new Course(responseNet);
         newCourse.isSynchro = true;  //TODO: a refactoriser 
         newListCourse.push(newCourse);
       }

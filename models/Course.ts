@@ -2,6 +2,9 @@ import InfoHoraireCourse from "./InfoHoraireCourse";
 import { StatusEnum } from "./enum";
 import CourseInterface from "./CourseInterface";
 import ApiCourseResponse from "./ApiCourseResponse";
+import Mesure from "./Mesure";
+import MesureBsc from "./bsc/MesureBsc";
+import MesureFactory from "./MesureFactory";
 
 
 
@@ -20,10 +23,31 @@ export default class Course implements CourseInterface{
   trainCourse?: string;
   objectif?: number;
   commentaire?: string;
-  mesure?: {};
+  mesure?: Mesure;
 
   constructor(course: CourseInterface) {
+    console.log("constructeur Course"); 
     Object.assign(this, course);
+
+    // Création de la mesure 
+    if (course.mesure) {
+      // mesure existe on le charge
+      this.mesure = MesureFactory.loadMesure(course.mesure); 
+    }
+    else {
+      // mesure n'existe pas on crée une mesure vide
+      console.log(`la mission est : ${course.mission}`); 
+      switch(course.mission) {
+        case "BSC HDF" : 
+          this.mesure = MesureFactory.createMesure("BSC"); 
+          break; 
+        case "MQ HDF": 
+          console.log("mesure MQ à implemnter"); 
+          break; 
+        default: 
+          console.log("pas de mesure pour cette mission"); 
+      }
+    }
   }
 
   toJson(): CourseInterface {

@@ -33,6 +33,7 @@ export const jwtState = atom<string | undefined>({
 export const courseAllSelector = selector({
   key: 'courseAllSelector', 
   get: ({get}) => {
+    console.log("intanciation des objet"); 
     const courses: CourseInterface[] = get(coursesState); 
     return courses.map(course => new Course(course)); 
   }

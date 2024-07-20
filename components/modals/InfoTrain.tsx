@@ -27,8 +27,9 @@ export default function InfoTrain({
 
   const onSubmit = () => {
     // test :
-    console.log(composition);
-    console.log(numMaterial);
+    console.log(course);
+
+    
 
     // mise a jour du state
     const nextCourse: CourseBsc = produce(course, (draft) => {

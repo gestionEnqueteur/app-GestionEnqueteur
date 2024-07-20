@@ -14,8 +14,22 @@ export default class MesureBsc extends Mesure implements MesureBscInterface {
   questionnaires?: Questionnaires;
   commentaireNoSuccess?: string;
 
-  constructor(mesureBsc: MesureBscInterface) {
+  constructor(mesureBsc: MesureBscInterface = {
+    infoEnqueteur: {
+
+    },
+    infoTrain: {
+      composition: "US",
+      numMaterial: ""
+    },
+    retards: {
+
+    },
+    type: "BSC"
+  }) {
+    console.log("constructeur CourseBsc"); 
     super(mesureBsc);
+    console.log("instanciation d'une mesure BSC");
   }
 
   convertDataToApi(): unknown {
@@ -46,8 +60,8 @@ export default class MesureBsc extends Mesure implements MesureBscInterface {
       },
       infoTrain: {
         numMaterial: dataApi.attributes.numMaterial,
-        composition: ["US", "UM2", "UM3"].includes(dataApi.attributes.composition) 
-          ? dataApi.attributes.composition as ("US"| "UM2"| "UM3")
+        composition: ["US", "UM2", "UM3"].includes(dataApi.attributes.composition)
+          ? dataApi.attributes.composition as ("US" | "UM2" | "UM3")
           : "US"
       },
       retards: {
