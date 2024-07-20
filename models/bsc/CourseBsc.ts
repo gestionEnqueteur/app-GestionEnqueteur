@@ -6,6 +6,7 @@ import MesureBsc from './MesureBsc'
 export default class CourseBsc extends Course {
    declare mesure: MesureBsc;
    declare infoHoraireCourse: InfoHoraireCourse; 
+   declare ligne: string;
 
   constructor(course: CourseInterface) {
     super(course); 

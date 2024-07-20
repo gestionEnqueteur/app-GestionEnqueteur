@@ -4,7 +4,6 @@ import { Button, TextInput, Text, SegmentedButtons } from "react-native-paper";
 import { produce } from "immer";
 import styles from "./modalStyle";
 
-
 import { useDispatchCourses } from "../../hook/useDispatchCourses";
 import Course from "../../models/Course";
 import CourseBsc from "../../models/bsc/CourseBsc";
@@ -20,9 +19,8 @@ export default function InfoTrain({
   course,
   setVisibleModal,
 }: Readonly<Props>) {
-
   if (!(course.mesure instanceof MesureBsc)) {
-    throw new Error("Mesure Invalide pour cette page"); 
+    throw new Error("Mesure Invalide pour cette page");
   }
 
   const [composition, setComposition] = useState<string>(
