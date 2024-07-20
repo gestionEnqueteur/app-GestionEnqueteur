@@ -1,10 +1,18 @@
-import Course from "../Course";
-import InfoHoraireCourse from "../InfoHoraireCourse";
-import MesureBSC from "./MesureBscInterface";
+import Course from '../Course'
+import CourseInterface from '../CourseInterface'
+import InfoHoraireCourse from '../InfoHoraireCourse';
+import MesureBsc from './MesureBsc'
 
-export default interface CourseBsc extends Course {
-  mesure: MesureBSC;
-  ligne: string;
-  infoHoraireCourse: InfoHoraireCourse;
-  trainCourse: string;
+export default class CourseBsc extends Course {
+   declare mesure: MesureBsc;
+   declare infoHoraireCourse: InfoHoraireCourse; 
+
+  constructor(course: CourseInterface) {
+    super(course); 
+
+    if (!(course.mesure instanceof MesureBsc)) {
+      throw new Error("Mesure invalide, doit etre de type MesureBsc"); 
+    }
+  }
 }
+

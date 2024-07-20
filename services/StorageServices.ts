@@ -1,7 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import TestMock from "./TestMock";
-import Course from "../models/Course";
-
 export default class StorageService {
 
   static async saveData(
@@ -37,14 +34,4 @@ export default class StorageService {
     }
   }
 
-  /**
-   *
-   * @returns the list des courses from mock
-   * @deprecated ne pas utiliser, sera supprimer très prochainement !!!!
-   */
-  static getAllCourse() {
-    //TODO: supprimer la fonction
-
-    return TestMock.getCourses();
-  }
 }

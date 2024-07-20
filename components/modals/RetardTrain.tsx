@@ -4,9 +4,9 @@ import { Button, Text } from "react-native-paper";
 import styles from "./modalStyle";
 
 import TopRetard from "../bsc/TopRetard";
-import CourseBsc from "../../models/bsc/CourseBsc";
 import { useDispatchCourses } from "../../hook/useDispatchCourses";
 import { produce } from "immer";
+import CourseBsc from "../../models/bsc/CourseBsc";
 
 type Props = {
   course: CourseBsc;

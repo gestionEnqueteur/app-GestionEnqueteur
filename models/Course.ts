@@ -3,12 +3,14 @@ import { StatusEnum } from "./enum";
 import CourseInterface from "./CourseInterface";
 import ApiCourseResponse from "./ApiCourseResponse";
 import Mesure from "./Mesure";
-import MesureBsc from "./bsc/MesureBsc";
 import MesureFactory from "./MesureFactory";
+import  { enableMapSet, immerable} from "immer"; 
 
-
+enableMapSet(); 
 
 export default class Course implements CourseInterface{
+
+  static readonly [immerable] = true;
 
   id!: number;
   mission!: string;
