@@ -27,7 +27,7 @@ export default class MesureBsc extends Mesure implements MesureBscInterface {
     },
     type: "BSC"
   }) {
-    console.log("constructeur CourseBsc"); 
+    console.log("constructeur CourseBsc");
     super(mesureBsc);
     console.log("instanciation d'une mesure BSC");
   }
@@ -68,6 +68,11 @@ export default class MesureBsc extends Mesure implements MesureBscInterface {
         retardDepart: dataApi.attributes.retardDepart,
         retardArrive: dataApi.attributes.retardArrive
       },
+      questionnaires: {
+        distribuees: dataApi.attributes.questionnaireDistribuess, 
+        vides: dataApi.attributes.questionnaireVides, 
+        inexploitables: dataApi.attributes.questionnaireInexploitables
+      }, 
       type: dataApi.attributes.__component
     }
 
@@ -80,7 +85,7 @@ export default class MesureBsc extends Mesure implements MesureBscInterface {
       typeof dataApi === 'object' &&
       dataApi !== null &&
       'id' in dataApi &&
-      'attributs' in dataApi &&
+      'attributes' in dataApi &&
       (dataApi as any).attributes.__component === "mesure.mesure-bsc"
     ) return true;
     else return false;
