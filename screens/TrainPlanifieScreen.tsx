@@ -9,7 +9,7 @@ import CourseInterface from "../models/CourseInterface";
 import TestMock from "../services/TestMock";
 
 export default function TrainPlanifieScreen() {
-  const selectorCourses = useRecoilValue(courseAllSelector); 
+  const selectorCourses = useRecoilValue(courseAllSelector);
   const dispatchCourses = useDispatchCourses();
 
   const renderItem = ({ item }: { item: Course }) => (
@@ -19,11 +19,10 @@ export default function TrainPlanifieScreen() {
   const handleOnRefresh = async () => {
     console.log("refresh");
 
-    const newcourses: CourseInterface[] = TestMock.getCourses(); 
-    dispatchCourses({type: "load", courses: newcourses}); 
-  
+    const newcourses: CourseInterface[] = TestMock.getCourses();
+    dispatchCourses({ type: "load", courses: newcourses });
 
-    console.log("syncho courses"); 
+    console.log("syncho courses");
   };
 
   return (

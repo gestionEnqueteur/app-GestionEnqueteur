@@ -17,7 +17,7 @@ export default class Course implements CourseInterface{
   pds!: string;
   vac!: string;
   affectation?: string;
-  infoHoraireCourse?: InfoHoraireCourse;
+  infoHoraireCourse!: InfoHoraireCourse;
   status!: StatusEnum;
   ligne?: string;
   service?: string;
@@ -34,11 +34,13 @@ export default class Course implements CourseInterface{
     // Création de la mesure 
     if (course.mesure) {
       // mesure existe on le charge
+      console.log("Debug : Mesure existe, load"); 
       this.mesure = MesureFactory.loadMesure(course.mesure); 
     }
     else {
       // mesure n'existe pas on crée une mesure vide
-      console.log(`la mission est : ${course.mission}`); 
+      console.log(`Debug Course: la mission est : ${course.mission}`); 
+      console.log("Debug course : création mesure"); 
       switch(course.mission) {
         case "BSC HDF" : 
           this.mesure = MesureFactory.createMesure("BSC"); 

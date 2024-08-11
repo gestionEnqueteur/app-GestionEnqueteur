@@ -2,7 +2,7 @@ import ApiMesureResponse from "./ApiMesureResponse";
 import Mesure from "./Mesure";
 import MesureInterface from "./MesureInterface";
 import MesureBsc from "./bsc/MesureBsc";
-import MesureMq from "./mq/MesureMQ";
+import MesureBscInterface from "./bsc/MesureBscInterface";
 
 export default class MesureFactory {
 
@@ -41,7 +41,7 @@ export default class MesureFactory {
   static loadMesure(mesure: MesureInterface): Mesure {
     switch(mesure.type) {
       case "BSC": 
-        return new MesureBsc(mesure as MesureBsc); 
+        return new MesureBsc(mesure as MesureBscInterface); 
       case "MQ": 
         throw new Error("Not implemented"); 
       default: 

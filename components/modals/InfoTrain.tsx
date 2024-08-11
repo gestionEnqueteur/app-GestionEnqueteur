@@ -8,6 +8,7 @@ import { useDispatchCourses } from "../../hook/useDispatchCourses";
 import Course from "../../models/Course";
 import CourseBsc from "../../models/bsc/CourseBsc";
 import MesureBsc from "../../models/bsc/MesureBsc";
+import Mesure from "../../models/Mesure";
 
 type Props = {
   course: CourseBsc;
@@ -32,22 +33,17 @@ export default function InfoTrain({
   const dispatch = useDispatchCourses();
 
   const onSubmit = () => {
-    // test :
-    console.log(course);
-
-    // mise a jour du state
+    // mise a jour du state 
     const nextCourse: Course = produce(course, (draft) => {
-      if (!(draft.mesure instanceof MesureBsc))
-        draft.mesure.infoTrain.composition = composition as
-          | "US"
-          | "UM2"
-          | "UM3";
-      draft.mesure.infoTrain.numMaterial = numMaterial;
-    });
+       if (!(draft.mesure instanceof MesureBsc)){ 
+        throw new Error("Error fatal pas une mesure BSC");
+       }
+       draft.mesure.infoTrain.composition = composition as "US" | "UM2" | "UM3"; 
+       draft.mesure.infoTrain.numMaterial = numMaterial;
+       
+    }); 
 
-    console.log(nextCourse);
-
-    dispatch({ type: "update", course: nextCourse.toJson() });
+    dispatch({ type: "update", course: nextCourse });
 
     setVisibleModal(false);
   };

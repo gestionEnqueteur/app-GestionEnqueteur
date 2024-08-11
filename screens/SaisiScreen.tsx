@@ -9,7 +9,8 @@ export default function SaisiScreen() {
   const { synchroApiPush, synchroApiPull } = useSynchroApi();
   const courses = useRecoilValue(courseAllSelector); 
   const dispatch = useDispatchCourses();
-
+  
+  const state = useRecoilValue(coursesState); 
 
   const handlePull = async () => {
     try {
@@ -33,13 +34,9 @@ export default function SaisiScreen() {
         Drop data
       </Button>
       <Button mode="contained" onPress={() => console.log(courses)} >
-        Log courses
+        Log AsyncStorage Course
       </Button>
-      <Button mode="contained" onPress={() => {
-          console.log(courses[0]);
-      }} >
-        Test function toJson
-      </Button>
+      
     </View>
   );
 }

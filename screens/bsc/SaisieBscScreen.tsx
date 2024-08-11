@@ -8,17 +8,21 @@ import MenuBurger from "../../components/MenuBurger";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigations/StackNavigation";
 import { useCourseById } from "../../hook/useCourseById";
-import CourseBsc from "../../models/bsc/CourseBsc";
 import { useState } from "react";
 import Questionnaires from "../../models/bsc/Questionnaire";
 import { produce } from "immer";
 import { useDispatchCourses } from "../../hook/useDispatchCourses";
+import MesureBsc from "../../models/bsc/MesureBsc";
 
 type Props = NativeStackScreenProps<RootStackParamList, "SaisieBsc">;
 
 export default function SaisiBscScreen({ route }: Readonly<Props>) {
-  const course = useCourseById(route.params.courseId) as CourseBsc;
+  const course = useCourseById(route.params.courseId); 
   const dispatch = useDispatchCourses();
+
+  if(!(course.mesure instanceof MesureBsc)) {
+    throw new Error("Mesure n'est pas une MesureBsc");
+  }
 
   // raccoursie
   const { retards, infoTrain } = course.mesure;
@@ -74,6 +78,9 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
     console.log(`questionnaire: ${JSON.stringify(questionnaire)}`);
 
     const newCourse = produce(course, (draft) => {
+      if (!(draft.mesure instanceof MesureBsc)) {
+        throw new Error("Mesure n'est pas une Mesure BSC"); 
+      }
       draft.mesure.questionnaires = questionnaire;
     });
     dispatch({ type: "update", course: newCourse });
@@ -91,7 +98,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
     <View style={style.container}>
       <Surface style={style.header} mode="elevated" elevation={4}>
         <View style={style.circulation}>
-          <CardNumeroLine lineNumber={course.ligne} />
+          <CardNumeroLine lineNumber={course.ligne ? course.ligne : "KO"} />
 
           <Text variant="displaySmall">{course.trainCourse}</Text>
         </View>
