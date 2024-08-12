@@ -128,4 +128,9 @@ describe("test de MesureFactory", () => {
     // expect(mesureTest.questionnaires?.exploitables).toBe(86); 
     expect(mesureTest.infoTrain.numMaterial).toBe("B8260"); 
   }); 
+
+  test("test error sur data invalide pour createMesureFromApi", () => {
+
+    expect(() => { MesureFactory.createMesureFromApi("data invalide")}).toThrow("Type invalide"); 
+  })
 });

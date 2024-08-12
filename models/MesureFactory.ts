@@ -8,7 +8,10 @@ export default class MesureFactory {
 
   static isValidReponseApi(dataApi: unknown): dataApi is ApiMesureResponse {
 
-    return true; //TODO: a refactoriers
+    return (typeof dataApi === "object" && 
+      dataApi !== null && 
+      'attributes' in dataApi 
+    )
   }
 
   static createMesureFromApi(dataApi: unknown): Mesure {
@@ -28,24 +31,24 @@ export default class MesureFactory {
   }
 
   static createMesure(type: string): Mesure {
-    switch(type) {
-      case "BSC": 
-        return new MesureBsc(); 
-      case "MQ": 
-        throw new Error("Not implemented"); 
-      default : 
-        throw new Error("Type invalide"); 
+    switch (type) {
+      case "BSC":
+        return new MesureBsc();
+      case "MQ":
+        throw new Error("Not implemented");
+      default:
+        throw new Error("Type invalide");
     }
   }
 
   static loadMesure(mesure: MesureInterface): Mesure {
-    switch(mesure.type) {
-      case "BSC": 
-        return new MesureBsc(mesure as MesureBscInterface); 
-      case "MQ": 
-        throw new Error("Not implemented"); 
-      default: 
-        throw new Error("Type not supported"); 
+    switch (mesure.type) {
+      case "BSC":
+        return new MesureBsc(mesure as MesureBscInterface);
+      case "MQ":
+        throw new Error("Not implemented");
+      default:
+        throw new Error("Type not supported");
     }
   }
 

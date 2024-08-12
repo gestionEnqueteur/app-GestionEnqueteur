@@ -12,10 +12,6 @@ export default abstract class Mesure implements MesureInterface {
 
   }
 
-  toJson() {
-    return { ...this };
-  }
-
   abstract convertDataToApi(): unknown;
 
 

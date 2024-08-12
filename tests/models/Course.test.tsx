@@ -1,6 +1,6 @@
 import Course from "../../models/Course";
 import CourseInterface from "../../models/CourseInterface";
-import Mesure from "../../models/Mesure";
+import { StatusEnum } from "../../models/enum";
 import TestMock from "../../services/TestMock";
 
 
@@ -21,6 +21,57 @@ describe("Test la class Course", () => {
   test('course est une instance de Course', () => {
     expect(course).toBeInstanceOf(Course); 
   })
+
+  test("test error avec dataApi incorrect sur createCourseFromApi", () => { 
+    expect(() => {
+      Course.createCourseFromApi("data incorrect");
+    }).toThrow("Format incorrect"); 
+  }); 
+
+  test("test création from Api createCourseFromApi", () => {
+    const dataApi = {
+      id: 69, 
+      attributes: {
+        mission: "BSC HDF", 
+        ligne: "K12", 
+        trainCourse: "16420", 
+        objectif: 80, 
+        placeDeparture: "LONGUEAU", 
+        placeArrival: "PARIS", 
+        hd: "string", 
+        ha: "string", 
+        status: "TEST", 
+        commentaire: "un test"
+      }
+    }
+
+    const courseTest = Course.createCourseFromApi(dataApi); 
+
+    expect(courseTest).toBeInstanceOf(Course); 
+  }); 
+
+  test("test de convertDataToApi", () => {
+
+    const courseInterfaceTest: CourseInterface = {
+      id: 42,
+      mission: "BSC HDF",
+      trainCourse: "16420", 
+      objectif: 69, 
+      pds: "LLF",
+      vac: "test",
+      status: StatusEnum.DRAFT,
+      isSynchro: false
+    }
+
+    const courseTest = new Course(courseInterfaceTest); 
+    const dataToSend = courseTest.convertDataToApi(); 
+
+    expect(dataToSend.mission).toBe("BSC HDF"); 
+    expect(dataToSend.trainCourse).toBe("16420"); 
+    expect(dataToSend.objectif).toBe(69); 
+  })
+
+
 
   
 })

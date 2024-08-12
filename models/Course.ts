@@ -46,19 +46,12 @@ export default class Course implements CourseInterface{
           this.mesure = MesureFactory.createMesure("BSC"); 
           break; 
         case "MQ HDF": 
-          console.log("mesure MQ à implemnter"); 
+          console.log("mesure MQ à implementer"); 
           break; 
         default: 
           console.log("pas de mesure pour cette mission"); 
       }
     }
-  }
-
-  toJson(): CourseInterface {
-    
-    console.log( { ...this } );
-    
-    return { ...this }
   }
 
   convertDataToApi() {
