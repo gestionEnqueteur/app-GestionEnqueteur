@@ -50,7 +50,6 @@ export default function useSynchroApi(): {
     }
 
     // passage de isSynchro a true pour les courses synchronisé 
-    console.log(coursesIdCourseSynchronised);
     dispatch({ type: "synchro", coursesId: coursesIdCourseSynchronised });
 
   };
@@ -58,8 +57,6 @@ export default function useSynchroApi(): {
   const synchroApiPull = async () => {
     console.log(`pull data from API`);
     const response = await api.get(`/api/courses?populate=*`);
-
-    console.log(response.data.data); // résultat non récupérer car non attendu
 
     const newListCourse: Course[] = [];
 
@@ -77,7 +74,7 @@ export default function useSynchroApi(): {
         // objet n'existe pas dans le state on peut le rajouter
         // ajout de la structure en fonction du type de course
         const newCourse = new Course(responseNet);
-        newCourse.isSynchro = true;  //TODO: a refactoriser 
+        newCourse.isSynchro = true;
         newListCourse.push(newCourse);
       }
     }

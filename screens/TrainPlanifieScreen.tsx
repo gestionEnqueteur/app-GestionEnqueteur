@@ -21,8 +21,6 @@ export default function TrainPlanifieScreen() {
 
     const newcourses: CourseInterface[] = TestMock.getCourses();
     dispatchCourses({ type: "load", courses: newcourses });
-
-    console.log("syncho courses");
   };
 
   return (

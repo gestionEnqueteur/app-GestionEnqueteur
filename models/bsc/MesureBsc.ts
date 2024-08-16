@@ -27,9 +27,7 @@ export default class MesureBsc extends Mesure implements MesureBscInterface {
     },
     type: "BSC"
   }) {
-    console.log("constructeur CourseBsc");
     super(mesureBsc);
-    console.log("instanciation d'une mesure BSC");
   }
 
   convertDataToApi(): unknown {

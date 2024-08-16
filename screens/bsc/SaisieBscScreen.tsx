@@ -41,8 +41,6 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
   const [errorVide, setErrorVide] = useState(false);
   const [errorInexploitable, setErrorInexploitable] = useState(false);
 
-  console.log("re-render page saisieBSC");
-
   // handleOnChangeQuestionnaire
   const handleOnChangeVide = (newValue: string) => {
     const vide = +newValue;

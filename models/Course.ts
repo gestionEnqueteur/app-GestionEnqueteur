@@ -28,19 +28,15 @@ export default class Course implements CourseInterface{
   mesure?: Mesure;
 
   constructor(course: CourseInterface) {
-    console.log("constructeur Course"); 
     Object.assign(this, course);
 
     // Création de la mesure 
     if (course.mesure) {
       // mesure existe on le charge
-      console.log("Debug : Mesure existe, load"); 
       this.mesure = MesureFactory.loadMesure(course.mesure); 
     }
     else {
       // mesure n'existe pas on crée une mesure vide
-      console.log(`Debug Course: la mission est : ${course.mission}`); 
-      console.log("Debug course : création mesure"); 
       switch(course.mission) {
         case "BSC HDF" : 
           this.mesure = MesureFactory.createMesure("BSC"); 
@@ -104,8 +100,6 @@ export default class Course implements CourseInterface{
   }
 
   static isValidReponseApi(response: unknown): response is ApiCourseResponse {
-    console.log("type guarde de course : "); 
-    console.log(response);
 
     if (typeof response !== 'object' || response === null) return false;
 

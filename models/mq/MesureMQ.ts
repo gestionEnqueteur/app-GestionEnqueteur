@@ -1,5 +1,5 @@
 import Mesure from "../Mesure";
-import MesureMqInterface from "./MesureMQInterface";
+import MesureMqInterface from "./MesureMqInterface";
 
 
 export default class MesureMq extends Mesure implements MesureMqInterface {
