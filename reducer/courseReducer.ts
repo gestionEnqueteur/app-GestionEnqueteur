@@ -6,20 +6,13 @@ export type ActionCourse =
   | { type: "delete"; course: CourseInterface }
   | { type: "add"; course: CourseInterface | CourseInterface[] }
   | { type: "load"; courses: CourseInterface[] }
+  | { type: "synchro", coursesId: number[] }
   | { type: "reset" };
-
-function removeMethod(payload: CourseInterface) {
-  // on vérfie si instance de Course 
-  if(payload instanceof Course) {
-    return payload.toJson(); 
-  }
-  return payload; 
-}
 
 export default function courseReducer(state: CourseInterface[], action: ActionCourse) {
   let newState: CourseInterface[];
 
-  
+
 
   switch (action.type) {
     case "add":
