@@ -43,6 +43,13 @@ export default function courseReducer(state: CourseInterface[], action: ActionCo
       newState = action.courses;
       return newState;
 
+    case "synchro":
+      newState = state.map(item =>
+        action.coursesId.includes(item.id)
+          ? { ...item, isSynchro: true }
+          : item)
+      return newState;
+
     case "reset":
       newState = [];
       return newState;
@@ -68,6 +75,6 @@ function addCourse(prevState: CourseInterface[], courses: CourseInterface | Cour
   } else if (prevState.find((item) => item.id === courses.id) === undefined) {
     return [...prevState, courses];
   }
-  console.warn("duplication ID"); 
+  console.warn("duplication ID");
   return prevState;
 }

@@ -3,6 +3,7 @@ import { configurationState, courseAllSelector } from "../store/storeAtom";
 import Course from "../models/Course";
 import { useDispatchCourses } from "./useDispatchCourses";
 import useApi from '../hook/useApi'
+import Mesure from "../models/Mesure";
 
 export default function useSynchroApi(): {
   synchroApiPush: Function;
@@ -19,9 +20,38 @@ export default function useSynchroApi(): {
     console.warn("URL non configuré");
   }
 
-  const synchroApiPush = () => {
+  const synchroApiPush = async () => {
     // Envoi des mesures 
-    throw new Error("Fonction non implémeneter");
+    const coursesNotSynchronised = listCourse.filter((course) => course.isSynchro === false);
+    const coursesIdCourseSynchronised: number[] = [];
+
+    for (const course of coursesNotSynchronised) {
+      const mesure: Mesure | undefined = course.mesure;
+
+      if (!mesure) continue;
+
+      const dataToSend = {
+        data: {
+          mesure: [mesure.convertDataToApi()],
+          course: course.id
+        },
+      }
+      console.log(dataToSend);
+      try {
+        const responseApi = await api.post(`/api/mesures`, dataToSend);
+        coursesIdCourseSynchronised.push(course.id);
+
+        console.log(responseApi);
+      }
+      catch (error) {
+        console.log(error);
+      }
+
+    }
+
+    // passage de isSynchro a true pour les courses synchronisé 
+    console.log(coursesIdCourseSynchronised);
+    dispatch({ type: "synchro", coursesId: coursesIdCourseSynchronised });
 
   };
 
