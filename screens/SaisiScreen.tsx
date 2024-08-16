@@ -9,8 +9,6 @@ export default function SaisiScreen() {
   const { synchroApiPush, synchroApiPull } = useSynchroApi();
   const courses = useRecoilValue(courseAllSelector); 
   const dispatch = useDispatchCourses();
-  
-  const state = useRecoilValue(coursesState); 
 
   const handlePull = async () => {
     try {

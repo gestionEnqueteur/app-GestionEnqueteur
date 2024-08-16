@@ -8,7 +8,6 @@ import { useDispatchCourses } from "../../hook/useDispatchCourses";
 import Course from "../../models/Course";
 import CourseBsc from "../../models/bsc/CourseBsc";
 import MesureBsc from "../../models/bsc/MesureBsc";
-import Mesure from "../../models/Mesure";
 
 type Props = {
   course: CourseBsc;

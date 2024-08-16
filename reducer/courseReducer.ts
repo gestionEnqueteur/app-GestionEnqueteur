@@ -1,4 +1,3 @@
-import Course from "../models/Course";
 import CourseInterface from "../models/CourseInterface";
 
 export type ActionCourse =
