@@ -3,9 +3,11 @@ import { View, StyleSheet } from "react-native";
 import { Button, TextInput, Text, SegmentedButtons } from "react-native-paper";
 import { produce } from "immer";
 import styles from "./modalStyle";
-import CourseBsc from "../../models/bsc/CourseBsc";
 
 import { useDispatchCourses } from "../../hook/useDispatchCourses";
+import Course from "../../models/Course";
+import CourseBsc from "../../models/bsc/CourseBsc";
+import MesureBsc from "../../models/bsc/MesureBsc";
 
 type Props = {
   course: CourseBsc;
@@ -16,6 +18,10 @@ export default function InfoTrain({
   course,
   setVisibleModal,
 }: Readonly<Props>) {
+  if (!(course.mesure instanceof MesureBsc)) {
+    throw new Error("Mesure Invalide pour cette page");
+  }
+
   const [composition, setComposition] = useState<string>(
     course.mesure.infoTrain.composition
   );
@@ -26,17 +32,15 @@ export default function InfoTrain({
   const dispatch = useDispatchCourses();
 
   const onSubmit = () => {
-    // test :
-    console.log(composition);
-    console.log(numMaterial);
-
-    // mise a jour du state
-    const nextCourse: CourseBsc = produce(course, (draft) => {
-      draft.mesure.infoTrain.composition = composition as "US" | "UM2" | "UM3";
-      draft.mesure.infoTrain.numMaterial = numMaterial;
-    });
-
-    console.log(nextCourse);
+    // mise a jour du state 
+    const nextCourse: Course = produce(course, (draft) => {
+       if (!(draft.mesure instanceof MesureBsc)){ 
+        throw new Error("Error fatal pas une mesure BSC");
+       }
+       draft.mesure.infoTrain.composition = composition as "US" | "UM2" | "UM3"; 
+       draft.mesure.infoTrain.numMaterial = numMaterial;
+       
+    }); 
 
     dispatch({ type: "update", course: nextCourse });
 

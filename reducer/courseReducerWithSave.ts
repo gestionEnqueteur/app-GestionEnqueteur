@@ -1,9 +1,9 @@
-import Course from "../models/Course";
+import CourseInterface from "../models/CourseInterface";
 import StorageService from "../services/StorageServices";
 import courseReducer, { ActionCourse } from "./courseReducer";
 
 export function courseReducerWithSave(
-  prevState: Course[],
+  prevState: CourseInterface[],
   action: ActionCourse
 ) {
   // utilisation du reducer original
@@ -15,10 +15,7 @@ export function courseReducerWithSave(
   return newState;
 }
 
-const middlewareAfterUpdate = (newState: Course[]) => {
-  // on instance le service
-  const storageService = new StorageService();
-
+const middlewareAfterUpdate = (newState: CourseInterface[]) => {
   // on sauvegarde la data
-  storageService.saveData(newState, "courses");
+  StorageService.saveData(newState, "courses");
 };

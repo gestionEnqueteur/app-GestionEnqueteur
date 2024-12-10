@@ -3,25 +3,24 @@ import DetailCourse from "../components/DetailCourse";
 import Course from "../models/Course";
 import { Text } from "react-native-paper";
 import { useRecoilValue } from "recoil";
-import { coursesBscSelector, coursesState } from "../store/storeAtom";
+import { courseAllSelector } from "../store/storeAtom";
 import { useDispatchCourses } from "../hook/useDispatchCourses";
-import { CourseContext } from "../provider/AppProvider";
-import { useContext } from "react";
+import CourseInterface from "../models/CourseInterface";
+import TestMock from "../services/TestMock";
 
 export default function TrainPlanifieScreen() {
-  const stateCourses = useRecoilValue(coursesState);
-  const selectorCourses = useRecoilValue(coursesBscSelector); 
+  const selectorCourses = useRecoilValue(courseAllSelector);
   const dispatchCourses = useDispatchCourses();
-  const courseService = useContext(CourseContext);
 
   const renderItem = ({ item }: { item: Course }) => (
     <DetailCourse course={item} />
   );
 
-  const handleOnRefresh = () => {
+  const handleOnRefresh = async () => {
     console.log("refresh");
-    dispatchCourses({ type: "load", courses: courseService.loadCourses() });
-    //TODO: courseService.loadCourses est un échaffauge, a refactoriser par la suite. 
+
+    const newcourses: CourseInterface[] = TestMock.getCourses();
+    dispatchCourses({ type: "load", courses: newcourses });
   };
 
   return (

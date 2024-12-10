@@ -1,17 +1,43 @@
 import { Button } from "react-native-paper";
-import { View, StyleSheet } from "react-native"; 
-
+import { View, StyleSheet } from "react-native";
+import useSynchroApi from "../hook/useSynchroApi";
+import { useDispatchCourses } from "../hook/useDispatchCourses";
+import { useRecoilValue } from "recoil";
+import { courseAllSelector, coursesState } from "../store/storeAtom";
 
 export default function SaisiScreen() {
+  const { synchroApiPush, synchroApiPull } = useSynchroApi();
+  const courses = useRecoilValue(courseAllSelector); 
+  const dispatch = useDispatchCourses();
+
+  const handlePull = async () => {
+    try {
+      await synchroApiPull(); 
+    }
+    catch(error) {
+      console.error(error); 
+    }
+    
+  }
+
   return (
     <View style={styles.container}>
-      <Button mode="contained" onPress={() => console.log("saisi BSC")}>BSC</Button>
-      <Button mode="contained" onPress={() => console.log("saisi MQ")}>MQ</Button>
-      <Button mode="contained" onPress={() => console.log("saisi autres")}>Autres</Button>
+      <Button mode="contained" onPress={() => synchroApiPush()}>
+        Push
+      </Button>
+      <Button mode="contained" onPress={() => handlePull()}>
+        Pull
+      </Button>
+      <Button mode="contained" onPress={() => dispatch({type: "reset"})}>
+        Drop data
+      </Button>
+      <Button mode="contained" onPress={() => console.log(courses)} >
+        Log AsyncStorage Course
+      </Button>
+      
     </View>
-  )
+  );
 }
-
 
 const styles = StyleSheet.create({
   container: {

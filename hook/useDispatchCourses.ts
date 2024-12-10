@@ -7,9 +7,11 @@ export function useDispatchCourses(): (action: ActionCourse) => void {
   // récupération du state Recoil
   const [courses, setCourses] = useRecoilState(coursesState);
 
+
   const dispatch = (action: ActionCourse) => {
-    const nextState = courseReducerWithSave(courses, action);
-    setCourses(nextState);
+    const nextState = courseReducerWithSave(courses, action); 
+
+    setCourses(nextState);   
   };
 
   // on retourne le dispatch

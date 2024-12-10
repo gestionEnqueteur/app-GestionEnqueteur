@@ -9,7 +9,6 @@ import TypeCourse from "./TypeCourse";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import CourseBsc from "../models/bsc/CourseBsc";
 import Course from "../models/Course";
 import { RootStackParamList } from "../screens/navigations/StackNavigation";
 
@@ -59,13 +58,14 @@ export default function DetailCourse(props: Readonly<Props>) {
           </View>
           <View>
             {course.mission === "BSC HDF" && (
-              <MenuBurger course={course as CourseBsc} />
+              <MenuBurger course={course} />
             )}
           </View>
         </View>
         <View style={style.infoLine}>
           <TypeCourse mission={course.mission} />
           {course.ligne && <CardNumeroLine lineNumber={course.ligne} />}
+          <Text variant="labelSmall">synchro: {course.isSynchro ? "OK" : "NO"}</Text>
           {course.objectif && <Quotas value={course.objectif} />}
           <Text variant="headlineSmall">{course.trainCourse}</Text>
         </View>

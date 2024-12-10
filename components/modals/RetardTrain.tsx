@@ -4,12 +4,13 @@ import { Button, Text } from "react-native-paper";
 import styles from "./modalStyle";
 
 import TopRetard from "../bsc/TopRetard";
-import CourseBsc from "../../models/bsc/CourseBsc";
 import { useDispatchCourses } from "../../hook/useDispatchCourses";
 import { produce } from "immer";
+import MesureBsc from "../../models/bsc/MesureBsc";
+import Course from "../../models/Course";
 
 type Props = {
-  course: CourseBsc;
+  course: Course;
   setVisibleModal: (value: boolean) => void;
 };
 
@@ -18,6 +19,11 @@ export default function RetardTrain({
   setVisibleModal,
 }: Readonly<Props>) {
   const dispatch = useDispatchCourses();
+
+  // verif mesure BSC 
+  if(!(course.mesure instanceof MesureBsc)) {
+    throw new Error("Mesure n'est pas une mesure BSC"); 
+  }
 
   // state form
   const [retardDepart, setRetardDepart] = useState(
@@ -37,7 +43,11 @@ export default function RetardTrain({
       return;
     }
 
-    const newCourse: CourseBsc = produce(course, (draft) => {
+    const newCourse = produce(course, (draft) => {
+      if(!(draft.mesure instanceof MesureBsc)) {
+        throw new Error("mesure n'est pas une mesure BSC"); 
+      }
+
       // modification de la course
       draft.mesure.retards.retardDepart = retardDepart;
       draft.mesure.retards.retardArrive = retardArrive;
