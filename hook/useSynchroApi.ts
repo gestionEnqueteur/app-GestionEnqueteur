@@ -55,32 +55,38 @@ export default function useSynchroApi(): {
   };
 
   const synchroApiPull = async () => {
-    console.log(`pull data from API`);
-    const response = await api.get(`/api/courses?populate=*`);
+    try {
+      console.log(`pull data from API`);
+      const response = await api.get(`/api/courses?populate=*`);
 
-    const newListCourse: Course[] = [];
+      const newListCourse: Course[] = [];
 
-    //traitement de la réponse
-    const listeCourseApiUnknown: unknown[] = response.data.data; // ajout vérification 
-
-    // on itère sur les items de API
-    for (const responseBrute of listeCourseApiUnknown) {
-      // on essaye de les transformer en course
-      const responseNet = Course.createCourseFromApi(responseBrute);
-      if (
-        responseNet &&
-        listCourse.find((item) => responseNet.id === item.id) === undefined
-      ) {
-        // objet n'existe pas dans le state on peut le rajouter
-        // ajout de la structure en fonction du type de course
-        const newCourse = new Course(responseNet);
-        newCourse.isSynchro = true;
-        newListCourse.push(newCourse);
+      //traitement de la réponse
+      const listeCourseApiUnknown: unknown[] = response.data.data; // ajout vérification 
+      // on itère sur les items de API
+      for (const responseBrute of listeCourseApiUnknown) {
+        // on essaye de les transformer en course
+        const responseNet = Course.createCourseFromApi(responseBrute);
+        if (
+          responseNet &&
+          listCourse.find((item) => responseNet.id === item.id) === undefined
+        ) {
+          // objet n'existe pas dans le state on peut le rajouter
+          // ajout de la structure en fonction du type de course
+          const newCourse = new Course(responseNet);
+          newCourse.isSynchro = true;
+          newListCourse.push(newCourse);
+        }
       }
+      // a la toute fin on met à jour le state
+      dispatch({ type: "add", course: newListCourse });
+
+    }
+    catch (error) {
+      console.error(`erreur dans le pullSynchro: ${error}`);
     }
 
-    // a la toute fin on met à jour le state
-    dispatch({ type: "add", course: newListCourse });
+
   };
 
   return { synchroApiPull, synchroApiPush };

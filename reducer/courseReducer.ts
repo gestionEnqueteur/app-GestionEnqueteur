@@ -64,7 +64,8 @@ function addCourse(prevState: CourseInterface[], courses: CourseInterface | Cour
       }
     }
     return [...prevState, ...newListCourse];
-  } else if (prevState.find((item) => item.id === courses.id) === undefined) {
+  }
+  else if (prevState.find((item) => item.id === courses.id) === undefined) {
     return [...prevState, courses];
   }
   console.warn("duplication ID");
