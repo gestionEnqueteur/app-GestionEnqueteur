@@ -27,7 +27,8 @@ const config: ExpoConfig = {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#ffffff"
     },
-    package: IS_DEV ? "com.ponche.appGestionEnqueteur.dev" : "com.ponche.appGestionEnqueteur"
+    package: IS_DEV ? "com.ponche.appGestionEnqueteur.dev" : "com.ponche.appGestionEnqueteur",
+    googleServicesFile: process.env.GOOGLE_SERVICES_JSON ?? './google-services.json'
   },
   web: {
     favicon: "./assets/favicon.png"
