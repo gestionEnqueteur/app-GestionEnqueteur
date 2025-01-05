@@ -4,7 +4,7 @@ import { useStoreZustand } from "../store/storeZustand";
 
 export function useCourseById(id: number): Course {
 
-  const listCourse = useStoreZustand(state => state.courses) 
+  const listCourse = useStoreZustand(state => state.courses); 
   
   const course = listCourse.find(item => item.id === id); 
   if (!course) {

@@ -25,7 +25,7 @@ type StoreAction = {
 
 type StoreZustand = StoreState & StoreAction
 
-const functionCreator: StateCreator<StoreZustand> = (set, get) => ({
+const functionCreator: StateCreator<StoreZustand> = (set) => ({
   // Courses 
   coursesData: [],
   courses: [],
@@ -54,13 +54,6 @@ const functionCreator: StateCreator<StoreZustand> = (set, get) => ({
 }
 )
 
-
-
-// export const useStoreZustand = create<StoreZustand>(persist(functionCreator, {
-//   name: "my-store"
-// })
-
-
 export const useStoreZustand = create<StoreZustand>()(
   persist(
     functionCreator,
@@ -73,6 +66,7 @@ export const useStoreZustand = create<StoreZustand>()(
         urlApi: state.urlApi
       }),
       onRehydrateStorage: () => state => {
+        console.log("Hydrate Storage");
         if (state?.coursesData) {
           state.courses = state.coursesData.map(item => new Course(item));
         }

@@ -2,12 +2,12 @@ import { FlatList } from "react-native";
 import DetailCourse from "../components/DetailCourse";
 import Course from "../models/Course";
 import { Text } from "react-native-paper";
-import CourseInterface from "../models/CourseInterface";
-import TestMock from "../services/TestMock";
 import { useStoreZustand } from "../store/storeZustand";
+import useSynchroApi from "../hook/useSynchroApi";
 
 export default function TrainPlanifieScreen() {
   const courses = useStoreZustand((state) => state.courses);
+  const { synchroApiPull, synchroApiPush } = useSynchroApi();
 
   const renderItem = ({ item }: { item: Course }) => (
     <DetailCourse course={item} />
@@ -15,9 +15,9 @@ export default function TrainPlanifieScreen() {
 
   const handleOnRefresh = async () => {
     console.log("refresh");
-
-    const newcourses: CourseInterface[] = TestMock.getCourses();
-    //dispatch({ type: "load", courses: newcourses });
+    await synchroApiPush();
+    await synchroApiPull();
+    console.log("end refresh");
   };
 
   return (

@@ -26,6 +26,7 @@ export default class Course implements CourseInterface{
   objectif?: number;
   commentaire?: string;
   mesure?: Mesure;
+  updatedAt!: string
 
   constructor(course: CourseInterface) {
     Object.assign(this, course);
@@ -92,7 +93,8 @@ export default class Course implements CourseInterface{
           dataApi.attributes.hd,
         datetimeArriveEnq:
           dataApi.attributes.ha,
-      }
+      },
+      updatedAt: dataApi.attributes.updateAt
     }
 
     return new Course(newCourse);
