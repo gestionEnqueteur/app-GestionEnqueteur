@@ -1,23 +1,20 @@
-import { useRecoilValue } from "recoil";
-import { configurationState, courseAllSelector } from "../store/storeAtom";
 import Course from "../models/Course";
-import { useDispatchCourses } from "./useDispatchCourses";
 import useApi from '../hook/useApi'
 import Mesure from "../models/Mesure";
+import { useStoreZustand } from "../store/storeZustand";
 
 export default function useSynchroApi(): {
   synchroApiPush: Function;
   synchroApiPull: Function;
 } {
-  const listCourse = useRecoilValue(courseAllSelector);
-  const { urlApi } = useRecoilValue(configurationState);
-  const dispatch = useDispatchCourses();
+
+  const { urlApi, listCourse, dispatch } = useStoreZustand(state => ({ urlApi: state.urlApi, listCourse: state.courses, dispatch: state.dispatchCourse }))
 
   const api = useApi();
 
   if (!urlApi) {
     //TODO: avertir l'utilisateur de la non configuration
-    console.warn("URL non configuré");
+    //console.warn("URL non configuré");
   }
 
   const synchroApiPush = async () => {

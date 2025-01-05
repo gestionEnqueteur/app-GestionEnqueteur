@@ -1,6 +1,5 @@
-import { useSetRecoilState } from "recoil";
-import { snackBarState } from "../store/storeAtom";
 import { SnackbarProps } from "react-native-paper";
+import { useStoreZustand } from "../store/storeZustand";
 
 type CustomSnackBarProps = Omit<SnackbarProps, 'onDismiss' | 'visible'> & {
   onDismiss?: () => void;
@@ -13,7 +12,7 @@ type CustomSnackBarProps = Omit<SnackbarProps, 'onDismiss' | 'visible'> & {
  */
 export default function useSnackBar() {
 
-  const setSnackBar = useSetRecoilState(snackBarState)
+  const setSnackBar = useStoreZustand(state => state.setMainSnackBarProp);
 
   /**
    * cette fonction permet d'afficher la CommunSnackBar pendant un brief instanst, elle recoit en argument une props SnackBarProps modifié.

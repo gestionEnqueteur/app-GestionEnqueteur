@@ -1,11 +1,10 @@
 import { Snackbar } from "react-native-paper";
-import { useRecoilValue } from "recoil";
-import { snackBarState } from "../store/storeAtom";
 import { StyleSheet, View } from "react-native";
+import { useStoreZustand } from "../store/storeZustand";
 
 
 export default function MainSnackBar() {
-  const snackBar = useRecoilValue(snackBarState);
+  const snackBar = useStoreZustand(state => state.mainSnackBarProp);
 
   return (
     <View style={styles.container}>

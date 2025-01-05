@@ -6,9 +6,9 @@ import { useRecoilState } from "recoil";
 import { configurationState } from "../store/storeAtom";
 import useSnackBar from "../hook/useSnackBar";
 import StorageService from "../services/StorageServices";
+import { useStoreZustand } from "../store/storeZustand";
 
 export default function ParamScreen() {
-
   const [config, setConfig] = useRecoilState(configurationState);
 
   const [valueForm, setValueForm] = useState<ConfigurationType>({
