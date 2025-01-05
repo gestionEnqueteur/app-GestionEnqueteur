@@ -3,7 +3,7 @@ import { StatusEnum } from "./enum";
 import CourseInterface from "./CourseInterface";
 import ApiCourseResponse from "./ApiCourseResponse";
 import Mesure from "./Mesure";
-import MesureFactory from "./MesureFactory";
+import MesureFactory from "../services/MesureFactory";
 import  { enableMapSet, immerable} from "immer"; 
 
 enableMapSet(); 

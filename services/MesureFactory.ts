@@ -1,8 +1,8 @@
-import ApiMesureResponse from "./ApiMesureResponse";
-import Mesure from "./Mesure";
-import MesureInterface from "./MesureInterface";
-import MesureBsc from "./bsc/MesureBsc";
-import MesureBscInterface from "./bsc/MesureBscInterface";
+import ApiMesureResponse from "../models/ApiMesureResponse";
+import Mesure from "../models/Mesure";
+import MesureInterface from "../models/MesureInterface";
+import MesureBsc from "../models/bsc/MesureBsc";
+import MesureBscInterface from "../models/bsc/MesureBscInterface";
 
 export default class MesureFactory {
 
