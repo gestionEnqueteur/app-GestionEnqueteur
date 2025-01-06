@@ -7,17 +7,21 @@ import useSynchroApi from "../hook/useSynchroApi";
 
 export default function TrainPlanifieScreen() {
   const courses = useStoreZustand((state) => state.courses);
-  const { synchroApiPull, synchroApiPush } = useSynchroApi();
 
-  const renderItem = ({ item }: { item: Course }) => (
-    <DetailCourse course={item} />
-  );
+  const { synchroApiPush, synchroApiPull } = useSynchroApi();
+
+  console.log(`mount TrainPlanfieScreen `);
 
   const handleOnRefresh = async () => {
     console.log("refresh");
     await synchroApiPush();
     await synchroApiPull();
     console.log("end refresh");
+  };
+
+  const renderItem = ({ item }: { item: Course }) => {
+    console.log("render Item");
+    return <DetailCourse course={item} key={item.id.toString()} />;
   };
 
   return (

@@ -3,28 +3,24 @@ import useApi from "../hook/useApi";
 import Mesure from "../models/Mesure";
 import { useStoreZustand } from "../store/storeZustand";
 import courseReducer from "../reducer/courseReducer";
+import { useCallback } from "react";
 
 export default function useSynchroApi(): {
   synchroApiPush: () => Promise<void>;
   synchroApiPull: () => Promise<void>;
 } {
-  const { urlApi, listCourse, dispatch, courseData } = useStoreZustand(
-    (state) => ({
-      urlApi: state.urlApi,
-      listCourse: state.courses,
-      dispatch: state.dispatchCourse,
-      courseData: state.coursesData,
-    })
-  );
+  const listCourse = useStoreZustand(state => state.courses); 
+  const dispatch = useStoreZustand(state => state.dispatchCourse); 
+  const courseData = useStoreZustand(state => state.coursesData); 
 
   const api = useApi();
 
-  if (!urlApi) {
-    //TODO: avertir l'utilisateur de la non configuration
-    //console.warn("URL non configuré");
-  }
+  console.log("mount useSynchroApi"); 
 
-  const synchroApiPush = async () => {
+  const synchroApiPush =  useCallback(async () => {
+    
+    console.log("appel de synchroApiPush"); 
+
     // Envoi des mesures
     const coursesNotSynchronised = listCourse.filter(
       (course) => course.isSynchro === false
@@ -55,9 +51,12 @@ export default function useSynchroApi(): {
 
     // passage de isSynchro a true pour les courses synchronisé
     dispatch({ type: "synchro", coursesId: coursesIdCourseSynchronised });
-  };
+  }, []);
 
-  const synchroApiPull = async () => {
+  const synchroApiPull = useCallback(async () => {
+
+    console.log("appel de synchroApiPull"); 
+
     try {
       console.log(`pull data from API`);
       //TODO: par la suite, récuperer que les data de l'utilisateur
@@ -103,7 +102,7 @@ export default function useSynchroApi(): {
     } catch (error) {
       console.error(`erreur dans le pullSynchro: ${error}`);
     }
-  };
+  }, []);
 
-  return { synchroApiPull, synchroApiPush };
+  return { synchroApiPull, synchroApiPush};
 }

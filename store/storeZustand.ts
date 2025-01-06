@@ -30,6 +30,7 @@ const functionCreator: StateCreator<StoreZustand> = (set) => ({
   coursesData: [],
   courses: [],
   dispatchCourse: (action: ActionCourse) => set((state) => {
+    console.log(`appel du dispatch ${action.type}`); 
     const updatedCoursesData = courseReducer(state.coursesData, action);
     return {
       coursesData: updatedCoursesData,

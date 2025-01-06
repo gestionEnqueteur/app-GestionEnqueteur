@@ -17,10 +17,10 @@ import { useStoreZustand } from "../../store/storeZustand";
 type Props = NativeStackScreenProps<RootStackParamList, "SaisieBsc">;
 
 export default function SaisiBscScreen({ route }: Readonly<Props>) {
-  const course = useCourseById(route.params.courseId); 
-  const dispatch = useStoreZustand(state => state.dispatchCourse)
+  const course = useCourseById(route.params.courseId);
+  const dispatch = useStoreZustand((state) => state.dispatchCourse);
 
-  if(!(course.mesure instanceof MesureBsc)) {
+  if (!(course.mesure instanceof MesureBsc)) {
     throw new Error("Mesure n'est pas une MesureBsc");
   }
 
@@ -77,7 +77,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
 
     const newCourse = produce(course, (draft) => {
       if (!(draft.mesure instanceof MesureBsc)) {
-        throw new Error("Mesure n'est pas une Mesure BSC"); 
+        throw new Error("Mesure n'est pas une Mesure BSC");
       }
       draft.mesure.questionnaires = questionnaire;
     });
