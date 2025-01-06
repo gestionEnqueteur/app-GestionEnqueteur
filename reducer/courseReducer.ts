@@ -5,13 +5,15 @@ export type ActionCourse =
   | { type: "delete"; course: CourseInterface }
   | { type: "add"; course: CourseInterface | CourseInterface[] }
   | { type: "load"; courses: CourseInterface[] }
-  | { type: "synchro", coursesId: number[] }
-  | { type: "reset" };
+  | { type: "synchro"; coursesId: number[] }
+  | { type: "reset" }
+  | { type: "updateApi"; courses: CourseInterface[] };
 
-export default function courseReducer(state: CourseInterface[], action: ActionCourse) {
+export default function courseReducer(
+  state: CourseInterface[],
+  action: ActionCourse
+) {
   let newState: CourseInterface[];
-
-
 
   switch (action.type) {
     case "add":
@@ -31,15 +33,21 @@ export default function courseReducer(state: CourseInterface[], action: ActionCo
       console.log("action update");
       return newState;
 
+    case "updateApi":
+        newState = state; 
+      for (let course of action.courses) {
+        newState = state.map((item) => (item.id === course.id ? course : item));
+      }
+      return newState;
+
     case "load":
       newState = action.courses;
       return newState;
 
     case "synchro":
-      newState = state.map(item =>
-        action.coursesId.includes(item.id)
-          ? { ...item, isSynchro: true }
-          : item)
+      newState = state.map((item) =>
+        action.coursesId.includes(item.id) ? { ...item, isSynchro: true } : item
+      );
       return newState;
 
     case "reset":
@@ -52,7 +60,10 @@ export default function courseReducer(state: CourseInterface[], action: ActionCo
 }
 
 // méthode interne pour le reducer
-function addCourse(prevState: CourseInterface[], courses: CourseInterface | CourseInterface[]) {
+function addCourse(
+  prevState: CourseInterface[],
+  courses: CourseInterface | CourseInterface[]
+) {
   // on vérifie le type
   if (courses instanceof Array) {
     // c'est un array
@@ -64,8 +75,7 @@ function addCourse(prevState: CourseInterface[], courses: CourseInterface | Cour
       }
     }
     return [...prevState, ...newListCourse];
-  }
-  else if (prevState.find((item) => item.id === courses.id) === undefined) {
+  } else if (prevState.find((item) => item.id === courses.id) === undefined) {
     return [...prevState, courses];
   }
   console.warn("duplication ID");

@@ -4,10 +4,10 @@ import { Button, Text } from "react-native-paper";
 import styles from "./modalStyle";
 
 import TopRetard from "../bsc/TopRetard";
-import { useDispatchCourses } from "../../hook/useDispatchCourses";
 import { produce } from "immer";
 import MesureBsc from "../../models/bsc/MesureBsc";
 import Course from "../../models/Course";
+import { useStoreZustand } from "../../store/storeZustand";
 
 type Props = {
   course: Course;
@@ -18,7 +18,7 @@ export default function RetardTrain({
   course,
   setVisibleModal,
 }: Readonly<Props>) {
-  const dispatch = useDispatchCourses();
+  const dispatch = useStoreZustand(state => state.dispatchCourse)
 
   // verif mesure BSC 
   if(!(course.mesure instanceof MesureBsc)) {

@@ -1,11 +1,10 @@
-import { useRecoilValue } from "recoil";
 import Course from "../models/Course";
-import { courseAllSelector } from "../store/storeAtom";
+import { useStoreZustand } from "../store/storeZustand";
 
 
 export function useCourseById(id: number): Course {
 
-  const listCourse = useRecoilValue(courseAllSelector); 
+  const listCourse = useStoreZustand(state => state.courses); 
   
   const course = listCourse.find(item => item.id === id); 
   if (!course) {

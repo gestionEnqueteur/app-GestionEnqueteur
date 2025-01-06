@@ -3,7 +3,7 @@ import { StatusEnum } from "./enum";
 import CourseInterface from "./CourseInterface";
 import ApiCourseResponse from "./ApiCourseResponse";
 import Mesure from "./Mesure";
-import MesureFactory from "./MesureFactory";
+import MesureFactory from "../services/MesureFactory";
 import  { enableMapSet, immerable} from "immer"; 
 
 enableMapSet(); 
@@ -26,6 +26,7 @@ export default class Course implements CourseInterface{
   objectif?: number;
   commentaire?: string;
   mesure?: Mesure;
+  updatedAt!: string
 
   constructor(course: CourseInterface) {
     Object.assign(this, course);
@@ -92,7 +93,8 @@ export default class Course implements CourseInterface{
           dataApi.attributes.hd,
         datetimeArriveEnq:
           dataApi.attributes.ha,
-      }
+      },
+      updatedAt: dataApi.attributes.updateAt
     }
 
     return new Course(newCourse);

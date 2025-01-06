@@ -4,10 +4,10 @@ import { Button, TextInput, Text, SegmentedButtons } from "react-native-paper";
 import { produce } from "immer";
 import styles from "./modalStyle";
 
-import { useDispatchCourses } from "../../hook/useDispatchCourses";
 import Course from "../../models/Course";
 import CourseBsc from "../../models/bsc/CourseBsc";
 import MesureBsc from "../../models/bsc/MesureBsc";
+import { useStoreZustand } from "../../store/storeZustand";
 
 type Props = {
   course: CourseBsc;
@@ -29,7 +29,7 @@ export default function InfoTrain({
     course.mesure.infoTrain.numMaterial
   );
 
-  const dispatch = useDispatchCourses();
+  const dispatch = useStoreZustand(state => state.dispatchCourse)
 
   const onSubmit = () => {
     // mise a jour du state 

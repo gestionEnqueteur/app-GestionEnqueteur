@@ -1,28 +1,30 @@
-import { useRecoilValue } from "recoil";
-import { configurationState, courseAllSelector } from "../store/storeAtom";
 import Course from "../models/Course";
-import { useDispatchCourses } from "./useDispatchCourses";
-import useApi from '../hook/useApi'
+import useApi from "../hook/useApi";
 import Mesure from "../models/Mesure";
+import { useStoreZustand } from "../store/storeZustand";
+import courseReducer from "../reducer/courseReducer";
+import { useCallback } from "react";
 
 export default function useSynchroApi(): {
-  synchroApiPush: Function;
-  synchroApiPull: Function;
+  synchroApiPush: () => Promise<void>;
+  synchroApiPull: () => Promise<void>;
 } {
-  const listCourse = useRecoilValue(courseAllSelector);
-  const { urlApi } = useRecoilValue(configurationState);
-  const dispatch = useDispatchCourses();
+  const listCourse = useStoreZustand(state => state.courses); 
+  const dispatch = useStoreZustand(state => state.dispatchCourse); 
+  const courseData = useStoreZustand(state => state.coursesData); 
 
   const api = useApi();
 
-  if (!urlApi) {
-    //TODO: avertir l'utilisateur de la non configuration
-    console.warn("URL non configuré");
-  }
+  console.log("mount useSynchroApi"); 
 
-  const synchroApiPush = async () => {
-    // Envoi des mesures 
-    const coursesNotSynchronised = listCourse.filter((course) => course.isSynchro === false);
+  const synchroApiPush =  useCallback(async () => {
+    
+    console.log("appel de synchroApiPush"); 
+
+    // Envoi des mesures
+    const coursesNotSynchronised = listCourse.filter(
+      (course) => course.isSynchro === false
+    );
     const coursesIdCourseSynchronised: number[] = [];
 
     for (const course of coursesNotSynchronised) {
@@ -33,61 +35,74 @@ export default function useSynchroApi(): {
       const dataToSend = {
         data: {
           mesure: [mesure.convertDataToApi()],
-          course: course.id
+          course: course.id,
         },
-      }
+      };
       console.log(dataToSend);
       try {
         const responseApi = await api.post(`/api/mesures`, dataToSend);
         coursesIdCourseSynchronised.push(course.id);
 
         console.log(responseApi);
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error);
       }
-
     }
 
-    // passage de isSynchro a true pour les courses synchronisé 
+    // passage de isSynchro a true pour les courses synchronisé
     dispatch({ type: "synchro", coursesId: coursesIdCourseSynchronised });
+  }, []);
 
-  };
+  const synchroApiPull = useCallback(async () => {
 
-  const synchroApiPull = async () => {
+    console.log("appel de synchroApiPull"); 
+
     try {
       console.log(`pull data from API`);
+      //TODO: par la suite, récuperer que les data de l'utilisateur
       const response = await api.get(`/api/courses?populate=*`);
 
       const newListCourse: Course[] = [];
+      const cousesToUpdate: Course[] = [];
 
       //traitement de la réponse
-      const listeCourseApiUnknown: unknown[] = response.data.data; // ajout vérification 
+      const listeCourseApiUnknown: unknown[] = response.data.data; // ajout vérification
       // on itère sur les items de API
       for (const responseBrute of listeCourseApiUnknown) {
         // on essaye de les transformer en course
-        const responseNet = Course.createCourseFromApi(responseBrute);
-        if (
-          responseNet &&
-          listCourse.find((item) => responseNet.id === item.id) === undefined
-        ) {
-          // objet n'existe pas dans le state on peut le rajouter
-          // ajout de la structure en fonction du type de course
-          const newCourse = new Course(responseNet);
-          newCourse.isSynchro = true;
-          newListCourse.push(newCourse);
+        const courseFromApi = Course.createCourseFromApi(responseBrute);
+        const courseFromZustand = listCourse.find(
+          (item) => courseFromApi.id === item.id
+        );
+
+        if (courseFromZustand) {
+          // objet n'existe on vérifie la date de mise a jour
+          if (courseFromZustand.updatedAt !== courseFromApi.updatedAt) {
+            // les date ne sont pas synchro, on le met dans la liste des course a updater
+            cousesToUpdate.push(courseFromApi);
+          }
+        } else {
+          // la course n'est pas dans le store Zustand, on le rajoute dans la liste
+          courseFromApi.isSynchro = true;
+          newListCourse.push(courseFromApi);
         }
       }
-      // a la toute fin on met à jour le state
-      dispatch({ type: "add", course: newListCourse });
+      const prevStateCourse = courseData;
+      let newStateCourse = courseReducer(prevStateCourse, {
+        type: "add",
+        course: newListCourse,
+      });
+      newStateCourse = courseReducer(newStateCourse, {
+        type: "updateApi",
+        courses: cousesToUpdate,
+      });
 
-    }
-    catch (error) {
+      // a la toute fin on met à jour le state en remplacement le state complet.
+      dispatch({ type: "load", courses: newStateCourse });
+    } catch (error) {
       console.error(`erreur dans le pullSynchro: ${error}`);
     }
+  }, []);
 
-
-  };
-
-  return { synchroApiPull, synchroApiPush };
+  return { synchroApiPull, synchroApiPush};
 }

@@ -17,5 +17,6 @@ export default interface CourseInterface {
   objectif?: number;
   commentaire?: string;
   mesure?: Mesure;
+  updatedAt: string;
 }
 

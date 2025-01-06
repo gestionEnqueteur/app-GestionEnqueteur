@@ -2,14 +2,14 @@ import { View, ScrollView, StyleSheet } from "react-native";
 import { Text, TextInput, Button, Surface } from "react-native-paper";
 import { useEffect, useState } from "react";
 import ConfigurationType from "../models/ConfigurationType";
-import { useRecoilState } from "recoil";
-import { configurationState } from "../store/storeAtom";
 import useSnackBar from "../hook/useSnackBar";
 import StorageService from "../services/StorageServices";
+import { useStoreZustand } from "../store/storeZustand";
 
 export default function ParamScreen() {
 
-  const [config, setConfig] = useRecoilState(configurationState);
+  const urlApi = useStoreZustand(state => state.urlApi); 
+  const setUrlApi = useStoreZustand(state => state.setUrlApi); 
 
   const [valueForm, setValueForm] = useState<ConfigurationType>({
     urlApi: "",
@@ -22,7 +22,7 @@ export default function ParamScreen() {
     // Init de la page
 
     console.log("Init ParamScreem");
-    setValueForm(config);
+    setValueForm((state) => ({ ...state, urlApi: urlApi }));
   }, []);
 
   const handleOnChangeURL = (newValue: string) => {
@@ -38,13 +38,17 @@ export default function ParamScreen() {
   const handleOnClickSubmit = () => {
     // stockage dans le AsyncStorage
     //TODO: appliquer une vérification de la cohérence, via des regex par exemple
+    /**
+     * @deprecated Inutile , le middleware de Zustand fait le boulot
+     */
     StorageService.saveData(
       valueForm,
       "configuration",
       succesSave,
       failureSave
     );
-    setConfig(valueForm);
+    //setConfig(valueForm);
+    setUrlApi(valueForm.urlApi)
   };
 
   const succesSave = () => {
